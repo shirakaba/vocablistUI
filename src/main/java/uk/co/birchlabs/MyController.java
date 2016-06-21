@@ -1,10 +1,14 @@
 package uk.co.birchlabs;
 
+import catRecurserPkg.VocabListRow;
+import catRecurserPkg.Vocablist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 /**
  * Created by jamiebirch on 21/06/2016.
@@ -36,6 +40,17 @@ public class MyController {
     ) {
         model.addAttribute("kanji", kanji);
         return "test";
+    }
+
+    @RequestMapping("/test3")
+    public String test3(Model model) {
+        Vocablist vocablist = new Vocablist("するためにしない。する為に行く。何のためにした？自分の為。する為。");
+
+        List<VocabListRow> sortedByFreq = vocablist.getSortedByFreq();
+        model.addAttribute("theList", sortedByFreq);
+//        sortedByFreq.get(0).
+
+        return "test3";
     }
 
     @RequestMapping("/test2")
