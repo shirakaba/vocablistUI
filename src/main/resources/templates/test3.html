@@ -6,7 +6,7 @@
 </head>
 <body>
 <p th:each="iter : ${theList}">
-    <span th:text="${iter.getToken()}"></span>
+    <span th:text="${iter.getToken().toString()} + ${iter.getCount()}"></span>
 </p>
 <!--<p th:text="'Pronunication is ' + ${myIterable} + '!'" />-->
 <!--<p th:text="'Getting pron:' + ${pron} + '.'" />-->

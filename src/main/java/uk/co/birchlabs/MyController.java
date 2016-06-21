@@ -42,17 +42,6 @@ public class MyController {
         return "test";
     }
 
-    @RequestMapping("/test3")
-    public String test3(Model model) {
-        Vocablist vocablist = new Vocablist("するためにしない。する為に行く。何のためにした？自分の為。する為。");
-
-        List<VocabListRow> sortedByFreq = vocablist.getSortedByFreq();
-        model.addAttribute("theList", sortedByFreq);
-//        sortedByFreq.get(0).
-
-        return "test3";
-    }
-
     @RequestMapping("/test2")
     public String test2(
             // kanji2 is a requestable parameter in the HTML scope. It has type String.
@@ -70,4 +59,31 @@ public class MyController {
 
         return "test2";
     }
+
+    @RequestMapping("/test3")
+    public String test3(Model model) {
+        Vocablist vocablist = new Vocablist("するためにしない。する為に行く。何のためにした？自分の為。する為。");
+
+        List<VocabListRow> sortedByFreq = vocablist.getSortedByFreq();
+        model.addAttribute("theList", sortedByFreq);
+//        sortedByFreq.get(0).
+
+        return "test3";
+    }
+
+    @RequestMapping("/test4")
+    public String test4(
+            // eg. http://localhost:8080/test4?input="この俺が俺です。"
+            @RequestParam(name="input", defaultValue = "するためにしない。する為に行く。何のためにした？自分の為。する為。") String input,
+            Model model
+    ) {
+        Vocablist vocablist = new Vocablist(input);
+
+        List<VocabListRow> sortedByFreq = vocablist.getSortedByFreq();
+        model.addAttribute("theList", sortedByFreq);
+//        sortedByFreq.get(0).
+
+        return "test4";
+    }
+
 }
