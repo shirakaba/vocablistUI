@@ -50,6 +50,8 @@ hs_err_pid*
 ## File-based project format:
 *.iws
 
+/jmdict_e_and_kanjidic.sqlite
+/pokedex.sqlite
 ## Plugin-specific files:
 
 # IntelliJ
@@ -67,3 +69,5 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 # Created by .ignore support plugin (hsz.mobi)
+
+*.iml

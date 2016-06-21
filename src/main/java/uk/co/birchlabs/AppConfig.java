@@ -16,7 +16,8 @@ public class AppConfig {
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.driverClassName("org.sqlite.JDBC");
 //        dataSourceBuilder.type(org.sqlite.SQLiteDataSource.class);
-        dataSourceBuilder.url("jdbc:sqlite:pokedex.sqlite");
+//        dataSourceBuilder.url("jdbc:sqlite:pokedex.sqlite");
+        dataSourceBuilder.url("jdbc:sqlite:jmdict_e_and_kanjidic.sqlite");
         return dataSourceBuilder.build();
     }
 }
