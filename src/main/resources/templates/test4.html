@@ -3,23 +3,24 @@
 <head>
     <title>Getting Started: Serving Web Content</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="test4.css" type="text/css" />
 </head>
 <body>
     <table>
         <thead>
         <tr>
-            <th>Token description</th>
-            <th>Lone</th>
-            <th>Cumulative</th>
+            <th class="alpha">Token</th>
+            <th class="number">Lone</th>
+            <th class="number">Cumulative</th>
         </tr>
         </thead>
         <tbody>
         <!--/*@thymesVar id="theList" type="List<uk.co.birchlabs.VocabListRowCumulative>"*/-->
         <!--/*@thymesVar id="iter" type="uk.co.birchlabs.VocabListRowCumulative"*/-->
         <tr th:each="iter : ${theList}">
-            <td th:text="${iter.getVocabListRow().getToken().describe()}"/>
-            <td th:text="${#numbers.formatDecimal(100.0 * iter.getIsolatePercent(), 1, 'COMMA', 2, 'POINT')} + '%'">null</td>
-            <td th:text="${#numbers.formatDecimal(100.0 * iter.getCumulativePercent(), 1, 'COMMA', 2, 'POINT')} + '%'">null</td>
+            <td class="alpha" th:text="${iter.getVocabListRow().getToken().getBaseForm()}"/>
+            <td class="number" th:text="${#numbers.formatDecimal(100.0 * iter.getIsolatePercent(), 1, 'COMMA', 2, 'POINT')} + '%'">null</td>
+            <td class="number" th:text="${#numbers.formatDecimal(100.0 * iter.getCumulativePercent(), 1, 'COMMA', 2, 'POINT')} + '%'">null</td>
         </tr>
         </tbody>
     </table>
