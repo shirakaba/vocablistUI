@@ -8,7 +8,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by jamiebirch on 21/06/2016.
@@ -77,10 +79,22 @@ public class MyController {
             @RequestParam(name="input", defaultValue = "するためにしない。する為に行く。何のためにした？自分の為。する為。") String input,
             Model model
     ) {
-        Vocablist vocablist = new Vocablist(input);
-
+        Vocablist vocablist = new Vocablist(input, Vocablist.Filtering.MANDATORY);
         List<VocabListRow> sortedByFreq = vocablist.getSortedByFreq();
-        model.addAttribute("theList", sortedByFreq);
+
+        List<VocabListRowCumulative> cumulative = new ArrayList<>();
+
+        final int s = vocablist.getTokenCount().size();
+        float runningPercent = 0;
+        for (int i = 0; i < sortedByFreq.size(); i++) {
+            VocabListRow vocabListRow = sortedByFreq.get(i);
+            float myPercent = (float)vocabListRow.getCount() / (float)s;
+            runningPercent += myPercent;
+            cumulative.add(new VocabListRowCumulative(vocabListRow, myPercent, runningPercent));
+        }
+
+//        model.addAttribute("theObject", vocablist);
+        model.addAttribute("theList", cumulative);
 //        sortedByFreq.get(0).
 
         return "test4";
