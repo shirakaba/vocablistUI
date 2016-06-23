@@ -6,11 +6,11 @@ import javax.persistence.*;
 //import javax.validation.constraints.NotNull;
 
 /**
- * eg. する
+ * eg. 為る
  */
 @Entity
-@Table(name="jmdict_pronunciation")
-public class JMDictPronunciation {
+@Table(name="jmdict_word")
+public class JMDictWord {
 
     @Id
 //    @GeneratedValue(strategy= GenerationType.TABLE)
@@ -21,7 +21,7 @@ public class JMDictPronunciation {
 
     private String data;
 
-    public JMDictPronunciation() {
+    public JMDictWord() {
     }
 
     public Integer getId() {

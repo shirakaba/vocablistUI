@@ -59,11 +59,15 @@ public class MyRestController {
         List<VocabListRow> sortedByFreq = vocablist.getSortedByFreq();
 
         List<VocabListRowCumulative> cumulative = new ArrayList<>();
+        List<String> baseForms = new ArrayList<>();
+        List<String> readings = new ArrayList<>();
 
         final int s = vocablist.getTokenCount().size();
         float runningPercent = 0;
         for (int i = 0; i < sortedByFreq.size(); i++) {
             VocabListRow vocabListRow = sortedByFreq.get(i);
+            baseForms.add(vocabListRow.getToken().getBaseForm());
+            baseForms.add(vocabListRow.getToken().getReading());
             float myPercent = (float)vocabListRow.getCount() / (float)s;
             runningPercent += myPercent;
             // Evaluates to true if FUNDAMENTAL filtering level excludes the Token.

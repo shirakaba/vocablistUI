@@ -6,11 +6,11 @@ import javax.persistence.*;
 //import javax.validation.constraints.NotNull;
 
 /**
- * eg. する
+ * eg. to do; to cause to become, to make (into), to turn (into); to serve as, to act as, to work as...
  */
 @Entity
-@Table(name="jmdict_pronunciation")
-public class JMDictPronunciation {
+@Table(name="jmdict_definition")
+public class JMDictDefinition {
 
     @Id
 //    @GeneratedValue(strategy= GenerationType.TABLE)
@@ -18,10 +18,18 @@ public class JMDictPronunciation {
     @GeneratedValue(generator="kaugen")
 //    @NotNull
     private Integer id;
-
+    private String sense;
     private String data;
 
-    public JMDictPronunciation() {
+    public JMDictDefinition() {
+    }
+
+    public String getSense() {
+        return sense;
+    }
+
+    public void setSense(String sense) {
+        this.sense = sense;
     }
 
     public Integer getId() {
