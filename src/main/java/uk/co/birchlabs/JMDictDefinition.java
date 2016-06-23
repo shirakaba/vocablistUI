@@ -49,6 +49,9 @@ public class JMDictDefinition {
         this.data = data;
     }
 
+    @ManyToOne
+    private JMDictWord jmDictWord;
+
 //    @Query("from jmdict_definition a join a.category c where c.name=:categoryName")
 //    public Iterable<Auction> findByCategory(@Param("categoryName") String categoryName);
 }

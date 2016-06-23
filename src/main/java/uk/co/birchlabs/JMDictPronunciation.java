@@ -39,4 +39,7 @@ public class JMDictPronunciation {
     public void setData(String identifier) {
         this.data = data;
     }
+
+    @ManyToOne
+    private JMDictWord jmDictWord;
 }
