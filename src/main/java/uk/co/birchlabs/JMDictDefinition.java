@@ -1,6 +1,7 @@
 package uk.co.birchlabs;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.repository.query.Param;
 
 import javax.persistence.*;
 //import javax.validation.constraints.NotNull;
@@ -47,4 +48,7 @@ public class JMDictDefinition {
     public void setData(String identifier) {
         this.data = data;
     }
+
+//    @Query("from jmdict_definition a join a.category c where c.name=:categoryName")
+//    public Iterable<Auction> findByCategory(@Param("categoryName") String categoryName);
 }

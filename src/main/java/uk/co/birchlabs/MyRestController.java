@@ -18,15 +18,22 @@ import java.util.List;
 @RestController
 public class MyRestController {
 
-    @Autowired
-    JMDictPronunciationRepository JMDictPronunciationRepository;
+//    @Autowired
+//    JMDictPronunciationRepository JMDictPronunciationRepository;
+//
+//    @Autowired
+//    JMDictPronunciationRepository2 jmDictPronunciationRepository2;
 
-    @RequestMapping("/thing")
-    public JMDictPronunciation thing(
-            @RequestParam Integer id
-    ) {
-        return JMDictPronunciationRepository.findOne(id);
-    }
+    @Autowired
+    JMDictPronunciationService jmDictPronunciationService;
+
+//    @RequestMapping("/thing")
+//    public JMDictPronunciation thing(
+//            @RequestParam Integer id
+//    ) {
+////        return jmDictPronunciationRepository2.getSome()
+//        return JMDictPronunciationRepository.findOne(id);
+//    }
 
 //    @RequestMapping("/test5")
 //    public List<VocabListRowCumulative> test5(
@@ -55,38 +62,6 @@ public class MyRestController {
             // eg. http://localhost:8080/test4?input="この俺が俺です。"
             @RequestParam(name="input", defaultValue = "するためにしない。する為に行く。何のためにした？自分の為。する為。") String input
     ) {
-        Vocablist vocablist = new Vocablist(input, Vocablist.Filtering.MANDATORY);
-        List<VocabListRow> sortedByFreq = vocablist.getSortedByFreq();
-
-        List<VocabListRowCumulative> cumulative = new ArrayList<>();
-        List<String> baseForms = new ArrayList<>();
-        List<String> readings = new ArrayList<>();
-
-        final int s = vocablist.getTokenCount().size();
-        float runningPercent = 0;
-        for (int i = 0; i < sortedByFreq.size(); i++) {
-            VocabListRow vocabListRow = sortedByFreq.get(i);
-            baseForms.add(vocabListRow.getToken().getBaseForm());
-            baseForms.add(vocabListRow.getToken().getReading());
-            float myPercent = (float)vocabListRow.getCount() / (float)s;
-            runningPercent += myPercent;
-            // Evaluates to true if FUNDAMENTAL filtering level excludes the Token.
-            boolean fundamental = Vocablist.filterOut(vocabListRow.getToken(), Vocablist.Filtering.FUNDAMENTAL);
-            boolean JLPT4 = Filter.JLPT4_BLACKLIST.contains(vocabListRow.getToken().getBaseForm());
-            boolean JLPT3 = Filter.JLPT3_BLACKLIST.contains(vocabListRow.getToken().getBaseForm());
-            boolean JLPT2 = Filter.JLPT2_BLACKLIST.contains(vocabListRow.getToken().getBaseForm());
-            boolean JLPT1 = Filter.JLPT1_BLACKLIST.contains(vocabListRow.getToken().getBaseForm());
-            cumulative.add(new VocabListRowCumulative(vocabListRow,
-                    myPercent,
-                    runningPercent,
-                    fundamental,
-                    JLPT4,
-                    JLPT3,
-                    JLPT2,
-                    JLPT1
-            ));
-        }
-
-        return new Test6Model(cumulative);
+        return jmDictPronunciationService.test6(input);
     }
 }
