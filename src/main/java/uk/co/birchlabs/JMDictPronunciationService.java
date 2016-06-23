@@ -5,7 +5,6 @@ import catRecurserPkg.VocabListRow;
 import catRecurserPkg.Vocablist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +18,12 @@ public class JMDictPronunciationService {
     JMDictPronunciationRepository2 jmDictPronunciationRepository2;
 
     @Autowired
-    JMDictPronunciationRepository jmDictPronunciationRepository;
+    JMDictWordRepository2 jmDictWordRepository2;
 
-    public Test6Model test6(
-            String input
-    ) {
+//    @Autowired
+//    JMDictPronunciationRepository jmDictPronunciationRepository;
+
+    public Test6Model test6(String input) {
         Vocablist vocablist = new Vocablist(input, Vocablist.Filtering.MANDATORY);
         List<VocabListRow> sortedByFreq = vocablist.getSortedByFreq();
 
@@ -36,7 +36,7 @@ public class JMDictPronunciationService {
         for (int i = 0; i < sortedByFreq.size(); i++) {
             VocabListRow vocabListRow = sortedByFreq.get(i);
             baseForms.add(vocabListRow.getToken().getBaseForm());
-            baseForms.add(vocabListRow.getToken().getReading());
+            readings.add(Utils.convertKana(vocabListRow.getToken().getReading()));
             float myPercent = (float)vocabListRow.getCount() / (float)s;
             runningPercent += myPercent;
             // Evaluates to true if FUNDAMENTAL filtering level excludes the Token.
@@ -55,8 +55,26 @@ public class JMDictPronunciationService {
                     JLPT1
             ));
         }
-        // size == 0 for some reason
-        jmDictPronunciationRepository2.getSome(readings);
+        // size == 631. ids all correspond to a unique word (in a prior, non-provided table), but one id may appear twice
+        // due to having two valid readings. Ordering is purely by word id, so unrelated words written as 'ikou' aren't
+        // necessarily in perfect sequence.         size == 115. Note that sortedByFreq has size 159.
+        // [[0] {id=1001420, data="へ"} ...          [0] {id=1151260, data="悪い"},
+        // [18] {id=1155870, data="いこう"},          [1] {id=1155110, data="以降"},
+        // [19] {id=1156280, data ="いこう"},         [2] {id=1158390, data="移転"}...
+        // [20] {id=1156990, data ="じょう"}...       [9] {id=1215230, data="間"},
+        // [23] {id=1158270, data ="いこう"} ...].   [10] {id=1215240, data="間"},
+        // Joining to JMDictWord might be hairy because one id can link to variant kanji as well as variant readings, so
+        // we'd get a lot duplication within rows. So get JMDictWord separately. If
+
+        // TODO: pass a list of tokens to both getSome() methods instead of a list of processed Tokens so that they can be subtracted from.
+        Iterable<JMDictWord> idWordPairs = jmDictWordRepository2.getSome(baseForms);
+        // Identify the set of all baseForms successfully found in idWordPairs, then subtract their corresponding Tokens
+        // from search-set for the next search on pronunciations.
+        Iterable<JMDictPronunciation> idReadingPairs = jmDictPronunciationRepository2.getSome(readings);
+        // Now we have ids for all possible baseForms and all possible Readings, so we must map them back to the sorted
+        // vocabListRows. Must map the baseForms first and declare them to be "dealt with" before mapping the readings
+        // (which could equally apply to many of the baseForms and thus wreak havoc).
+
 
         return new Test6Model(cumulative);
     }

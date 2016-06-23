@@ -6,21 +6,18 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
-/**
- * Created by jamiebirch on 23/06/2016.
- */
 @Repository
-public class JMDictPronunciationRepository2 {
+public class JMDictWordRepository2 {
 
     @PersistenceContext
 //    @Autowired
-    EntityManager em;
+            EntityManager em;
 
-    public Iterable<JMDictPronunciation> getSome(Iterable<String> readings) {
-        TypedQuery<JMDictPronunciation> query = em.createQuery(
-                "SELECT a FROM JMDictPronunciation a " +
+    public Iterable<JMDictWord> getSome(Iterable<String> readings) {
+        TypedQuery<JMDictWord> query = em.createQuery(
+                "SELECT a FROM JMDictWord a " +
                         "WHERE a.data IN :data",
-                JMDictPronunciation.class
+                JMDictWord.class
         );
         query.setParameter("data", readings);
         // offset

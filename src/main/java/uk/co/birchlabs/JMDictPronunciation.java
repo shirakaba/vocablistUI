@@ -40,6 +40,6 @@ public class JMDictPronunciation {
         this.data = data;
     }
 
-    @ManyToOne
-    private JMDictWord jmDictWord;
+//    @ManyToOne
+//    private JMDictWord jmDictWord;
 }
