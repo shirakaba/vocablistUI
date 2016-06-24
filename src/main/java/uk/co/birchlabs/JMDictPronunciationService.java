@@ -1,13 +1,17 @@
 package uk.co.birchlabs;
 
 import catRecurserPkg.Filter;
+import catRecurserPkg.ForwardingToken;
 import catRecurserPkg.VocabListRow;
 import catRecurserPkg.Vocablist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * Created by jamiebirch on 23/06/2016.
@@ -28,15 +32,13 @@ public class JMDictPronunciationService {
         List<VocabListRow> sortedByFreq = vocablist.getSortedByFreq();
 
         List<VocabListRowCumulative> cumulative = new ArrayList<>();
-        List<String> baseForms = new ArrayList<>();
-        List<String> readings = new ArrayList<>();
 
         final int s = vocablist.getTokenCount().size();
         float runningPercent = 0;
         for (int i = 0; i < sortedByFreq.size(); i++) {
             VocabListRow vocabListRow = sortedByFreq.get(i);
-            baseForms.add(vocabListRow.getToken().getBaseForm());
-            readings.add(Utils.convertKana(vocabListRow.getToken().getReading()));
+//            baseForms.add(vocabListRow.getToken().getBaseForm());
+//            readings.add(Utils.convertKana(vocabListRow.getToken().getReading()));
             float myPercent = (float)vocabListRow.getCount() / (float)s;
             runningPercent += myPercent;
             // Evaluates to true if FUNDAMENTAL filtering level excludes the Token.
@@ -64,16 +66,21 @@ public class JMDictPronunciationService {
         // [20] {id=1156990, data ="じょう"}...       [9] {id=1215230, data="間"},
         // [23] {id=1158270, data ="いこう"} ...].   [10] {id=1215240, data="間"},
         // Joining to JMDictWord might be hairy because one id can link to variant kanji as well as variant readings, so
-        // we'd get a lot duplication within rows. So get JMDictWord separately. If
+        // we'd get a lot duplication within rows. So get JMDictWord separately.
+
+        Set<ForwardingToken> tokensToSearch = new HashSet<>();
+        sortedByFreq.forEach(vocablistRow -> tokensToSearch.add(vocablistRow.getToken()));
+//        List<String> readings = new ArrayList<>();
 
         // TODO: pass a list of tokens to both getSome() methods instead of a list of processed Tokens so that they can be subtracted from.
-        Iterable<JMDictWord> idWordPairs = jmDictWordRepository2.getSome(baseForms);
+        Iterable<JMDictWord> idWordPairs = jmDictWordRepository2.getSome(tokensToSearch);
         // Identify the set of all baseForms successfully found in idWordPairs, then subtract their corresponding Tokens
         // from search-set for the next search on pronunciations.
-        Iterable<JMDictPronunciation> idReadingPairs = jmDictPronunciationRepository2.getSome(readings);
+        Iterable<JMDictPronunciation> idReadingPairs = jmDictPronunciationRepository2.getSome(tokensToSearch);
         // Now we have ids for all possible baseForms and all possible Readings, so we must map them back to the sorted
         // vocabListRows. Must map the baseForms first and declare them to be "dealt with" before mapping the readings
-        // (which could equally apply to many of the baseForms and thus wreak havoc).
+        // (which could equally
+        // apply to many of the baseForms and thus wreak havoc).
 
 
         return new Test6Model(cumulative);
