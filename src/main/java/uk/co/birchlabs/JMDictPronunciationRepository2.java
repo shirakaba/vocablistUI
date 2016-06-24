@@ -19,9 +19,17 @@ public class JMDictPronunciationRepository2 {
 //    @Autowired
     EntityManager em;
 
-    public Iterable<JMDictPronunciation> getSome(Iterable<ForwardingToken> tokensToSearch) {
+    public enum Mode {
+        READINGS_IN_HIRAGANA,
+        READINGS_IN_KATAKANA
+    }
+
+    public Iterable<JMDictPronunciation> getSome(Iterable<ForwardingToken> tokensToSearch, Mode mode) {
         List<String> readingsToQuery = new ArrayList<>();
-        tokensToSearch.forEach(forwardingToken -> readingsToQuery.add(Utils.convertKana(forwardingToken.getReading())));
+        tokensToSearch.forEach(forwardingToken -> {
+            if(mode.equals(Mode.READINGS_IN_HIRAGANA)) readingsToQuery.add(Utils.convertKana(forwardingToken.getReading())); // search for native words in hiragana
+            else readingsToQuery.add(forwardingToken.getReading()); // search for possible loan words in their native katakana.
+        });
 
         TypedQuery<JMDictPronunciation> query = em.createQuery(
                 "SELECT a FROM JMDictPronunciation a " +

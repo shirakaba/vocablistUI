@@ -4,7 +4,10 @@ import catRecurserPkg.Filter;
 import catRecurserPkg.ForwardingToken;
 import catRecurserPkg.VocabListRow;
 import catRecurserPkg.Vocablist;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.StreamUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,6 +15,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
+
+import static uk.co.birchlabs.JMDictPronunciationRepository2.Mode.*;
 
 /**
  * Created by jamiebirch on 23/06/2016.
@@ -57,7 +62,7 @@ public class JMDictPronunciationService {
                     JLPT1
             ));
         }
-        // size == 631. ids all correspond to a unique word (in a prior, non-provided table), but one id may appear twice
+        // size == 631 if you don't subtract the Tokens for which baseForms are identifiable. ids all correspond to a unique word (in a prior, non-provided table), but one id may appear twice
         // due to having two valid readings. Ordering is purely by word id, so unrelated words written as 'ikou' aren't
         // necessarily in perfect sequence.         size == 115. Note that sortedByFreq has size 159.
         // [[0] {id=1001420, data="へ"} ...          [0] {id=1151260, data="悪い"},
@@ -72,17 +77,37 @@ public class JMDictPronunciationService {
         sortedByFreq.forEach(vocablistRow -> tokensToSearch.add(vocablistRow.getToken()));
 //        List<String> readings = new ArrayList<>();
 
-        // TODO: pass a list of tokens to both getSome() methods instead of a list of processed Tokens so that they can be subtracted from.
+        // Searches jmdict_word for tokens by their baseForms
+        // (for list entries likely to have at least one kanji such as 作る、日、又)
         Iterable<JMDictWord> idWordPairs = jmDictWordRepository2.getSome(tokensToSearch);
-        // Identify the set of all baseForms successfully found in idWordPairs, then subtract their corresponding Tokens
-        // from search-set for the next search on pronunciations.
-        Iterable<JMDictPronunciation> idReadingPairs = jmDictPronunciationRepository2.getSome(tokensToSearch);
+        Set<String> wordsFound = new HashSet<>();
+        idWordPairs.forEach(word -> wordsFound.add(word.getData()));
+        tokensToSearch.removeIf(token -> wordsFound.contains(token.getBaseForm())); // tokensToSearch goes from 159 -> 66 here.
+
+        // Searches jmdict_pronunciation for any still-unfound tokens by their readings converted into hiragana
+        // (for list entries likely rendered without any kanji such as する、ある、いる、として).
+        Iterable<JMDictPronunciation> idReadingPairs = jmDictPronunciationRepository2.getSome(tokensToSearch, READINGS_IN_HIRAGANA);
+        idReadingPairs.forEach(reading -> wordsFound.add(Utils.convertKana(reading.getData())));
+        tokensToSearch.removeIf(token -> wordsFound.contains(token.getReading())); // tokensToSearch goes from 66 -> 17 here.
+
+        // Searches jmdict_pronunciation for the remaining tokens by their katakana readings
+        // (for list entries likely to be loan words such as キャンパス)
+        Iterable<JMDictPronunciation> idReadingPairs2 = jmDictPronunciationRepository2.getSome(tokensToSearch, READINGS_IN_KATAKANA);
+        Iterables.concat(idReadingPairs, idReadingPairs2);
+        idReadingPairs2.forEach(reading -> wordsFound.add(reading.getData()));
+        tokensToSearch.removeIf(token -> wordsFound.contains(token.getReading()));  // tokesnToSearch goes from 17 -> 11 here.
+        // Remaining Tokens are generally proper nouns or auxiliary verb stems.
+
         // Now we have ids for all possible baseForms and all possible Readings, so we must map them back to the sorted
         // vocabListRows. Must map the baseForms first and declare them to be "dealt with" before mapping the readings
-        // (which could equally
-        // apply to many of the baseForms and thus wreak havoc).
+        // (which could equally apply to many of the baseForms and thus wreak havoc).
+        // TODO: query to retrieve definitions for all ids listed in idWordPairs and idReadingsPairs1/2. This will first involve mapping entries to searchable ids as follows [may involve stream.filter()]:
+        // TODO: map each entry in the cumulative list to a set of ids for cases where their baseForm matches a member of idWordPairs.getData()...
+        // TODO: ... then, for yet-unassigned entries, map them each to a set of ids for cases where their baseForm (hiragana) matches a member of idReadingPairs.getData() (hiragana)...
+        // TODO: ... finally, for yet-unassigned entries, map them each to a set of ids for cases where their reading (katakana) matches a member of idReadingPairs2.getData() (katakana)...
+        // TODO: also assess the efficiency of doing idReadingPairs as just one query's operation (searching EVERY reading simultaneously in both hiragana and katakana)
 
-
+        // [14] {id=1153670, data=やすい}, // [15] {id=1156990, data=やすい}... // [33] {id=1296400, data=ある}
         return new Test6Model(cumulative);
     }
 }
