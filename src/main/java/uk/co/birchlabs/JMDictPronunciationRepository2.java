@@ -28,6 +28,8 @@ public class JMDictPronunciationRepository2 {
     public Iterable<JMDictPronunciation> getSome(Iterable<ForwardingToken> tokensToSearch, Mode mode) {
         List<String> readingsToQuery = new ArrayList<>();
         tokensToSearch.forEach(forwardingToken -> {
+            // TODO: hard mode: subtract any しか for which the POS (eg. noun) doesn't match the offered POS (such as particle)
+            // There are ~fifteen しか, and multiple of の, よく, も, ない, いる found.
             switch(mode){ // Note: most likely could search by baseForm for all of these. Not sure there's ever any difference in these cases.
                 case READINGS_IN_HIRAGANA:
                     if(forwardingToken.isVerb()) readingsToQuery.add(forwardingToken.getBaseForm()); // search for verbs by their baseform eg. する

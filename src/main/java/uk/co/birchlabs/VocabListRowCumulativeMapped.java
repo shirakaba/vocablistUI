@@ -25,40 +25,40 @@ public class VocabListRowCumulativeMapped {
 
         id = new HashSet<>();
 
-//        id // searches jmdict_word by baseForm
-//                .addAll( // TODO: test whether matching by baseForm ever succesfully adds anything to the list.
-//                        StreamSupport
-//                                .stream(idWordPairs.spliterator(), false)
-//                                .filter(wordPair -> wordPair
-//                                        .getData()
-//                                        .equals(
-//                                                vocabListRowCumulative
-//                                                        .getVocabListRow()
-//                                                        .getToken()
-//                                                        .getBaseForm()
-//                                        )
-//                                )
-//                                .map(JMDictWord::getId)
-//                                .collect(Collectors.toList())
-//                );
-//        if (id.isEmpty()) {
-//            id // searches jmdict_pronunciation by pronunciation in hiragana (or if verb: by hiragana baseForm)
-//                    .addAll(
-//                            StreamSupport
-//                                    .stream(hiraganaPairs.spliterator(), false)
-//                                    .filter(wordPair -> wordPair
-//                                            .getData()
-//                                            .equals(
-//                                                    vocabListRowCumulative
-//                                                            .getVocabListRow()
-//                                                            .getToken()
-//                                                            .getBaseForm()
-//                                            )
-//                                    )
-//                                    .map(JMDictPronunciation::getId)
-//                                    .collect(Collectors.toList())
-//                    );
-//        }
+        id // searches jmdict_word by baseForm
+                .addAll( // TODO: test whether matching by baseForm ever succesfully adds anything to the list.
+                        StreamSupport
+                                .stream(idWordPairs.spliterator(), false)
+                                .filter(wordPair -> wordPair
+                                        .getData()
+                                        .equals(
+                                                vocabListRowCumulative
+                                                        .getVocabListRow()
+                                                        .getToken()
+                                                        .getBaseForm()
+                                        )
+                                )
+                                .map(JMDictWord::getId)
+                                .collect(Collectors.toList())
+                );
+        if (id.isEmpty()) {
+            id // searches jmdict_pronunciation by pronunciation in hiragana (or if verb: by hiragana baseForm)
+                    .addAll(
+                            StreamSupport
+                                    .stream(hiraganaPairs.spliterator(), false)
+                                    .filter(wordPair -> wordPair
+                                            .getData()
+                                            .equals(
+                                                    vocabListRowCumulative
+                                                            .getVocabListRow()
+                                                            .getToken()
+                                                            .getBaseForm()
+                                            )
+                                    )
+                                    .map(JMDictPronunciation::getId)
+                                    .collect(Collectors.toList())
+                    );
+        }
         if (id.isEmpty()) {
             id // searches jmdict_pronunciation by pronunciation in katakana
                     .addAll(
