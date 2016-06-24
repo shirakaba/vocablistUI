@@ -112,27 +112,18 @@ public class JMDictPronunciationService {
 //        idWordPairs               [based on getBaseForm()]
 //        idReadingPairs (hiragana) [based on getReading()]
 //        idReadingPairs2 (katakana) [based on getReading()]
-        cumulative
+        List<VocabListRowCumulativeMapped> list = cumulative
                 .stream()
                 .map(
                         row ->
                                 new VocabListRowCumulativeMapped(
                                         row,
-                                        StreamSupport
-                                                .stream(idWordPairs.spliterator(), false)
-                                                .filter(wordPair -> wordPair
-                                                        .getData()
-                                                        .equalsIgnoreCase(
-                                                                row
-                                                                        .getVocabListRow()
-                                                                        .getToken()
-                                                                        .getBaseForm()
-                                                        )
-                                                )
-                                                .map(JMDictWord::getId)
-                                                .collect(Collectors.toList())
-                                        )
-                );
+                                        idWordPairs,
+                                        idReadingPairs,
+                                        idReadingPairs2
+                                )
+                )
+                .collect(Collectors.toList());
 
 //        Iterables.filter(cumulative, row -> row.getVocabListRow().getToken().getBaseForm())
 //        cumulative.stream().filter(row -> row.getVocabListRow().getToken().getBaseForm().equals())
@@ -144,6 +135,6 @@ public class JMDictPronunciationService {
 //        cumulative.forEach(row -> row.getVocabListRow().getToken().getBaseForm());
 
         // [14] {id=1153670, data=やすい}, // [15] {id=1156990, data=やすい}... // [33] {id=1296400, data=ある}
-        return new Test6Model(cumulative);
+        return new Test6Model(list);
     }
 }
