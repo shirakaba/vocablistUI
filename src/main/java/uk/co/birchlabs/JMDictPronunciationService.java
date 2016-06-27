@@ -52,11 +52,11 @@ public class JMDictPronunciationService {
                     myPercent,
                     runningPercent,
                     fundamental,
-                    n1,
-                    n2,
-                    n3,
+                    n5,
                     n4,
-                    n5
+                    n3,
+                    n2,
+                    n1
             ));
         }
         // size == 631 if you don't subtract the Tokens for which baseForms are identifiable. ids all correspond to a unique word (in a prior, non-provided table), but one id may appear twice
