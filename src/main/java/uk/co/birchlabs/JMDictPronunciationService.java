@@ -1,9 +1,6 @@
 package uk.co.birchlabs;
 
-import catRecurserPkg.Filter;
-import catRecurserPkg.ForwardingToken;
-import catRecurserPkg.VocabListRow;
-import catRecurserPkg.Vocablist;
+import catRecurserPkg.*;
 import com.google.common.collect.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.StreamUtils;
@@ -46,18 +43,20 @@ public class JMDictPronunciationService {
             runningPercent += myPercent;
             // Evaluates to true if FUNDAMENTAL filtering level excludes the Token.
             boolean fundamental = Vocablist.filterOut(vocabListRow.getToken(), Vocablist.Filtering.FUNDAMENTAL);
-            boolean JLPT4 = Filter.JLPT4_BLACKLIST.contains(vocabListRow.getToken().getBaseForm());
-            boolean JLPT3 = Filter.JLPT3_BLACKLIST.contains(vocabListRow.getToken().getBaseForm());
-            boolean JLPT2 = Filter.JLPT2_BLACKLIST.contains(vocabListRow.getToken().getBaseForm());
-            boolean JLPT1 = Filter.JLPT1_BLACKLIST.contains(vocabListRow.getToken().getBaseForm());
+            boolean n5 = Filter.N5_BLACKLIST.contains(vocabListRow.getToken().getBaseForm());
+            boolean n4 = Filter.N4_BLACKLIST.contains(vocabListRow.getToken().getBaseForm());
+            boolean n3 = Filter.N3_BLACKLIST.contains(vocabListRow.getToken().getBaseForm());
+            boolean n2 = Filter.N2_BLACKLIST.contains(vocabListRow.getToken().getBaseForm());
+            boolean n1 = Filter2.N1_BLACKLIST.contains(vocabListRow.getToken().getBaseForm());
             cumulative.add(new VocabListRowCumulative(vocabListRow,
                     myPercent,
                     runningPercent,
                     fundamental,
-                    JLPT4,
-                    JLPT3,
-                    JLPT2,
-                    JLPT1
+                    n1,
+                    n2,
+                    n3,
+                    n4,
+                    n5
             ));
         }
         // size == 631 if you don't subtract the Tokens for which baseForms are identifiable. ids all correspond to a unique word (in a prior, non-provided table), but one id may appear twice

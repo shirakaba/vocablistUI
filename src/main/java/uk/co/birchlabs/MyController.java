@@ -69,7 +69,7 @@ public class MyController {
             VocabListRow vocabListRow = sortedByFreq.get(i);
             float myPercent = (float)vocabListRow.getCount() / (float)s;
             runningPercent += myPercent;
-            cumulative.add(new VocabListRowCumulative(vocabListRow, myPercent, runningPercent, false, false, false, false, false));
+            cumulative.add(new VocabListRowCumulative(vocabListRow, myPercent, runningPercent, false, false, false, false, false, false));
         }
 
 //        model.addAttribute("theObject", vocablist);
