@@ -1,7 +1,5 @@
 package uk.co.birchlabs;
 
-import com.google.common.collect.ImmutableSet;
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.stream.Collectors;
@@ -10,6 +8,9 @@ import java.util.stream.StreamSupport;
 /**
  * Created by jamiebirch on 24/06/2016.
  */
+/* http://stackoverflow.com/questions/4362104/strange-jackson-exception-being-thrown-when-serializing-hibernate-object */
+//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+//@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NONE, getterVisibility = JsonAutoDetect.Visibility.NONE)
 public class VocabListRowCumulativeMapped {
     private final VocabListRowCumulative vocabListRowCumulative;
     private final Collection<Integer> id;
@@ -26,7 +27,7 @@ public class VocabListRowCumulativeMapped {
         id = new HashSet<>();
 
         id // searches jmdict_word by baseForm
-                .addAll( // TODO: test whether matching by baseForm ever succesfully adds anything to the list.
+                .addAll( // TODO: test whether matching by baseForm ever successfully adds anything to the list.
                         StreamSupport
                                 .stream(idWordPairs.spliterator(), false)
                                 .filter(wordPair -> wordPair
@@ -77,5 +78,15 @@ public class VocabListRowCumulativeMapped {
                                     .collect(Collectors.toList())
                     );
         }
+    }
+
+//    @JsonProperty
+    public VocabListRowCumulative getVocabListRowCumulative() {
+        return vocabListRowCumulative;
+    }
+
+//    @JsonProperty
+    public Collection<Integer> getId() {
+        return id;
     }
 }

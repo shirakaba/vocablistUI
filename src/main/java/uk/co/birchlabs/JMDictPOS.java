@@ -19,8 +19,7 @@ public class JMDictPOS {
     @GeneratedValue(generator="kaugen")
 //    @NotNull
     private Integer id; // 214,245 (with some duplicated as two data are applicable: eg. both adv & adv-to)
-
-    private String sense; // 193,861 (with some duplicated as two data are applicable: eg. both adv & adv-to)
+    private Integer sense; // 193,861 (with some duplicated as two data are applicable: eg. both adv & adv-to)
     private String data; // eg. n, vs, adv-na...
 
     public JMDictPOS() {
@@ -34,13 +33,9 @@ public class JMDictPOS {
         return data;
     }
 
-    public String getSense() {
-        return sense;
-    }
+    public Integer getSense() { return sense; }
 
-    public String setSense() {
-        return sense;
-    }
+    public void setSense(Integer sense) { this.sense = sense; }
 
     public void setId(Integer id) {
         this.id = id;
