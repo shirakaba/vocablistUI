@@ -85,8 +85,9 @@ public class VocabListRowCumulativeMapped {
         return vocabListRowCumulative;
     }
 
-//    @JsonProperty
-    public Collection<Integer> getId() {
-        return id;
-    }
+    // currently not exposing id; only planning to consume it on the backend, so needn't add to JSON.
+////    @JsonProperty
+//    public Collection<Integer> getId() {
+//        return id;
+//    }
 }
