@@ -78,13 +78,13 @@ public class JMDictPronunciationService {
         // (for list entries likely to have at least one kanji such as 作る、日、又)
         List<JMDictWord> idWordPairs = Lists.newArrayList(jmDictWordRepository2.getSome(tokensToSearch));
         Set<String> wordsFound = new HashSet<>();
-        idWordPairs.forEach(word -> wordsFound.add(word.getData()));
+        idWordPairs.forEach(word -> wordsFound.add(word.getIdDataKey().getData()));
         tokensToSearch.removeIf(token -> wordsFound.contains(token.getBaseForm())); // tokensToSearch goes from 159 -> 66 here.
 
         // Searches jmdict_pronunciation for any still-unfound tokens by their readings converted into hiragana
         // (for list entries likely rendered without any kanji such as する、ある、いる、として).
         List<JMDictPronunciation> idReadingPairs = Lists.newArrayList(jmDictPronunciationRepository2.getSome(tokensToSearch, READINGS_IN_HIRAGANA));
-        idReadingPairs.forEach(reading -> wordsFound.add(Utils.convertKana(reading.getData())));
+        idReadingPairs.forEach(reading -> wordsFound.add(Utils.convertKana(reading.getIdDataKey().getData())));
         tokensToSearch.removeIf(token -> wordsFound.contains(token.getReading())); // tokensToSearch goes from 66 -> 17 here.
 
         // Searches jmdict_pronunciation for the remaining tokens by their katakana readings
@@ -93,7 +93,7 @@ public class JMDictPronunciationService {
 //        Lists.newArrayList(Iterables.concat(idReadingPairs, idReadingPairs2));
         Iterables
                 .concat(idReadingPairs, idReadingPairs2)
-                .forEach(reading -> wordsFound.add(reading.getData()));
+                .forEach(reading -> wordsFound.add(reading.getIdDataKey().getData()));
         tokensToSearch.removeIf(token -> wordsFound.contains(token.getReading()));  // tokensToSearch goes from 17 -> 11 here.
         // Remaining Tokens are generally proper nouns or auxiliary verb stems.
 

@@ -25,7 +25,8 @@ public class JMDictWordRepository2 {
         // There are four 上, two 間, two 日, two 越える found.
         TypedQuery<JMDictWord> query = em.createQuery(
                 "SELECT a FROM JMDictWord a " +
-                        "WHERE a.data IN :data",
+//                        "WHERE a.data IN :data",
+                        "WHERE a.idDataKey.data IN :data",
                 JMDictWord.class
         );
         query.setParameter("data", baseFormsToQuery);

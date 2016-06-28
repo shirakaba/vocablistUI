@@ -31,6 +31,7 @@ public class VocabListRowCumulativeMapped {
                         StreamSupport
                                 .stream(idWordPairs.spliterator(), false)
                                 .filter(wordPair -> wordPair
+                                        .getIdDataKey()
                                         .getData()
                                         .equals(
                                                 vocabListRowCumulative
@@ -39,7 +40,8 @@ public class VocabListRowCumulativeMapped {
                                                         .getBaseForm()
                                         )
                                 )
-                                .map(JMDictWord::getId)
+                                .map(word -> word.getIdDataKey().getId())
+//                                .map(JMDictWord::getId)
                                 .collect(Collectors.toList())
                 );
         if (id.isEmpty()) {
@@ -48,6 +50,7 @@ public class VocabListRowCumulativeMapped {
                             StreamSupport
                                     .stream(hiraganaPairs.spliterator(), false)
                                     .filter(wordPair -> wordPair
+                                            .getIdDataKey()
                                             .getData()
                                             .equals(
                                                     vocabListRowCumulative
@@ -56,7 +59,7 @@ public class VocabListRowCumulativeMapped {
                                                             .getBaseForm()
                                             )
                                     )
-                                    .map(JMDictPronunciation::getId)
+                                    .map(pronun -> pronun.getIdDataKey().getId())
                                     .collect(Collectors.toList())
                     );
         }
@@ -66,6 +69,7 @@ public class VocabListRowCumulativeMapped {
                             StreamSupport
                                     .stream(katakanaPairs.spliterator(), false)
                                     .filter(wordPair -> wordPair
+                                            .getIdDataKey()
                                             .getData()
                                             .equals(
                                                     vocabListRowCumulative
@@ -74,7 +78,7 @@ public class VocabListRowCumulativeMapped {
                                                             .getReading()
                                             )
                                     )
-                                    .map(JMDictPronunciation::getId)
+                                    .map(pronun -> pronun.getIdDataKey().getId())
                                     .collect(Collectors.toList())
                     );
         }
