@@ -8,50 +8,41 @@ import javax.persistence.*;
 
 /**
  * eg. to do; to cause to become, to make (into), to turn (into); to serve as, to act as, to work as...
+ * Based on http://stackoverflow.com/questions/2611619/onetomany-and-composite-primary-keys
  */
 @Entity
 @Table(name="jmdict_definition")
 public class JMDictDefinition {
 
-    @Id
-//    @GeneratedValue(strategy= GenerationType.TABLE)
-    @GenericGenerator(name="kaugen" , strategy="increment")
-    @GeneratedValue(generator="kaugen")
-//    @NotNull
-    private Integer id;
-    private Integer sense;
-    private String data;
+    @EmbeddedId
+    private SenseDataKey senseDataKey;
+
+    @ManyToOne
+    // This FK's annotated name must equal the annotated name for the target partial key in SenseDataKey.
+    @JoinColumn(
+//            foreignKey = @ForeignKey(name = "FK_JMDICT_DEFINITION_SENSE"), // not sure whether necessary
+            name="sense", insertable = false, updatable = false
+    )
+//    @org.hibernate.annotations.ForeignKey(name = "FK_CHILD_OBJECT_PARENTID")
+    private JMDictSense jmDictSense;
 
     public JMDictDefinition() {
     }
 
-    public Integer getSense() {
-        return sense;
+
+    public JMDictSense getJmDictSense() {
+        return jmDictSense;
     }
 
-    public void setSense(Integer sense) {
-        this.sense = sense;
+    public SenseDataKey getSenseDataKey() {
+        return senseDataKey;
     }
 
-    public Integer getId() {
-        return id;
+    public void setSenseDataKey(SenseDataKey senseDataKey) {
+        this.senseDataKey = senseDataKey;
     }
 
-    public String getData() {
-        return data;
+    public void setJmDictSense(JMDictSense jmDictSense) {
+        this.jmDictSense = jmDictSense;
     }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public void setData(String identifier) {
-        this.data = data;
-    }
-
-//    @ManyToOne
-//    private JMDictWord jmDictWord;
-
-//    @Query("from jmdict_definition a join a.category c where c.name=:categoryName")
-//    public Iterable<Auction> findByCategory(@Param("categoryName") String categoryName);
 }

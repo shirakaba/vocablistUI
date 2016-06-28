@@ -1,7 +1,5 @@
 package uk.co.birchlabs;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 //import javax.validation.constraints.NotNull;
 
@@ -12,31 +10,25 @@ import javax.persistence.*;
 @Table(name="jmdict_word")
 public class JMDictWord {
 
-    @Id
-//    @GeneratedValue(strategy= GenerationType.TABLE)
-    @GenericGenerator(name="kaugen" , strategy="increment")
-    @GeneratedValue(generator="kaugen")
-//    @NotNull
-    private Integer id;
+    @EmbeddedId
+    private IdDataKey idDataKey;
 
-    private String data;
+    @ManyToOne
+    // This FK's annotated name must equal the annotated name for the target partial key in IdDataKey.
+    @JoinColumn(
+//            foreignKey = @ForeignKey(name = "FK_JMDICT_WORD_ENTRYID"), // not sure whether necessary
+            name="entryId", insertable = false, updatable = false
+    )
+    private JMDictEntry jmDictEntryW;
 
     public JMDictWord() {
     }
 
-    public Integer getId() {
-        return id;
+    public IdDataKey getIdDataKey() {
+        return idDataKey;
     }
 
-    public String getData() {
-        return data;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public void setData(String identifier) {
-        this.data = data;
+    public void setIdDataKey(IdDataKey idDataKey) {
+        this.idDataKey = idDataKey;
     }
 }
