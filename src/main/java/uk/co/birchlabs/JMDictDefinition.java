@@ -4,6 +4,8 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.repository.query.Param;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlTransient;
+import java.util.List;
 //import javax.validation.constraints.NotNull;
 
 /**
@@ -14,22 +16,24 @@ import javax.persistence.*;
 public class JMDictDefinition {
 
     @Id
-//    @GeneratedValue(strategy= GenerationType.TABLE)
-    @GenericGenerator(name="kaugen" , strategy="increment")
-    @GeneratedValue(generator="kaugen")
-//    @NotNull
+    @Column(name="_rowid_")
+    private Integer rowId;
+
+//    @Id
+//    @GenericGenerator(name="kaugen" , strategy="increment")
+//    @GeneratedValue(generator="kaugen")
     private Integer id;
-    private String sense;
+    private Integer sense;
     private String data;
 
     public JMDictDefinition() {
     }
 
-    public String getSense() {
+    public Integer getSense() {
         return sense;
     }
 
-    public void setSense(String sense) {
+    public void setSense(Integer sense) {
         this.sense = sense;
     }
 
@@ -49,9 +53,21 @@ public class JMDictDefinition {
         this.data = data;
     }
 
-//    @ManyToOne
-//    private JMDictWord jmDictWord;
+//    @ManyToOne(fetch=FetchType.EAGER)
+//    @JoinColumn(name="id", insertable=false, updatable=false)
+//    @ManyToMany(mappedBy = "definitions")
+//    private List<JMDictWord> jmDictWord;
 
-//    @Query("from jmdict_definition a join a.category c where c.name=:categoryName")
+    public Integer getRowId() {
+        return rowId;
+    }
+
+    // do not serialize
+//    @XmlTransient
+//    public List<JMDictWord> getJmDictWord() {
+//        return jmDictWord;
+//    }
+
+    //    @Query("from jmdict_definition a join a.category c where c.name=:categoryName")
 //    public Iterable<Auction> findByCategory(@Param("categoryName") String categoryName);
 }

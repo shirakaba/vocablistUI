@@ -23,8 +23,17 @@ public class JMDictWordRepository2 {
         tokensToSearch.forEach(forwardingToken -> baseFormsToQuery.add(forwardingToken.getBaseForm()));
         // TODO: hard mode: subtract any 上 for which the reading (eg. うえ) doesn't match the offered reading (such as かみ)
         // There are four 上, two 間, two 日, two 越える found.
+//        TypedQuery<JMDictWord> query = em.createQuery(
+//                "SELECT NEW uk.co.birchlabs.JMDictWord(a, d) " +
+//                        "FROM JMDictWord a " +
+//                        "JOIN JMDictDefinition d " +
+//                        "  ON d.id = a.id " +
+//                        "WHERE a.data IN :data",
+//                JMDictWord.class
+//        );
         TypedQuery<JMDictWord> query = em.createQuery(
-                "SELECT a FROM JMDictWord a " +
+                "SELECT NEW uk.co.birchlabs.JMDictWord(a, (SELECT d FROM JMDictDefinition d WHERE d.id = a.id)) " +
+                        "FROM JMDictWord a " +
                         "WHERE a.data IN :data",
                 JMDictWord.class
         );
@@ -32,7 +41,7 @@ public class JMDictWordRepository2 {
         // offset
 //        query.setFirstResult(100)
         // page size
-//        query.setMaxResults(10)
+//        query.setMaxResults(1);
         return query.getResultList();
     }
 }
