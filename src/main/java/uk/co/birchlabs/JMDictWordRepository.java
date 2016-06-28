@@ -5,5 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 /**
  * eg. 為る
  */
-public interface JMDictWordRepository extends CrudRepository<JMDictWord, Integer> {
+public interface JMDictWordRepository extends CrudRepository<JMDictWord, IdDataKey> {
 }

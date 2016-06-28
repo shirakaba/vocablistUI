@@ -22,6 +22,9 @@ public class BackendApplicationTests {
 	@Autowired
 	JMDictWordRepository2 jmDictWordRepository2;
 
+	@Autowired
+	JMDictEntryRepository jmDictEntryRepository;
+
 //	@Autowired
 //	private MyCoolService myCoolService;
 
@@ -69,7 +72,11 @@ public class BackendApplicationTests {
 
 		Set<ForwardingToken> tokensToSearch = new HashSet<>();
 		sortedByFreq.forEach(vocablistRow -> tokensToSearch.add(vocablistRow.getToken()));
-		List<JMDictWord> idWordPairs = Lists.newArrayList(jmDictWordRepository2.getSome(tokensToSearch));
+		Iterable<Integer> ids = Lists.newArrayList(jmDictWordRepository2.getIds(tokensToSearch));
+		List<JMDictEntry> idWordPairs = Lists.newArrayList(jmDictEntryRepository.findAll(ids));
+
+
+		System.out.println("You're too slow!");
 	}
 
 }

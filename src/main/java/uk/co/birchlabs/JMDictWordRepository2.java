@@ -36,4 +36,16 @@ public class JMDictWordRepository2 {
 //        query.setMaxResults(10)
         return query.getResultList();
     }
+
+    public Iterable<Integer> getIds(Iterable<ForwardingToken> tokensToSearch) {
+        List<String> baseFormsToQuery = new ArrayList<>();
+        tokensToSearch.forEach(forwardingToken -> baseFormsToQuery.add(forwardingToken.getBaseForm()));
+        TypedQuery<Integer> query = em.createQuery(
+                "SELECT DISTINCT a.idDataKey.id from JMDictWord a " +
+                        "WHERE a.idDataKey.data IN :data",
+                Integer.class
+        );
+        query.setParameter("data", baseFormsToQuery);
+        return query.getResultList();
+    }
 }
