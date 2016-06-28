@@ -19,17 +19,17 @@ public class JMDictDefinition {
     @GeneratedValue(generator="kaugen")
 //    @NotNull
     private Integer id;
-    private String sense;
+    private Integer sense;
     private String data;
 
     public JMDictDefinition() {
     }
 
-    public String getSense() {
+    public Integer getSense() {
         return sense;
     }
 
-    public void setSense(String sense) {
+    public void setSense(Integer sense) {
         this.sense = sense;
     }
 
