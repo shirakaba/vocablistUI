@@ -9,7 +9,7 @@ import java.io.Serializable;
  */
 @Embeddable
 public class IdDataKey implements Serializable {
-    @Column(name = "entryId", nullable = false, updatable=false)
+    @Column(name = "id", nullable = false, updatable=false)
     private Integer id;
 
     @Column(name = "data", nullable = false, updatable=false)

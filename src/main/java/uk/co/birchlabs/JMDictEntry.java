@@ -10,7 +10,7 @@ import java.util.List;
 @Table(name="jmdict_entry")
 public class JMDictEntry {
     @Id
-    @Column(name = "entryId", nullable=false, updatable=false)
+//    @Column(name = "entryId", nullable=false, updatable=false)
     private Integer id;
 
     public JMDictEntry() {

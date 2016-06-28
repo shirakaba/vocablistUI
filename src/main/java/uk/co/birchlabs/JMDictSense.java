@@ -11,14 +11,14 @@ import java.util.List;
 public class JMDictSense {
     @Id
 //    @GeneratedValue
-    @Column(name = "sense", nullable=false, updatable=false)
+    @Column(name = "data", nullable=false, updatable=false)
     private Integer data;
 
     // TODO: not sure what to do about the field being an Integer called id in the real table.
     @ManyToOne
     @JoinColumn(
-//            foreignKey = @ForeignKey(name = "FK_JMDICT_SENSE_ENTRYID"), // not sure whether necessary
-            name="entryId", insertable = false, updatable = false
+//            foreignKey = @ForeignKey(name = "FK_JMDICT_SENSE_ID"), // not sure whether necessary
+            name="id", insertable = false, updatable = false
     )
     private JMDictEntry jmDictEntryS;
 
