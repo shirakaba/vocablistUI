@@ -72,9 +72,10 @@ public class BackendApplicationTests {
 
 		Set<ForwardingToken> tokensToSearch = new HashSet<>();
 		sortedByFreq.forEach(vocablistRow -> tokensToSearch.add(vocablistRow.getToken()));
-		Iterable<Integer> ids = Lists.newArrayList(jmDictWordRepository2.getIds(tokensToSearch));
-		List<JMDictEntry> idWordPairs = Lists.newArrayList(jmDictEntryRepository.findAll(ids));
-
+//		Iterable<Integer> ids = Lists.newArrayList(jmDictWordRepository2.getIds(tokensToSearch));
+//		List<JMDictEntry> idWordPairs = Lists.newArrayList(jmDictEntryRepository.findAll(ids));
+		List<JMDictEntry> idWordPairs = Lists.newArrayList(jmDictWordRepository2.getEntries(tokensToSearch));
+		// TODO: move the getEntries() method to JMDictEntryRepository2 because it does return a list of JMDictEntry.
 
 		System.out.println("You're too slow!");
 	}
