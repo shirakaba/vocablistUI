@@ -26,6 +26,9 @@ public class BackendApplicationTests {
 	@Autowired
 	JMDictEntryRepository2 jmDictEntryRepository2;
 
+    @Autowired
+    JMDictPronunciationRepository2 jmDictPronunciationRepository2;
+
 //	@Autowired
 //	JMDictWordRepository2 jmDictWordRepository2;
 
@@ -128,6 +131,14 @@ public class BackendApplicationTests {
             else if (firstFeature.startsWith("記号")) symbols.add(t);
             else unclassified.add(t);
         });
+
+        List<JMDictEntry> particlesByPron = Lists.newArrayList(jmDictPronunciationRepository2.getEntriesFromPronunciation(particles,
+                JMDictPronunciationRepository2.Mode.READINGS_IN_HIRAGANA,
+                JMDictPronunciationRepository2.POS.particles));
+
+        List<JMDictEntry> particlesByPronNoCond = Lists.newArrayList(jmDictPronunciationRepository2.getEntriesFromPronunciation(particles,
+                JMDictPronunciationRepository2.Mode.READINGS_IN_HIRAGANA,
+                JMDictPronunciationRepository2.POS.others));
 
 
 //        List<JMDictEntry> pronunEntries = Lists.newArrayList(jmDictEntryRepository2.getEntries(tokensToSearch, READINGS_IN_HIRAGANA));

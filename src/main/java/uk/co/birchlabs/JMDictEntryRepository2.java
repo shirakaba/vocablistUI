@@ -33,21 +33,4 @@ public class JMDictEntryRepository2 {
         query.setParameter("data", baseFormsToQuery);
         return query.getResultList();
     }
-
-    public Iterable<JMDictEntry> getEntriesFromPronunciation(Iterable<ForwardingToken> tokensToSearch) {
-        List<String> baseFormsToQuery = new ArrayList<>();
-        tokensToSearch.forEach(forwardingToken -> baseFormsToQuery.add(forwardingToken.getBaseForm()));
-        TypedQuery<JMDictEntry> query = em.createQuery(
-                "SELECT a " +
-                        "FROM JMDictEntry a " +
-                        // only need to specify the join because we're using a WHERE clause on it?
-                        "JOIN JMDictPronunciation p " +
-                        "  ON a.id = p.idDataKey.id " +
-                        "WHERE p.idDataKey.data IN :data " +
-                        "GROUP BY p.idDataKey.id",
-                JMDictEntry.class
-        );
-        query.setParameter("data", baseFormsToQuery);
-        return query.getResultList();
-    }
 }
