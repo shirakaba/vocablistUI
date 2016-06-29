@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
 
@@ -77,8 +79,23 @@ public class BackendApplicationTests {
 		sortedByFreq.forEach(vocablistRow -> tokensToSearch.add(vocablistRow.getToken()));
 //		Iterable<Integer> ids = Lists.newArrayList(jmDictWordRepository2.getIds(tokensToSearch));
 //		List<JMDictEntry> idWordPairs = Lists.newArrayList(jmDictEntryRepository.findAll(ids));
-		List<JMDictEntry> idWordPairs = Lists.newArrayList(jmDictEntryRepository2.getEntries(tokensToSearch));
-
+        // All entries with a baseForm() found in jmdict_word.
+		List<JMDictEntry> wordEntries = Lists.newArrayList(jmDictEntryRepository2.getEntries(tokensToSearch));
+        List<String> baseFormsFound = wordEntries
+                .stream()
+                .flatMap(
+                        entry -> entry
+                                .getWords()
+                                .stream()
+                                .map(
+                                        word -> word
+                                                .getIdDataKey()
+                                                .getData()
+                                )
+                )
+                .collect(Collectors.toList()
+                );
+        tokensToSearch.removeIf(token -> baseFormsFound.contains(token.getBaseForm()));
 		System.out.println("You're too slow!");
 	}
 

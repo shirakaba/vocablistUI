@@ -22,7 +22,6 @@ public class JMDictPronunciationRepository2 {
     public enum Mode {
         READINGS_IN_HIRAGANA,
         READINGS_IN_KATAKANA
-//        , HIRAGANA_VERBS
     }
 
     public Iterable<JMDictPronunciation> getSome(Iterable<ForwardingToken> tokensToSearch, Mode mode) {

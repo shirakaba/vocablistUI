@@ -23,6 +23,7 @@ public class JMDictEntryRepository2 {
         TypedQuery<JMDictEntry> query = em.createQuery(
                 "SELECT a " +
                         "FROM JMDictEntry a " +
+                        // only need to specify the join because we're using a WHERE clause on it?
                         "JOIN JMDictWord w " +
                         "  ON a.id = w.idDataKey.id " +
                         "WHERE w.idDataKey.data IN :data " +
