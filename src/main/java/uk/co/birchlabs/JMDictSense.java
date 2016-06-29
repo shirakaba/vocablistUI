@@ -11,7 +11,7 @@ import java.util.List;
 public class JMDictSense {
     @Id
 //    @GeneratedValue
-    @Column(name = "data", nullable=false, updatable=false)
+    @Column(name = "data", nullable=false, updatable=false) // may not need this annotation
     private Integer data;
 
     // TODO: not sure what to do about the field being an Integer called id in the real table.
@@ -22,13 +22,23 @@ public class JMDictSense {
     )
     private JMDictEntry jmDictEntryS;
 
-    @OneToMany(mappedBy = "jmDictSense", fetch = FetchType.EAGER)
-//    @IndexColumn(name = "pos", base=0)
+    // Note: these mappedBy names don't actually have to be unique because it searches only within-class.
+    @OneToMany(mappedBy = "jmDictSenseD", fetch = FetchType.EAGER)
     private List<JMDictDefinition> definitions;
+
+    @OneToMany(mappedBy = "jmDictSenseT", fetch = FetchType.EAGER)
+    private List<JMDictType> types;
 
     public JMDictSense() {
     }
 
+    public JMDictEntry getJmDictEntryS() {
+        return jmDictEntryS;
+    }
+
+    public void setJmDictEntryS(JMDictEntry jmDictEntryS) {
+        this.jmDictEntryS = jmDictEntryS;
+    }
 
     public Integer getData() {
         return data;
@@ -37,14 +47,6 @@ public class JMDictSense {
     public void setData(Integer data) {
         this.data = data;
     }
-
-//    public Integer getId() {
-//        return id;
-//    }
-//
-//    public void setId(Integer id) {
-//        this.id = id;
-//    }
 
     public List<JMDictDefinition> getDefinitions() {
         return definitions;

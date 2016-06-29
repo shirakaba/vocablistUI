@@ -17,10 +17,43 @@ public class JMDictEntry {
     }
 
     @OneToMany(mappedBy = "jmDictEntryS", fetch = FetchType.EAGER)
-//    @IndexColumn(name = "pos", base=0)
     private List<JMDictSense> senses;
 
     @OneToMany(mappedBy = "jmDictEntryW", fetch = FetchType.EAGER)
-//    @IndexColumn(name = "pos", base=0)
     private List<JMDictWord> words;
+
+    @OneToMany(mappedBy = "jmDictEntryP", fetch = FetchType.EAGER)
+    private List<JMDictWord> pron;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public List<JMDictSense> getSenses() {
+        return senses;
+    }
+
+    public void setSenses(List<JMDictSense> senses) {
+        this.senses = senses;
+    }
+
+    public List<JMDictWord> getWords() {
+        return words;
+    }
+
+    public void setWords(List<JMDictWord> words) {
+        this.words = words;
+    }
+
+    public List<JMDictWord> getPron() {
+        return pron;
+    }
+
+    public void setPron(List<JMDictWord> pron) {
+        this.pron = pron;
+    }
 }

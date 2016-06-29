@@ -1,8 +1,5 @@
 package uk.co.birchlabs;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.springframework.data.repository.query.Param;
-
 import javax.persistence.*;
 //import javax.validation.constraints.NotNull;
 
@@ -19,19 +16,20 @@ public class JMDictDefinition {
 
     @ManyToOne
     // This FK's annotated name must equal the annotated name for the target partial key in SenseDataKey.
+    // Another JoinColumn example at http://www.thejavageek.com/2014/09/23/jpa-joincolumns-annotation-example/
     @JoinColumn(
 //            foreignKey = @ForeignKey(name = "FK_JMDICT_DEFINITION_SENSE"), // not sure whether necessary
             name="sense", insertable = false, updatable = false
     )
 //    @org.hibernate.annotations.ForeignKey(name = "FK_CHILD_OBJECT_PARENTID")
-    private JMDictSense jmDictSense;
+    private JMDictSense jmDictSenseD;
 
     public JMDictDefinition() {
     }
 
 
-    public JMDictSense getJmDictSense() {
-        return jmDictSense;
+    public JMDictSense getJmDictSenseD() {
+        return jmDictSenseD;
     }
 
     public SenseDataKey getSenseDataKey() {
@@ -42,7 +40,7 @@ public class JMDictDefinition {
         this.senseDataKey = senseDataKey;
     }
 
-    public void setJmDictSense(JMDictSense jmDictSense) {
-        this.jmDictSense = jmDictSense;
+    public void setJmDictSenseD(JMDictSense jmDictSenseD) {
+        this.jmDictSenseD = jmDictSenseD;
     }
 }

@@ -31,4 +31,12 @@ public class JMDictWord {
     public void setIdDataKey(IdDataKey idDataKey) {
         this.idDataKey = idDataKey;
     }
+
+    public JMDictEntry getJmDictEntryW() {
+        return jmDictEntryW;
+    }
+
+    public void setJmDictEntryW(JMDictEntry jmDictEntryW) {
+        this.jmDictEntryW = jmDictEntryW;
+    }
 }

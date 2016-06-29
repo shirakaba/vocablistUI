@@ -15,6 +15,14 @@ public class JMDictPronunciation {
     @EmbeddedId
     private IdDataKey idDataKey;
 
+    @ManyToOne
+    // This FK's annotated name must equal the annotated name for the target partial key in IdDataKey.
+    @JoinColumn(
+//            foreignKey = @ForeignKey(name = "FK_JMDICT_PRONUNCIATION_ID"), // not sure whether necessary
+            name="id", insertable = false, updatable = false
+    )
+    private JMDictEntry jmDictEntryP;
+
     public JMDictPronunciation() {
     }
 
@@ -26,6 +34,11 @@ public class JMDictPronunciation {
         this.idDataKey = idDataKey;
     }
 
-    //    @ManyToOne
-//    private JMDictWord jmDictWord;
+    public JMDictEntry getJmDictEntryP() {
+        return jmDictEntryP;
+    }
+
+    public void setJmDictEntryP(JMDictEntry jmDictEntryP) {
+        this.jmDictEntryP = jmDictEntryP;
+    }
 }
