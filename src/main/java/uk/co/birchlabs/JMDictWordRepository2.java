@@ -8,8 +8,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Stream;
 
 @Repository
 public class JMDictWordRepository2 {
@@ -49,19 +47,19 @@ public class JMDictWordRepository2 {
         return query.getResultList();
     }
 
-    public Iterable<JMDictEntry> getEntries(Iterable<ForwardingToken> tokensToSearch) {
-        List<String> baseFormsToQuery = new ArrayList<>();
-        tokensToSearch.forEach(forwardingToken -> baseFormsToQuery.add(forwardingToken.getBaseForm()));
-        TypedQuery<JMDictEntry> query = em.createQuery(
-                "SELECT a " +
-                        "FROM JMDictEntry a " +
-                        "JOIN JMDictWord w " +
-                        "  ON a.id = w.idDataKey.id " +
-                        "WHERE w.idDataKey.data IN :data " +
-                        "GROUP BY w.idDataKey.id",
-                JMDictEntry.class
-        );
-        query.setParameter("data", baseFormsToQuery);
-        return query.getResultList();
-    }
+//    public Iterable<JMDictEntry> getEntries(Iterable<ForwardingToken> tokensToSearch) {
+//        List<String> baseFormsToQuery = new ArrayList<>();
+//        tokensToSearch.forEach(forwardingToken -> baseFormsToQuery.add(forwardingToken.getBaseForm()));
+//        TypedQuery<JMDictEntry> query = em.createQuery(
+//                "SELECT a " +
+//                        "FROM JMDictEntry a " +
+//                        "JOIN JMDictWord w " +
+//                        "  ON a.id = w.idDataKey.id " +
+//                        "WHERE w.idDataKey.data IN :data " +
+//                        "GROUP BY w.idDataKey.id",
+//                JMDictEntry.class
+//        );
+//        query.setParameter("data", baseFormsToQuery);
+//        return query.getResultList();
+//    }
 }

@@ -20,7 +20,10 @@ import static org.junit.Assert.assertEquals;
 public class BackendApplicationTests {
 
 	@Autowired
-	JMDictWordRepository2 jmDictWordRepository2;
+	JMDictEntryRepository2 jmDictEntryRepository2;
+
+//	@Autowired
+//	JMDictWordRepository2 jmDictWordRepository2;
 
 	@Autowired
 	JMDictEntryRepository jmDictEntryRepository;
@@ -74,8 +77,7 @@ public class BackendApplicationTests {
 		sortedByFreq.forEach(vocablistRow -> tokensToSearch.add(vocablistRow.getToken()));
 //		Iterable<Integer> ids = Lists.newArrayList(jmDictWordRepository2.getIds(tokensToSearch));
 //		List<JMDictEntry> idWordPairs = Lists.newArrayList(jmDictEntryRepository.findAll(ids));
-		List<JMDictEntry> idWordPairs = Lists.newArrayList(jmDictWordRepository2.getEntries(tokensToSearch));
-		// TODO: move the getEntries() method to JMDictEntryRepository2 because it does return a list of JMDictEntry.
+		List<JMDictEntry> idWordPairs = Lists.newArrayList(jmDictEntryRepository2.getEntries(tokensToSearch));
 
 		System.out.println("You're too slow!");
 	}
