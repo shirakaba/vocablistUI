@@ -141,17 +141,17 @@ public class BackendApplicationTests {
 
         List<JMDictEntry> particlesByPron = Lists.newArrayList(jmDictPronunciationRepository2.getEntriesFromPronunciation(particles,
                 JMDictPronunciationRepository2.Mode.READINGS_IN_HIRAGANA,
-                JMDictPronunciationRepository2.POS.particles)); // size = 11 for 9 particles
+                JMDictPronunciationRepository2.POS.particles)); // size = 29 for 27 particles
 
         List<JMDictEntry> verbsByPron = Lists.newArrayList(jmDictPronunciationRepository2.getEntriesFromPronunciation(verbsAndAux,
                 JMDictPronunciationRepository2.Mode.READINGS_IN_HIRAGANA,
-                JMDictPronunciationRepository2.POS.verbsAndAux)); // size = 14 for 5 verbsAndAux (mainly due to suru/aru/iru)
+                JMDictPronunciationRepository2.POS.verbsAndAux)); // size = 48 for 26 verbsAndAux (mainly due to suru/aru/iru)
 
         List<JMDictEntry> particlesByPronNoCond = Lists.newArrayList(jmDictPronunciationRepository2.getEntriesFromPronunciation(particles,
                 JMDictPronunciationRepository2.Mode.READINGS_IN_HIRAGANA,
-                JMDictPronunciationRepository2.POS.others)); // size = 41 for 9 particles
+                JMDictPronunciationRepository2.POS.others)); // size = 109 for 29 particles
 
-        List<String> particlesByPronAsStrings = particlesByPron
+        List<String> particlesByPronAsStrings = particlesByPron // crude debugging; only returns rows if they have a kanji form.
                 .stream()
                 .flatMap(
                         entry -> entry
