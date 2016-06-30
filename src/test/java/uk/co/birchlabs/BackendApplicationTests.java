@@ -151,6 +151,20 @@ public class BackendApplicationTests {
                 JMDictPronunciationRepository2.Mode.READINGS_IN_HIRAGANA,
                 JMDictPronunciationRepository2.POS.others)); // size = 41 for 9 particles
 
+        List<String> particlesByPronAsStrings = particlesByPron
+                .stream()
+                .flatMap(
+                        entry -> entry
+                                .getWords()
+                                .stream()
+                                .map(
+                                        word -> word
+                                                .getIdDataKey()
+                                                .getData()
+                                )
+                )
+                .collect(Collectors.toList()
+                );
 
 //        List<JMDictEntry> pronunEntries = Lists.newArrayList(jmDictEntryRepository2.getEntries(tokensToSearch, READINGS_IN_HIRAGANA));
 //        pronunEntries.forEach(reading -> wordsFound.add(Utils.convertKana(reading.getIdDataKey().getData())));

@@ -143,7 +143,9 @@ public class JMDictPronunciationRepository2 {
 
     public static final List<String> particles = Lists.newArrayList(
             "prt",
-            "aux"
+            "aux", // for -te
+            "exp" // for niyotte
+            // "conj" // almost but don't quite need for 'demo'
     );
 
     public Iterable<JMDictEntry> getEntriesFromPronunciation(Iterable<ForwardingToken> tokensToSearch, Mode mode, POS pos) {
