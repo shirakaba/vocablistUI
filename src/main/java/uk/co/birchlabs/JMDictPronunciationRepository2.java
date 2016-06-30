@@ -193,19 +193,21 @@ public class JMDictPronunciationRepository2 {
         TypedQuery<JMDictEntry> query = em.createQuery(
                 "SELECT a " +
                         "FROM JMDictEntry a " +
-                        "JOIN JMDictPronunciation p " +
-                        "  ON a.id = p.idDataKey.id " +
-                        "JOIN JMDictSense s " +
-                        "  ON s.id = a.id " +
-                        "JOIN JMDictType t " +
-                        "ON t.senseDataKey.sense = s.data " +
-                        "WHERE p.idDataKey.data IN :readingsToQuery " +
-                        restrictPOSClause +
-                        "GROUP BY p.idDataKey.id",
+//                        "JOIN JMDictPronunciation p " +
+//                        "  ON a.id = p.idDataKey.id " +
+                        "JOIN JMDictSense s " + // somehow can't seem to join to Sense and Type
+                        "  ON s.id = a.id "
+//                        + "JOIN JMDictType t " +
+//                        "ON t.senseDataKey.sense = s.data "
+//                        + "WHERE p.idDataKey.data IN :readingsToQuery "
+//                        + restrictPOSClause
+//                        + "GROUP BY p.idDataKey.id"
+                ,
                 JMDictEntry.class
         );
-        query.setParameter("readingsToQuery", readingsToQuery);
-        if(secondParameter) query.setParameter("acceptablePOS", acceptablePOS);
+//        query.setParameter("readingsToQuery", readingsToQuery);
+//        if(secondParameter) query.setParameter("acceptablePOS", acceptablePOS);
+//        query.setMaxResults(50);
         return query.getResultList();
     }
 }

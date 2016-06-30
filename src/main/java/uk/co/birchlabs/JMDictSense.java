@@ -14,6 +14,8 @@ public class JMDictSense {
     @Column(name = "data", nullable=false, updatable=false) // may not need this annotation
     private Integer data;
 
+    private Integer id;
+
     // TODO: not sure what to do about the field being an Integer called id in the real table.
     @ManyToOne
     @JoinColumn(
@@ -30,6 +32,22 @@ public class JMDictSense {
     private List<JMDictType> types;
 
     public JMDictSense() {
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public List<JMDictType> getTypes() {
+        return types;
+    }
+
+    public void setTypes(List<JMDictType> types) {
+        this.types = types;
     }
 
     public JMDictEntry getJmDictEntryS() {

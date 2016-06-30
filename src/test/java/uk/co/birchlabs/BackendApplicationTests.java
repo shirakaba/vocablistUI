@@ -132,9 +132,9 @@ public class BackendApplicationTests {
             else unclassified.add(t);
         });
 
-        List<JMDictEntry> particlesByPron = Lists.newArrayList(jmDictPronunciationRepository2.getEntriesFromPronunciation(particles,
-                JMDictPronunciationRepository2.Mode.READINGS_IN_HIRAGANA,
-                JMDictPronunciationRepository2.POS.particles));
+//        List<JMDictEntry> particlesByPron = Lists.newArrayList(jmDictPronunciationRepository2.getEntriesFromPronunciation(particles,
+//                JMDictPronunciationRepository2.Mode.READINGS_IN_HIRAGANA,
+//                JMDictPronunciationRepository2.POS.particles));
 
         List<JMDictEntry> particlesByPronNoCond = Lists.newArrayList(jmDictPronunciationRepository2.getEntriesFromPronunciation(particles,
                 JMDictPronunciationRepository2.Mode.READINGS_IN_HIRAGANA,
