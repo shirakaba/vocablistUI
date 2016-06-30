@@ -158,6 +158,23 @@ public class JMDictPronunciationRepository2 {
             "conj" // Included so we can handle conjunctions and particles in same acceptablePOS set 'keredomo'.
     );
 
+    /**
+     * Calls getEntriesFromPronunciation() by the 'search readings in hiragana' mode.
+     * @param tokensToSearch - Tokens to search for the readings of in jmdict_pronunciation.
+     * @param pos - the POS tagged by MeCab.
+     * @return - an iterable of eligible JMDictEntrys.
+     */
+    public Iterable<JMDictEntry> getEntriesFromPronunciation(Iterable<ForwardingToken> tokensToSearch, POS pos) {
+        return getEntriesFromPronunciation(tokensToSearch, Mode.READINGS_IN_HIRAGANA, pos);
+    }
+
+    /**
+     * Searches in jmdict_pronunciation by the readings of a Token in hiragana format.
+     * @param tokensToSearch - Tokens to search for the readings of in jmdict_pronunciation.
+     * @param mode - READINGS_IN_HIRAGANA to search the table in hiragana, or READINGS_IN_KATAKANA to search in katakana.
+     * @param pos - the POS tagged by MeCab.
+     * @return - an iterable of eligible JMDictEntrys.
+     */
     public Iterable<JMDictEntry> getEntriesFromPronunciation(Iterable<ForwardingToken> tokensToSearch, Mode mode, POS pos) {
         List<String> readingsToQuery = new ArrayList<>();
         List<String> acceptablePOS;
