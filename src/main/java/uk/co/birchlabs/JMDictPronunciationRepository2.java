@@ -2,16 +2,13 @@ package uk.co.birchlabs;
 
 import catRecurserPkg.ForwardingToken;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by jamiebirch on 23/06/2016.
@@ -74,36 +71,49 @@ public class JMDictPronunciationRepository2 {
         unclassified
     }
 
-    public static final List<String> grammatical = Lists.newArrayList(
+    public static final List<String> adnominals = Lists.newArrayList(
+            "adj-pn" // いわゆる, どの, この, おおきな
+            // "adj-t",
+            // "exp", // another option for ああいう
+            // "adj-f"
+    );
+
+    public static final List<String> adjectives = Lists.newArrayList(
             "adj-i",
             "adj-na",
             "adj-no",
             "adj-pn",
             "adj-t",
             "adj-f",
-            "adj",
-            "adv",
+            "adj"
+    );
+
+    public static final List<String> adverbs = Lists.newArrayList(
+            "adj-na", // an extra option for たぶん, あまり
+            "adj-no", // an extra option for たぶん, あまり
+            "adv", // for most
             "adv-n",
-            "adv-to",
-//            "aux",
-            "aux-v",
-            "aux-adj",
-            "conj",
-            "pref",
-//            "prt",
-            "suf"
+            "exp", // for なにか, あんなに
+            "adv-to"
+    );
+
+    public static final List<String> adfixes = Lists.newArrayList(
+            "n-pref", // 夫
+            "n-suf", // 男
+            "pref", // go, o,
+            "suf" // go
     );
 
     public static final List<String> nouns = Lists.newArrayList(
             "ctr",
             "exp",
-            "int", // adnominal in Mecab
+            "int", // adnominals in Mecab
             "n",
             "n-adv",
-            "n-pref",
-            "n-suf",
             "n-t",
             "num",
+            "adj-t", // for 暗然 (あんぜん), 決然 (けつぜん)
+            "adj-f", // for 移動 (いどう), 遺伝子 (いでんし), 月間 (げっかん)
             "pn"
     );
 
@@ -144,13 +154,15 @@ public class JMDictPronunciationRepository2 {
     public static final List<String> particles = Lists.newArrayList(
             "prt",
             "aux", // for -te
-            "exp" // for niyotte
-            // "conj" // almost but don't quite need for 'demo'
+            "exp", // for niyotte
+            "conj" // Included so we can handle conjunctions and particles in same acceptablePOS set 'keredomo'.
     );
 
     public Iterable<JMDictEntry> getEntriesFromPronunciation(Iterable<ForwardingToken> tokensToSearch, Mode mode, POS pos) {
         List<String> readingsToQuery = new ArrayList<>();
         List<String> acceptablePOS;
+        final String restrictPOSClause;
+        boolean restrictPOS = true;
 
         tokensToSearch.forEach(token -> {
                     if (token.isVerb()) readingsToQuery.add(token.getBaseForm()); // search for verbs by their baseform eg. する
@@ -158,29 +170,29 @@ public class JMDictPronunciationRepository2 {
                 }
         );
 
-        final String restrictPOSClause;
 
         switch(pos){
             case particles:
-                acceptablePOS = particles;
-                restrictPOSClause = "AND t.senseDataKey.data IN :acceptablePOS ";
-                break;
             case conjunctions:
+                acceptablePOS = particles;
+                break;
             case adverbs:
+                acceptablePOS = adverbs;
+                break;
             case adjectives:
+                acceptablePOS = adjectives;
+                break;
             case adnominals:
-                acceptablePOS = grammatical;
-                restrictPOSClause = "AND t.senseDataKey.data IN :acceptablePOS ";
+                acceptablePOS = adnominals;
                 break;
             case prefixes:
+                acceptablePOS = adfixes;
+                break;
             case nouns:
-            // generally will have been found by kanji baseForm
                 acceptablePOS = nouns;
-                restrictPOSClause = "AND t.senseDataKey.data IN :acceptablePOS ";
                 break;
             case verbsAndAux:
                 acceptablePOS = verbs;
-                restrictPOSClause = "AND t.senseDataKey.data IN :acceptablePOS ";
                 break;
             // Take all you can find
             case exclamations:
@@ -189,11 +201,14 @@ public class JMDictPronunciationRepository2 {
             case others:
             case unclassified:
                 acceptablePOS = new ArrayList<>();
-                restrictPOSClause = "";
+                restrictPOS = false;
                 break;
             default:
                 throw new IllegalStateException();
         }
+
+        if(restrictPOS) restrictPOSClause = "AND t.senseDataKey.data IN :acceptablePOS ";
+        else restrictPOSClause = "";
 
         TypedQuery<JMDictEntry> query = em.createQuery(
                 "SELECT a " +
@@ -211,7 +226,7 @@ public class JMDictPronunciationRepository2 {
                 JMDictEntry.class
         );
         query.setParameter("readingsToQuery", readingsToQuery);
-        if(!restrictPOSClause.isEmpty()) query.setParameter("acceptablePOS", acceptablePOS);
+        if(restrictPOS) query.setParameter("acceptablePOS", acceptablePOS);
 //        query.setMaxResults(50);
         return query.getResultList();
     }
