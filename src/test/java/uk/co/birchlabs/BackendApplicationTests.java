@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -47,10 +50,14 @@ public class BackendApplicationTests {
 //	}
 
 	@Test
-	public void doJoins() {
-		Vocablist vocablist = new Vocablist("気候[編集]年間の平均気温は15℃前後で、ここ20年ほどはほぼ横ばいである。 " +
-				"最高気温もほぼ横ばいで推移しているが、1日の最高気温が30℃を越える日数、および1日の最低気温が25℃を超える日数は、" +
-				"1990年以降、増加傾向にある。",
+	public void doJoins() throws IOException {
+		String nerima = new String(Files.readAllBytes(Paths.get("src/test/java/uk/co/birchlabs/nerima.txt")));
+		Vocablist vocablist = new Vocablist(
+//				"気候[編集]年間の平均気温は15℃前後で、ここ20年ほどはほぼ横ばいである。 " +
+//				"最高気温もほぼ横ばいで推移しているが、1日の最高気温が30℃を越える日数、および1日の最低気温が25℃を超える日数は、" +
+//				"1990年以降、増加傾向にある。"
+				nerima
+				,
 				Vocablist.Filtering.MANDATORY);
 		List<VocabListRow> sortedByFreq = vocablist.getSortedByFreq();
 
