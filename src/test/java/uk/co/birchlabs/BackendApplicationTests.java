@@ -132,13 +132,17 @@ public class BackendApplicationTests {
             else unclassified.add(t);
         });
 
-//        List<JMDictEntry> particlesByPron = Lists.newArrayList(jmDictPronunciationRepository2.getEntriesFromPronunciation(particles,
-//                JMDictPronunciationRepository2.Mode.READINGS_IN_HIRAGANA,
-//                JMDictPronunciationRepository2.POS.particles));
+        List<JMDictEntry> particlesByPron = Lists.newArrayList(jmDictPronunciationRepository2.getEntriesFromPronunciation(particles,
+                JMDictPronunciationRepository2.Mode.READINGS_IN_HIRAGANA,
+                JMDictPronunciationRepository2.POS.particles)); // size = 11 for 9 particles
+
+        List<JMDictEntry> verbsByPron = Lists.newArrayList(jmDictPronunciationRepository2.getEntriesFromPronunciation(verbsAndAux,
+                JMDictPronunciationRepository2.Mode.READINGS_IN_HIRAGANA,
+                JMDictPronunciationRepository2.POS.verbsAndAux)); // size = 14 for 5 verbsAndAux (mainly due to suru/aru/iru)
 
         List<JMDictEntry> particlesByPronNoCond = Lists.newArrayList(jmDictPronunciationRepository2.getEntriesFromPronunciation(particles,
                 JMDictPronunciationRepository2.Mode.READINGS_IN_HIRAGANA,
-                JMDictPronunciationRepository2.POS.others));
+                JMDictPronunciationRepository2.POS.others)); // size = 41 for 9 particles
 
 
 //        List<JMDictEntry> pronunEntries = Lists.newArrayList(jmDictEntryRepository2.getEntries(tokensToSearch, READINGS_IN_HIRAGANA));

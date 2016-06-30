@@ -85,12 +85,12 @@ public class JMDictPronunciationRepository2 {
             "adv",
             "adv-n",
             "adv-to",
-            "aux",
+//            "aux",
             "aux-v",
             "aux-adj",
             "conj",
             "pref",
-            "prt",
+//            "prt",
             "suf"
     );
 
@@ -141,6 +141,11 @@ public class JMDictPronunciationRepository2 {
             "vt"
     );
 
+    public static final List<String> particles = Lists.newArrayList(
+            "prt",
+            "aux"
+    );
+
     public Iterable<JMDictEntry> getEntriesFromPronunciation(Iterable<ForwardingToken> tokensToSearch, Mode mode, POS pos) {
         List<String> readingsToQuery = new ArrayList<>();
         List<String> acceptablePOS;
@@ -155,8 +160,11 @@ public class JMDictPronunciationRepository2 {
         final String restrictPOSClause;
 
         switch(pos){
-            case conjunctions:
             case particles:
+                acceptablePOS = particles;
+                restrictPOSClause = "AND t.senseDataKey.data IN :acceptablePOS ";
+                break;
+            case conjunctions:
             case adverbs:
             case adjectives:
             case adnominals:
@@ -193,20 +201,20 @@ public class JMDictPronunciationRepository2 {
         TypedQuery<JMDictEntry> query = em.createQuery(
                 "SELECT a " +
                         "FROM JMDictEntry a " +
-//                        "JOIN JMDictPronunciation p " +
-//                        "  ON a.id = p.idDataKey.id " +
+                        "JOIN JMDictPronunciation p " +
+                        "  ON a.id = p.idDataKey.id " +
                         "JOIN JMDictSense s " + // somehow can't seem to join to Sense and Type
                         "  ON s.id = a.id "
-//                        + "JOIN JMDictType t " +
-//                        "ON t.senseDataKey.sense = s.data "
-//                        + "WHERE p.idDataKey.data IN :readingsToQuery "
-//                        + restrictPOSClause
-//                        + "GROUP BY p.idDataKey.id"
+                        + "JOIN JMDictType t " +
+                        "ON t.senseDataKey.sense = s.data "
+                        + "WHERE p.idDataKey.data IN :readingsToQuery "
+                        + restrictPOSClause
+                        + "GROUP BY p.idDataKey.id"
                 ,
                 JMDictEntry.class
         );
-//        query.setParameter("readingsToQuery", readingsToQuery);
-//        if(secondParameter) query.setParameter("acceptablePOS", acceptablePOS);
+        query.setParameter("readingsToQuery", readingsToQuery);
+        if(secondParameter) query.setParameter("acceptablePOS", acceptablePOS);
 //        query.setMaxResults(50);
         return query.getResultList();
     }

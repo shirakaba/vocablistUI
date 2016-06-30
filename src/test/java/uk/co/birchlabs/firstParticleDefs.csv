@@ -1,0 +1,91 @@
+-- As of commit f048bd3, wherein large 'grammatical' group was used
+SELECT e.id, p.data AS pron, w.data AS word, s.data AS sense, d.data AS def, t.data AS type FROM jmdict_entry e
+JOIN jmdict_pronunciation p
+  ON e.id = p.id
+JOIN jmdict_sense s
+  ON s.id = e.id
+JOIN jmdict_definition d
+  ON d.sense = s.data
+JOIN jmdict_type t
+  ON t.sense = s.data
+LEFT JOIN jmdict_word w
+  ON e.id = w.id
+WHERE e.id IN (1314550, 1399250, 1402240, 1436510, 1469800, 2028920, 2028930, 2028940, 2028980, 2028990, 2029010, 2086960, 2224630, 2270030, 2654270, 2773810)
+-- Expecting: mo, hodo, ga, wo, te, de ni, no, ha
+;
+id|pron|word|sense|def|type
+1314550|に|似|34771|'takes after (either of one''s parents)'|suf
+1399250|も|喪|44827|mourning|adj-no
+1399250|も|喪|44827|mourning|n
+1402240|も|藻|45196|algae|adj-no
+1402240|も|藻|45196|algae|n
+1402240|も|藻|45196|duckweed|adj-no
+1402240|も|藻|45196|duckweed|n
+1402240|も|藻|45196|seaweed|adj-no
+1402240|も|藻|45196|seaweed|n
+1402240|も|藻|45196|waterweed|adj-no
+1402240|も|藻|45196|waterweed|n
+1436510|ほど|程|49296|bounds|n
+1436510|ほど|程|49296|bounds|n-adv
+1436510|ほど|程|49296|degree|n
+1436510|ほど|程|49296|degree|n-adv
+1436510|ほど|程|49296|extent|n
+1436510|ほど|程|49296|extent|n-adv
+1436510|ほど|程|49296|limit|n
+1436510|ほど|程|49296|limit|n-adv
+1436510|ほど|程|49297|indicates approx. amount or maximum|prt
+1436510|ほど|程|49297|upper limit|prt
+1469800|の||53179|indicates possessive|prt
+2028920|は||110029|topic marker particle|prt
+2028930|が||110032|indicates sentence subject (occasionally object)|prt
+2028930|が||110034|and|conj
+2028930|が||110034|and|prt
+2028930|が||110034|but|conj
+2028930|が||110034|but|prt
+2028930|が||110034|however|conj
+2028930|が||110034|however|prt
+2028930|が||110034|still|conj
+2028930|が||110034|still|prt
+2028940|も||110035|(not) either (in a negative sentence)|prt
+2028940|も||110035|also|prt
+2028940|も||110035|as well|prt
+2028940|も||110035|in addition|prt
+2028940|も||110035|too|prt
+2028940|も||110039|again|adv
+2028940|も||110039|another|adv
+2028940|も||110039|further|adv
+2028940|も||110039|more|adv
+2028940|も||110039|the other|adv
+2028980|で||110056|at|prt
+2028980|で||110056|in|prt
+2028980|で||110056|indicates location of action|prt
+2028980|で||110059|and then|conj
+2028980|で||110059|so|conj
+2028980|で||110060|indicates continuing action|aux
+2028980|で||110061|indicates certainty, emphasis, etc.|prt
+2028980|にて||110056|at|prt
+2028980|にて||110056|in|prt
+2028980|にて||110056|indicates location of action|prt
+2028980|にて||110059|and then|conj
+2028980|にて||110059|so|conj
+2028980|にて||110060|indicates continuing action|aux
+2028980|にて||110061|indicates certainty, emphasis, etc.|prt
+2028990|に||110062|at (place, time)|prt
+2028990|に||110062|during|prt
+2028990|に||110062|in|prt
+2028990|に||110062|on|prt
+2029010|を||110072|indicates direct object of action|prt
+2086960|って||116051|casual quoting particle|prt
+2086960|て||116051|casual quoting particle|prt
+2224630|が|雅|130509|elegance|adj-na
+2224630|が|雅|130509|elegance|n
+2224630|が|雅|130509|grace|adj-na
+2224630|が|雅|130509|grace|n
+2224630|が|雅|130510|festal song (genre of the Shi Jing)|n
+2270030|の|乃|135458|possessive particle|prt
+2270030|の|之|135458|possessive particle|prt
+2654270|て||173886|indicates continuing action|aux
+2773810|に|煮|186130|cooked with|suf
+2773810|に|煮|186130|simmered with|suf
+2773810|に|煮|186131|boiled dish|n
+2773810|に|煮|186131|boiling|n
