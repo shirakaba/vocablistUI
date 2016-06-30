@@ -151,7 +151,6 @@ public class JMDictPronunciationRepository2 {
     public Iterable<JMDictEntry> getEntriesFromPronunciation(Iterable<ForwardingToken> tokensToSearch, Mode mode, POS pos) {
         List<String> readingsToQuery = new ArrayList<>();
         List<String> acceptablePOS;
-        boolean secondParameter = true;
 
         tokensToSearch.forEach(token -> {
                     if (token.isVerb()) readingsToQuery.add(token.getBaseForm()); // search for verbs by their baseform eg. する
@@ -176,12 +175,12 @@ public class JMDictPronunciationRepository2 {
             case prefixes:
             case nouns:
             // generally will have been found by kanji baseForm
-                restrictPOSClause = "AND t.senseDataKey.data IN :acceptablePOS ";
                 acceptablePOS = nouns;
+                restrictPOSClause = "AND t.senseDataKey.data IN :acceptablePOS ";
                 break;
             case verbsAndAux:
-                restrictPOSClause = "AND t.senseDataKey.data IN :acceptablePOS ";
                 acceptablePOS = verbs;
+                restrictPOSClause = "AND t.senseDataKey.data IN :acceptablePOS ";
                 break;
             // Take all you can find
             case exclamations:
@@ -191,12 +190,8 @@ public class JMDictPronunciationRepository2 {
             case unclassified:
                 acceptablePOS = new ArrayList<>();
                 restrictPOSClause = "";
-                secondParameter = false;
                 break;
             default:
-                acceptablePOS = new ArrayList<>();
-                restrictPOSClause = "";
-                secondParameter = false;
                 throw new IllegalStateException();
         }
 
@@ -216,7 +211,7 @@ public class JMDictPronunciationRepository2 {
                 JMDictEntry.class
         );
         query.setParameter("readingsToQuery", readingsToQuery);
-        if(secondParameter) query.setParameter("acceptablePOS", acceptablePOS);
+        if(!restrictPOSClause.isEmpty()) query.setParameter("acceptablePOS", acceptablePOS);
 //        query.setMaxResults(50);
         return query.getResultList();
     }
