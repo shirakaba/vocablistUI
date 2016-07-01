@@ -139,7 +139,7 @@ public class BackendApplicationTests {
             else unclassified.add(t);
         });
 
-        List<JMDictEntry>
+        List<JMDictEntry> // asking just for id takes 54 seconds too
                 particlesByPron = Lists.newArrayList(jmDictPronunciationRepository2.getEntriesFromPronunciation(particles,
                 JMDictPronunciationRepository2.POS.particles)),
 
@@ -152,6 +152,7 @@ public class BackendApplicationTests {
                 conjunctionsByPron = Lists.newArrayList(jmDictPronunciationRepository2.getEntriesFromPronunciation(conjunctions,
                 JMDictPronunciationRepository2.POS.conjunctions)),
 
+                // runs in 8 seconds if you just remove this line
                 nounsByPron = Lists.newArrayList(jmDictPronunciationRepository2.getEntriesFromPronunciation(nouns,
                 JMDictPronunciationRepository2.POS.nouns)), // size = 136 for 151 nouns (due to some being katakana, some being pronouns.
 
@@ -185,20 +186,20 @@ public class BackendApplicationTests {
 //        List<JMDictEntry> particlesByPronNoCond = Lists.newArrayList(jmDictPronunciationRepository2.getEntriesFromPronunciation(particles,
 //                JMDictPronunciationRepository2.POS.others)); // size = 109 for 29 particles
 
-        List<String> particlesByPronAsStrings = particlesByPron // crude debugging; only returns rows if they have a kanji form.
-                .stream()
-                .flatMap(
-                        entry -> entry
-                                .getWords()
-                                .stream()
-                                .map(
-                                        word -> word
-                                                .getIdDataKey()
-                                                .getData()
-                                )
-                )
-                .collect(Collectors.toList()
-                );
+//        List<String> particlesByPronAsStrings = particlesByPron // crude debugging; only returns rows if they have a kanji form.
+//                .stream()
+//                .flatMap(
+//                        entry -> entry
+//                                .getWords()
+//                                .stream()
+//                                .map(
+//                                        word -> word
+//                                                .getIdDataKey()
+//                                                .getData()
+//                                )
+//                )
+//                .collect(Collectors.toList()
+//                );
 
 //        List<JMDictEntry> pronunEntries = Lists.newArrayList(jmDictEntryRepository2.getEntries(tokensToSearch, READINGS_IN_HIRAGANA));
 //        pronunEntries.forEach(reading -> wordsFound.add(Utils.convertKana(reading.getIdDataKey().getData())));
