@@ -16,13 +16,14 @@ public class JMDictEntry {
     public JMDictEntry() {
     }
 
-    @OneToMany(mappedBy = "jmDictEntryS", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "jmDictEntryS", fetch = FetchType.LAZY)
     private List<JMDictSense> senses;
 
+    // can't seem to change this to lazy. Notably only used by jmDictEntryRepository2.getEntries().
     @OneToMany(mappedBy = "jmDictEntryW", fetch = FetchType.EAGER)
     private List<JMDictWord> words;
 
-    @OneToMany(mappedBy = "jmDictEntryP", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "jmDictEntryP", fetch = FetchType.LAZY)
     private List<JMDictPronunciation> pron;
 
     public Integer getId() {

@@ -17,7 +17,7 @@ public class JMDictSense {
     private Integer id;
 
     // TODO: not sure what to do about the field being an Integer called id in the real table.
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
 //            foreignKey = @ForeignKey(name = "FK_JMDICT_SENSE_ID"), // not sure whether necessary
             name="id", insertable = false, updatable = false
@@ -25,7 +25,7 @@ public class JMDictSense {
     private JMDictEntry jmDictEntryS;
 
     // Note: these mappedBy names don't actually have to be unique because it searches only within-class.
-    @OneToMany(mappedBy = "jmDictSenseD", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "jmDictSenseD", fetch = FetchType.LAZY)
     private List<JMDictDefinition> definitions;
 
     @OneToMany(mappedBy = "jmDictSenseT", fetch = FetchType.EAGER)

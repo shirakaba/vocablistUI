@@ -238,7 +238,7 @@ public class JMDictPronunciationRepository2 {
                         "ON t.senseDataKey.sense = s.data "
                         + "WHERE p.idDataKey.data IN :readingsToQuery "
                         + restrictPOSClause
-                        + "GROUP BY p.idDataKey.id"
+//                        + "GROUP BY p.idDataKey.id"
                 ,
                 JMDictEntry.class
         );

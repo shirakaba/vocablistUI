@@ -14,7 +14,7 @@ public class JMDictDefinition {
     @EmbeddedId
     private SenseDataKey senseDataKey;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     // This FK's annotated name must equal the annotated name for the target partial key in SenseDataKey.
     // Another JoinColumn example at http://www.thejavageek.com/2014/09/23/jpa-joincolumns-annotation-example/
     @JoinColumn(
