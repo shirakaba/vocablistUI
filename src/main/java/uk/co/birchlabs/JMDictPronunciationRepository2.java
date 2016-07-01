@@ -228,7 +228,7 @@ public class JMDictPronunciationRepository2 {
         else restrictPOSClause = "";
 
         TypedQuery<JMDictEntry> query = em.createQuery(
-                "SELECT a " +
+                "SELECT a " + // TODO: compare speed by just selecting a.id and rejoining later
                         "FROM JMDictEntry a " +
                         "JOIN JMDictPronunciation p " +
                         "  ON a.id = p.idDataKey.id " +
