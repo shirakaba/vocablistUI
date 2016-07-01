@@ -1,11 +1,14 @@
 package uk.co.birchlabs;
 
+import org.hibernate.annotations.Immutable;
+
 import javax.persistence.*;
 import java.util.List;
 
 /**
  * Created by jamiebirch on 28/06/2016.
  */
+@Immutable
 @Entity
 @Table(name="jmdict_entry")
 public class JMDictEntry {
@@ -19,7 +22,7 @@ public class JMDictEntry {
     @OneToMany(mappedBy = "jmDictEntryS", fetch = FetchType.LAZY)
     private List<JMDictSense> senses;
 
-    // can't seem to change this to lazy. Notably only used by jmDictEntryRepository2.getEntries().
+    // can't seem to change this to lazy. Only used by jmDictEntryRepository2.getEntries() though.
     @OneToMany(mappedBy = "jmDictEntryW", fetch = FetchType.EAGER)
     private List<JMDictWord> words;
 

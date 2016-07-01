@@ -228,17 +228,17 @@ public class JMDictPronunciationRepository2 {
         else restrictPOSClause = "";
 
         TypedQuery<JMDictEntry> query = em.createQuery(
-                "SELECT a " + // TODO: compare speed by just selecting a.id and rejoining later
+                "SELECT a " + // not sure whether JOIN FETCH is any better
                         "FROM JMDictEntry a " +
-                        "JOIN JMDictPronunciation p " +
+                        "JOIN FETCH JMDictPronunciation p " +
                         "  ON a.id = p.idDataKey.id " +
-                        "JOIN JMDictSense s " + // somehow can't seem to join to Sense and Type
+                        "JOIN FETCH JMDictSense s " +
                         "  ON s.id = a.id "
-                        + "JOIN JMDictType t " +
+                        + "JOIN FETCH JMDictType t " +
                         "ON t.senseDataKey.sense = s.data "
                         + "WHERE p.idDataKey.data IN :readingsToQuery "
                         + restrictPOSClause
-//                        + "GROUP BY p.idDataKey.id"
+                        + "GROUP BY p.idDataKey.id"
                 ,
                 JMDictEntry.class
         );

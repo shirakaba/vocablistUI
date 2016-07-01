@@ -1,11 +1,14 @@
 package uk.co.birchlabs;
 
+import org.hibernate.annotations.Immutable;
+
 import javax.persistence.*;
 import java.util.List;
 
 /**
  * Based on http://stackoverflow.com/questions/2611619/onetomany-and-composite-primary-keys
  */
+@Immutable
 @Entity
 @Table(name="jmdict_sense")
 public class JMDictSense {
@@ -17,7 +20,7 @@ public class JMDictSense {
     private Integer id;
 
     // TODO: not sure what to do about the field being an Integer called id in the real table.
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(
 //            foreignKey = @ForeignKey(name = "FK_JMDICT_SENSE_ID"), // not sure whether necessary
             name="id", insertable = false, updatable = false

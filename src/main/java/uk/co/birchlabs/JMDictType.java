@@ -1,10 +1,13 @@
 package uk.co.birchlabs;
 
+import org.hibernate.annotations.Immutable;
+
 import javax.persistence.*;
 
 /**
  * Created by jamiebirch on 29/06/2016.
  */
+@Immutable
 @Entity
 @Table(name="jmdict_type")
 public class JMDictType {
@@ -12,7 +15,7 @@ public class JMDictType {
     @EmbeddedId
     private SenseDataKey senseDataKey;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name="sense", insertable = false, updatable = false)
     private JMDictSense jmDictSenseT;
 

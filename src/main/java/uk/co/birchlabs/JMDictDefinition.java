@@ -1,5 +1,7 @@
 package uk.co.birchlabs;
 
+import org.hibernate.annotations.Immutable;
+
 import javax.persistence.*;
 //import javax.validation.constraints.NotNull;
 
@@ -7,6 +9,7 @@ import javax.persistence.*;
  * eg. to do; to cause to become, to make (into), to turn (into); to serve as, to act as, to work as...
  * Based on http://stackoverflow.com/questions/2611619/onetomany-and-composite-primary-keys
  */
+@Immutable
 @Entity
 @Table(name="jmdict_definition")
 public class JMDictDefinition {

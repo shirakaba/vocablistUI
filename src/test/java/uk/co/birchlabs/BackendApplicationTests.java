@@ -122,7 +122,7 @@ public class BackendApplicationTests {
                 others = new ArrayList<>(),
                 unclassified = new ArrayList<>();
 
-        tokensToSearch.forEach(t -> {
+		tokensToSearch.forEach(t -> {
             String firstFeature = t.getAllFeaturesArray()[0];
             if (firstFeature.startsWith("助詞")) particles.add(t);
             else if (t.isVerb()) verbsAndAux.add(t);
@@ -144,7 +144,7 @@ public class BackendApplicationTests {
                 JMDictPronunciationRepository2.POS.particles)),
 
                 verbsByPron = Lists.newArrayList(jmDictPronunciationRepository2.getEntriesFromPronunciation(verbsAndAux,
-                JMDictPronunciationRepository2.POS.verbsAndAux)), // size = 48 for 26 verbsAndAux (mainly due to suru/aru/iru)
+                JMDictPronunciationRepository2.POS.verbsAndAux)), // size = 48 for 26 verbsAndAux (mainly due to suru/aru/iru). Costs 5 seconds.
 
                 adverbsByPron = Lists.newArrayList(jmDictPronunciationRepository2.getEntriesFromPronunciation(adverbs,
                 JMDictPronunciationRepository2.POS.adverbs)),
@@ -152,7 +152,7 @@ public class BackendApplicationTests {
                 conjunctionsByPron = Lists.newArrayList(jmDictPronunciationRepository2.getEntriesFromPronunciation(conjunctions,
                 JMDictPronunciationRepository2.POS.conjunctions)),
 
-                // runs in 8 seconds if you just remove this line
+                // costs about 45 seconds.
                 nounsByPron = Lists.newArrayList(jmDictPronunciationRepository2.getEntriesFromPronunciation(nouns,
                 JMDictPronunciationRepository2.POS.nouns)), // size = 136 for 151 nouns (due to some being katakana, some being pronouns.
 

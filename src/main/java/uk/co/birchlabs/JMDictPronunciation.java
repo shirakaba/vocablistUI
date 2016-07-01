@@ -1,6 +1,7 @@
 package uk.co.birchlabs;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Immutable;
 
 import javax.persistence.*;
 //import javax.validation.constraints.NotNull;
@@ -8,6 +9,7 @@ import javax.persistence.*;
 /**
  * eg. する
  */
+@Immutable
 @Entity
 @Table(name="jmdict_pronunciation")
 public class JMDictPronunciation {
@@ -15,7 +17,7 @@ public class JMDictPronunciation {
     @EmbeddedId
     private IdDataKey idDataKey;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional=false)
     // This FK's annotated name must equal the annotated name for the target partial key in IdDataKey.
     @JoinColumn(
 //            foreignKey = @ForeignKey(name = "FK_JMDICT_PRONUNCIATION_ID"), // not sure whether necessary
