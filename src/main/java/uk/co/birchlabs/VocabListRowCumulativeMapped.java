@@ -18,8 +18,8 @@ public class VocabListRowCumulativeMapped {
     public VocabListRowCumulativeMapped(
             VocabListRowCumulative vocabListRowCumulative,
             Iterable<JMDictWord> idWordPairs,
-            Iterable<JMDictPronunciation> hiraganaPairs,
-            Iterable<JMDictPronunciation> katakanaPairs
+            Iterable<JMDictPron> hiraganaPairs,
+            Iterable<JMDictPron> katakanaPairs
     ) {
         this.vocabListRowCumulative = vocabListRowCumulative;
 

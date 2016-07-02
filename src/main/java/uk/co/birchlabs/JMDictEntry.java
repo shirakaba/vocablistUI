@@ -27,7 +27,7 @@ public class JMDictEntry {
     private List<JMDictWord> words;
 
     @OneToMany(mappedBy = "jmDictEntryP", fetch = FetchType.LAZY)
-    private List<JMDictPronunciation> pron;
+    private List<JMDictPron> pron;
 
     public Integer getId() {
         return id;
@@ -53,11 +53,11 @@ public class JMDictEntry {
         this.words = words;
     }
 
-    public List<JMDictPronunciation> getPron() {
+    public List<JMDictPron> getPron() {
         return pron;
     }
 
-    public void setPron(List<JMDictPronunciation> pron) {
+    public void setPron(List<JMDictPron> pron) {
         this.pron = pron;
     }
 }

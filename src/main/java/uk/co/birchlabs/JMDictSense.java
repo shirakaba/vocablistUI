@@ -29,7 +29,7 @@ public class JMDictSense {
 
     // Note: these mappedBy names don't actually have to be unique because it searches only within-class.
     @OneToMany(mappedBy = "jmDictSenseD", fetch = FetchType.LAZY)
-    private List<JMDictDefinition> definitions;
+    private List<JMDictDef> defs;
 
     @OneToMany(mappedBy = "jmDictSenseT", fetch = FetchType.EAGER)
     private List<JMDictType> types;
@@ -69,11 +69,11 @@ public class JMDictSense {
         this.data = data;
     }
 
-    public List<JMDictDefinition> getDefinitions() {
-        return definitions;
+    public List<JMDictDef> getDefs() {
+        return defs;
     }
 
-    public void setDefinitions(List<JMDictDefinition> definitions) {
-        this.definitions = definitions;
+    public void setDefs(List<JMDictDef> defs) {
+        this.defs = defs;
     }
 }

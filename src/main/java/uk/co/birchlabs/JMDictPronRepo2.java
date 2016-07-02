@@ -15,7 +15,7 @@ import java.util.List;
  * Created by jamiebirch on 23/06/2016.
  */
 @Repository
-public class JMDictPronunciationRepo2 {
+public class JMDictPronRepo2 {
 
     @PersistenceContext
 //    @Autowired
@@ -27,7 +27,7 @@ public class JMDictPronunciationRepo2 {
     }
 
     @Deprecated
-    public Iterable<JMDictPronunciation> getSome(Iterable<ForwardingToken> tokensToSearch, Mode mode) {
+    public Iterable<JMDictPron> getSome(Iterable<ForwardingToken> tokensToSearch, Mode mode) {
         List<String> readingsToQuery = new ArrayList<>();
         tokensToSearch.forEach(forwardingToken -> {
             // TODO: hard mode: subtract any しか for which the POS (eg. noun) doesn't match the offered POS (such as particle)
@@ -45,10 +45,10 @@ public class JMDictPronunciationRepo2 {
             }
         });
 
-        TypedQuery<JMDictPronunciation> query = em.createQuery(
+        TypedQuery<JMDictPron> query = em.createQuery(
                 "SELECT a FROM JMDictPronunciation a " +
                         "WHERE a.data IN :data",
-                JMDictPronunciation.class
+                JMDictPron.class
         );
         query.setParameter("data", readingsToQuery);
         return query.getResultList();
@@ -158,13 +158,13 @@ public class JMDictPronunciationRepo2 {
     );
 
     /**
-     * Calls getEntriesFromPronunciation() by the 'search readings in hiragana' mode.
+     * Calls getEntriesFromPron() by the 'search readings in hiragana' mode.
      * @param tokensToSearch - Tokens to search for the readings of in jmdict_pronunciation.
      * @param pos - the POS tagged by MeCab.
      * @return - an iterable of eligible JMDictEntrys.
      */
-    public Iterable<JMDictEntry> getEntriesFromPronunciation(Iterable<ForwardingToken> tokensToSearch, POS pos) {
-        return getEntriesFromPronunciation(tokensToSearch, Mode.READINGS_IN_HIRAGANA, pos);
+    public Iterable<JMDictEntry> getEntriesFromPron(Iterable<ForwardingToken> tokensToSearch, POS pos) {
+        return getEntriesFromPron(tokensToSearch, Mode.READINGS_IN_HIRAGANA, pos);
     }
 
     /**
@@ -174,7 +174,7 @@ public class JMDictPronunciationRepo2 {
      * @param pos - the POS tagged by MeCab.
      * @return - an iterable of eligible JMDictEntrys.
      */
-    public Iterable<JMDictEntry> getEntriesFromPronunciation(Iterable<ForwardingToken> tokensToSearch, Mode mode, POS pos) {
+    public Iterable<JMDictEntry> getEntriesFromPron(Iterable<ForwardingToken> tokensToSearch, Mode mode, POS pos) {
         List<String> readingsToQuery = new ArrayList<>();
         List<String> acceptablePOS;
         final String restrictPOSClause;
@@ -237,7 +237,7 @@ public class JMDictPronunciationRepo2 {
         TypedQuery<JMDictEntry> query = em.createQuery(
                 "SELECT a " + // JOIN FETCH is certainly faster (2s).
                         "FROM JMDictEntry a " +
-                        "JOIN FETCH JMDictPronunciation p " +
+                        "JOIN FETCH JMDictPron p " +
                         "  ON a.id = p.idDataKey.id " +
                         "JOIN FETCH JMDictSense s " +
                         "  ON s.id = a.id "

@@ -18,7 +18,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
-import static uk.co.birchlabs.JMDictPronunciationRepo2.POS;
+import static uk.co.birchlabs.JMDictPronRepo2.POS;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -28,7 +28,7 @@ public class BackendApplicationTests {
 	JMDictEntryRepo2 jmDictEntryRepo2;
 
     @Autowired
-	JMDictPronunciationRepo2 jmDictPronunciationRepo2;
+	JMDictPronRepo2 jmDictPronRepo2;
 
 //	@Autowired
 //	JMDictWordRepository2 jmDictWordRepository2;
@@ -139,50 +139,39 @@ public class BackendApplicationTests {
 
 		// List of all JMDictEntrys with a valid
         List<JMDictEntry>
-                particlesByPron = Lists.newArrayList(jmDictPronunciationRepo2.getEntriesFromPronunciation(particles,
-                POS.particles)),
+                particlesByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(particles, POS.particles)),
 
-                verbsByPron = Lists.newArrayList(jmDictPronunciationRepo2.getEntriesFromPronunciation(verbsAndAux,
-                POS.verbsAndAux)), // size = 48 for 26 verbsAndAux (mainly due to suru/aru/iru). Costs 5 seconds.
+				// size = 48 for 26 verbsAndAux (mainly due to suru/aru/iru). Costs 5 seconds.
+                verbsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(verbsAndAux, POS.verbsAndAux)),
 
-                adverbsByPron = Lists.newArrayList(jmDictPronunciationRepo2.getEntriesFromPronunciation(adverbs,
-                POS.adverbs)),
+                adverbsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(adverbs, POS.adverbs)),
 
-                conjunctionsByPron = Lists.newArrayList(jmDictPronunciationRepo2.getEntriesFromPronunciation(conjunctions,
-                POS.conjunctions)),
+                conjunctionsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(conjunctions, POS.conjunctions)),
 
-                nounsByPron = Lists.newArrayList(jmDictPronunciationRepo2.getEntriesFromPronunciation(nouns,
-                POS.nouns)), // size = 136 for 151 nouns (due to some being katakana, some being pronouns.
+				// size = 136 for 151 nouns (due to some being katakana, some being pronouns.
+                nounsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(nouns, POS.nouns)),
 
-                prefixesByPron = Lists.newArrayList(jmDictPronunciationRepo2.getEntriesFromPronunciation(prefixes,
-                POS.prefixes)),
+                prefixesByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(prefixes, POS.prefixes)),
 
-                adjectivesByPron = Lists.newArrayList(jmDictPronunciationRepo2.getEntriesFromPronunciation(adjectives,
-                POS.adjectives)),
+                adjectivesByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(adjectives, POS.adjectives)),
 
-                adnominalsByPron = Lists.newArrayList(jmDictPronunciationRepo2.getEntriesFromPronunciation(adnominals,
-                POS.adnominals)),
+                adnominalsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(adnominals, POS.adnominals)),
 
-                exclamationsByPron = Lists.newArrayList(jmDictPronunciationRepo2.getEntriesFromPronunciation(exclamations,
-                POS.exclamations)),
+                exclamationsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(exclamations, POS.exclamations)),
 
-                symbolsByPron = Lists.newArrayList(jmDictPronunciationRepo2.getEntriesFromPronunciation(symbols,
-                POS.symbols)),
+                symbolsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(symbols, POS.symbols)),
 
-                fillersByPron = Lists.newArrayList(jmDictPronunciationRepo2.getEntriesFromPronunciation(fillers,
-                POS.fillers)),
+                fillersByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(fillers, POS.fillers)),
 
-                othersByPron = Lists.newArrayList(jmDictPronunciationRepo2.getEntriesFromPronunciation(others,
-                POS.others)),
+                othersByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(others, POS.others)),
 
-                unclassifiedByPron = Lists.newArrayList(jmDictPronunciationRepo2.getEntriesFromPronunciation(unclassified,
-                POS.unclassified))
+                unclassifiedByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(unclassified, POS.unclassified))
         ;
 
 //		particles.forEach(p -> p. if(particlesByPron.contains()));
 
 
-//        List<JMDictEntry> particlesByPronNoCond = Lists.newArrayList(jmDictPronunciationRepo2.getEntriesFromPronunciation(particles,
+//        List<JMDictEntry> particlesByPronNoCond = Lists.newArrayList(jmDictPronunciationRepo2.getEntriesFromPron(particles,
 //                JMDictPronunciationRepository2.POS.others)); // size = 109 for 29 particles
 
 //        List<String> particlesByPronAsStrings = particlesByPron // crude debugging; only returns rows if they have a kanji form.

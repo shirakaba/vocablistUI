@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Immutable
 @Entity
 @Table(name="jmdict_pronunciation")
-public class JMDictPronunciation {
+public class JMDictPron {
 
     @EmbeddedId
     private IdDataKey idDataKey;
@@ -25,7 +25,7 @@ public class JMDictPronunciation {
     )
     private JMDictEntry jmDictEntryP;
 
-    public JMDictPronunciation() {
+    public JMDictPron() {
     }
 
     public IdDataKey getIdDataKey() {

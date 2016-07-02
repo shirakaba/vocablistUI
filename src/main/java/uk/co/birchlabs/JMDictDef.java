@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Immutable
 @Entity
 @Table(name="jmdict_definition")
-public class JMDictDefinition {
+public class JMDictDef {
 
     @EmbeddedId
     private SenseDataKey senseDataKey;
@@ -27,7 +27,7 @@ public class JMDictDefinition {
 //    @org.hibernate.annotations.ForeignKey(name = "FK_CHILD_OBJECT_PARENTID")
     private JMDictSense jmDictSenseD;
 
-    public JMDictDefinition() {
+    public JMDictDef() {
     }
 
 

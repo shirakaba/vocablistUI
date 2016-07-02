@@ -19,16 +19,16 @@ public class MyController {
 
     MyCoolService myCoolService;
 
-    JMDictPronunciationRepo JMDictPronunciationRepo;
+    JMDictPronRepo JMDictPronRepo;
 
 
     @Autowired
     public MyController(
             MyCoolService myCoolService,
-            JMDictPronunciationRepo JMDictPronunciationRepo
+            JMDictPronRepo JMDictPronRepo
     ) {
         this.myCoolService = myCoolService;
-        this.JMDictPronunciationRepo = JMDictPronunciationRepo;
+        this.JMDictPronRepo = JMDictPronRepo;
     }
 
     @RequestMapping("/test")

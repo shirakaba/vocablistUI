@@ -1,17 +1,9 @@
 package uk.co.birchlabs;
 
-import catRecurserPkg.Filter;
-import catRecurserPkg.VocabListRow;
-import catRecurserPkg.Vocablist;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.persistence.EntityManager;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by jamiebirch on 21/06/2016.
@@ -20,23 +12,23 @@ import java.util.List;
 public class MyRestController {
 
 //    @Autowired
-//    JMDictPronunciationRepo JMDictPronunciationRepo;
+//    JMDictPronRepo JMDictPronRepo;
 //
 //    @Autowired
 //    JMDictPronunciationRepository2 jmDictPronunciationRepository2;
 
     @Autowired
-    JMDictPronunciationService jmDictPronunciationService;
+    JMDictPronService jmDictPronService;
 
 //    @Autowired
 //    EntityManager em;
 
 //    @RequestMapping("/thing")
-//    public JMDictPronunciation thing(
+//    public JMDictPron thing(
 //            @RequestParam Integer id
 //    ) {
 ////        return jmDictPronunciationRepository2.getSome()
-//        return JMDictPronunciationRepo.findOne(id);
+//        return JMDictPronRepo.findOne(id);
 //    }
 
 //    @RequestMapping("/test5")
@@ -66,6 +58,6 @@ public class MyRestController {
             // eg. http://localhost:8080/test4?input="この俺が俺です。"
             @RequestParam(name="input", defaultValue = "するためにしない。する為に行く。何のためにした？自分の為。する為。") String input
     ) {
-        return jmDictPronunciationService.test6(input);
+        return jmDictPronService.test6(input);
     }
 }

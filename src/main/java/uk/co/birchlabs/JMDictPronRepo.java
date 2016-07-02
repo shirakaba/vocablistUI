@@ -5,7 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 /**
  * eg. する
  */
-public interface JMDictPronunciationRepo extends CrudRepository<JMDictPronunciation, Integer> {
+public interface JMDictPronRepo extends CrudRepository<JMDictPron, Integer> {
 
 
 }

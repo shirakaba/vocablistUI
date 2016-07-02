@@ -8,21 +8,21 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static uk.co.birchlabs.JMDictPronunciationRepo2.Mode.*;
+import static uk.co.birchlabs.JMDictPronRepo2.Mode.*;
 
 /**
  * Created by jamiebirch on 23/06/2016.
  */
 @Service
-public class JMDictPronunciationService {
+public class JMDictPronService {
     @Autowired
-    JMDictPronunciationRepo2 jmDictPronunciationRepo2;
+    JMDictPronRepo2 jmDictPronRepo2;
 
     @Autowired
     JMDictWordRepo2 jmDictWordRepo2;
 
 //    @Autowired
-//    JMDictPronunciationRepo jmDictPronunciationRepository;
+//    JMDictPronRepo jmDictPronunciationRepository;
 
     @Deprecated
     public Test6Model test6(String input) {
@@ -70,13 +70,13 @@ public class JMDictPronunciationService {
 
         // Searches jmdict_pronunciation for any still-unfound tokens by their readings converted into hiragana
         // (for list entries likely rendered without any kanji such as する、ある、いる、として).
-        List<JMDictPronunciation> idReadingPairs = Lists.newArrayList(jmDictPronunciationRepo2.getSome(tokensToSearch, READINGS_IN_HIRAGANA));
+        List<JMDictPron> idReadingPairs = Lists.newArrayList(jmDictPronRepo2.getSome(tokensToSearch, READINGS_IN_HIRAGANA));
         idReadingPairs.forEach(reading -> wordsFound.add(Utils.convertKana(reading.getIdDataKey().getData())));
         tokensToSearch.removeIf(token -> wordsFound.contains(token.getReading())); // tokensToSearch goes from 66 -> 17 here.
 
         // Searches jmdict_pronunciation for the remaining tokens by their katakana readings
         // (for list entries likely to be loan words such as キャンパス)
-        List<JMDictPronunciation> idReadingPairs2 = Lists.newArrayList(jmDictPronunciationRepo2.getSome(tokensToSearch, READINGS_IN_KATAKANA));
+        List<JMDictPron> idReadingPairs2 = Lists.newArrayList(jmDictPronRepo2.getSome(tokensToSearch, READINGS_IN_KATAKANA));
 //        Lists.newArrayList(Iterables.concat(idReadingPairs, idReadingPairs2));
         Iterables
                 .concat(idReadingPairs, idReadingPairs2)
