@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by jamiebirch on 21/06/2016.
@@ -20,16 +19,16 @@ public class MyController {
 
     MyCoolService myCoolService;
 
-    JMDictPronunciationRepository JMDictPronunciationRepository;
+    JMDictPronunciationRepo JMDictPronunciationRepo;
 
 
     @Autowired
     public MyController(
             MyCoolService myCoolService,
-            JMDictPronunciationRepository JMDictPronunciationRepository
+            JMDictPronunciationRepo JMDictPronunciationRepo
     ) {
         this.myCoolService = myCoolService;
-        this.JMDictPronunciationRepository = JMDictPronunciationRepository;
+        this.JMDictPronunciationRepo = JMDictPronunciationRepo;
     }
 
     @RequestMapping("/test")

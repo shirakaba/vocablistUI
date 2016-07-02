@@ -3,6 +3,7 @@ package uk.co.birchlabs;
 import catRecurserPkg.ForwardingToken;
 import com.google.common.collect.Lists;
 import org.springframework.stereotype.Repository;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -14,7 +15,7 @@ import java.util.List;
  * Created by jamiebirch on 23/06/2016.
  */
 @Repository
-public class JMDictPronunciationRepository2 {
+public class JMDictPronunciationRepo2 {
 
     @PersistenceContext
 //    @Autowired
@@ -41,8 +42,6 @@ public class JMDictPronunciationRepository2 {
                     break;
                 default:
                     break;
-//                case HIRAGANA_VERBS:
-//                    break;
             }
         });
 
@@ -181,11 +180,19 @@ public class JMDictPronunciationRepository2 {
         final String restrictPOSClause;
         boolean restrictPOS = true;
 
-        tokensToSearch.forEach(token -> {
-                    if (token.isVerb()) readingsToQuery.add(token.getBaseForm()); // search for verbs by their baseform eg. する
-                    else readingsToQuery.add(Utils.convertKana(token.getReading())); // search for native words in hiragana eg. として
-                }
-        );
+        tokensToSearch.forEach(forwardingToken -> {
+            switch (mode) { // Note: most likely could search by baseForm for all of these. Not sure there's ever any difference in these cases.
+                case READINGS_IN_HIRAGANA:
+                    if (forwardingToken.isVerb()) readingsToQuery.add(forwardingToken.getBaseForm()); // search for verbs by their baseform eg. する
+                    else readingsToQuery.add(Utils.convertKana(forwardingToken.getReading())); // search for native words in hiragana eg. として
+                    break;
+                case READINGS_IN_KATAKANA:
+                    readingsToQuery.add(forwardingToken.getReading()); // search for possible loan words in their native katakana. eg. キャンパス
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
+        });
 
 
         switch(pos){

@@ -13,7 +13,7 @@ import java.util.List;
  * Created by jamiebirch on 29/06/2016.
  */
 @Repository
-public class JMDictEntryRepository2 {
+public class JMDictEntryRepo2 {
     @PersistenceContext
     EntityManager em;
 

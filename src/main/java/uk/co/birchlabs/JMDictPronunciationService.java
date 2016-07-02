@@ -3,15 +3,12 @@ package uk.co.birchlabs;
 import catRecurserPkg.*;
 import com.google.common.collect.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.StreamUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
-import static uk.co.birchlabs.JMDictPronunciationRepository2.Mode.*;
+import static uk.co.birchlabs.JMDictPronunciationRepo2.Mode.*;
 
 /**
  * Created by jamiebirch on 23/06/2016.
@@ -19,14 +16,15 @@ import static uk.co.birchlabs.JMDictPronunciationRepository2.Mode.*;
 @Service
 public class JMDictPronunciationService {
     @Autowired
-    JMDictPronunciationRepository2 jmDictPronunciationRepository2;
+    JMDictPronunciationRepo2 jmDictPronunciationRepo2;
 
     @Autowired
-    JMDictWordRepository2 jmDictWordRepository2;
+    JMDictWordRepo2 jmDictWordRepo2;
 
 //    @Autowired
-//    JMDictPronunciationRepository jmDictPronunciationRepository;
+//    JMDictPronunciationRepo jmDictPronunciationRepository;
 
+    @Deprecated
     public Test6Model test6(String input) {
         Vocablist vocablist = new Vocablist(input, Vocablist.Filtering.MANDATORY);
         List<VocabListRow> sortedByFreq = vocablist.getSortedByFreq();
@@ -65,20 +63,20 @@ public class JMDictPronunciationService {
 
         // Searches jmdict_word for tokens by their baseForms
         // (for list entries likely to have at least one kanji such as 作る、日、又)
-        List<JMDictWord> idWordPairs = Lists.newArrayList(jmDictWordRepository2.getSome(tokensToSearch));
+        List<JMDictWord> idWordPairs = Lists.newArrayList(jmDictWordRepo2.getSome(tokensToSearch));
         Set<String> wordsFound = new HashSet<>();
         idWordPairs.forEach(word -> wordsFound.add(word.getIdDataKey().getData()));
         tokensToSearch.removeIf(token -> wordsFound.contains(token.getBaseForm())); // tokensToSearch goes from 159 -> 66 here.
 
         // Searches jmdict_pronunciation for any still-unfound tokens by their readings converted into hiragana
         // (for list entries likely rendered without any kanji such as する、ある、いる、として).
-        List<JMDictPronunciation> idReadingPairs = Lists.newArrayList(jmDictPronunciationRepository2.getSome(tokensToSearch, READINGS_IN_HIRAGANA));
+        List<JMDictPronunciation> idReadingPairs = Lists.newArrayList(jmDictPronunciationRepo2.getSome(tokensToSearch, READINGS_IN_HIRAGANA));
         idReadingPairs.forEach(reading -> wordsFound.add(Utils.convertKana(reading.getIdDataKey().getData())));
         tokensToSearch.removeIf(token -> wordsFound.contains(token.getReading())); // tokensToSearch goes from 66 -> 17 here.
 
         // Searches jmdict_pronunciation for the remaining tokens by their katakana readings
         // (for list entries likely to be loan words such as キャンパス)
-        List<JMDictPronunciation> idReadingPairs2 = Lists.newArrayList(jmDictPronunciationRepository2.getSome(tokensToSearch, READINGS_IN_KATAKANA));
+        List<JMDictPronunciation> idReadingPairs2 = Lists.newArrayList(jmDictPronunciationRepo2.getSome(tokensToSearch, READINGS_IN_KATAKANA));
 //        Lists.newArrayList(Iterables.concat(idReadingPairs, idReadingPairs2));
         Iterables
                 .concat(idReadingPairs, idReadingPairs2)

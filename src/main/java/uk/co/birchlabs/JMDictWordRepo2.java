@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class JMDictWordRepository2 {
+public class JMDictWordRepo2 {
 
     @PersistenceContext
 //    @Autowired

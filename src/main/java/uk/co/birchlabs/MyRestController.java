@@ -20,7 +20,7 @@ import java.util.List;
 public class MyRestController {
 
 //    @Autowired
-//    JMDictPronunciationRepository JMDictPronunciationRepository;
+//    JMDictPronunciationRepo JMDictPronunciationRepo;
 //
 //    @Autowired
 //    JMDictPronunciationRepository2 jmDictPronunciationRepository2;
@@ -36,7 +36,7 @@ public class MyRestController {
 //            @RequestParam Integer id
 //    ) {
 ////        return jmDictPronunciationRepository2.getSome()
-//        return JMDictPronunciationRepository.findOne(id);
+//        return JMDictPronunciationRepo.findOne(id);
 //    }
 
 //    @RequestMapping("/test5")
