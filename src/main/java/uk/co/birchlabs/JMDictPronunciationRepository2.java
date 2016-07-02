@@ -228,7 +228,7 @@ public class JMDictPronunciationRepository2 {
         else restrictPOSClause = "";
 
         TypedQuery<JMDictEntry> query = em.createQuery(
-                "SELECT a " + // not sure whether JOIN FETCH is any better
+                "SELECT a " + // JOIN FETCH is certainly faster (2s).
                         "FROM JMDictEntry a " +
                         "JOIN FETCH JMDictPronunciation p " +
                         "  ON a.id = p.idDataKey.id " +
