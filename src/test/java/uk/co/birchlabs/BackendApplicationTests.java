@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import uk.co.birchlabs.JMDictEntryRepo2.CollectionMode;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -88,20 +89,8 @@ public class BackendApplicationTests {
 		Set<ForwardingToken> tokensToSearch = new HashSet<>();
 		sortedByFreq.forEach(vocablistRow -> tokensToSearch.add(vocablistRow.getToken()));
 		List<JMDictEntry> wordEntries = Lists.newArrayList(jmDictEntryRepo2.getEntries(tokensToSearch));
-        List<String> baseFormsFound = wordEntries
-                .stream()
-                .flatMap(
-                        entry -> entry
-                                .getWords()
-                                .stream()
-                                .map(
-                                        word -> word
-                                                .getIdDataKey()
-                                                .getData()
-                                )
-                )
-                .collect(Collectors.toList()
-                );
+        List<String> baseFormsFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(wordEntries, CollectionMode.word);
+
         tokensToSearch.removeIf(token -> baseFormsFound.contains(token.getBaseForm()));
 
 
@@ -137,7 +126,7 @@ public class BackendApplicationTests {
             else unclassified.add(t);
         });
 
-		// List of all JMDictEntrys with a valid
+		// List of all JMDictEntrys with a valid hiragana reading
         List<JMDictEntry>
                 particlesByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(particles, POS.particles)),
 				// size = 48 for 26 verbsAndAux (mainly due to suru/aru/iru). Costs 5 seconds.
@@ -156,7 +145,36 @@ public class BackendApplicationTests {
                 unclassifiedByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(unclassified, POS.unclassified))
         ;
 
-//		particles.forEach(p -> p. if(particlesByPron.contains()));
+        List<String>
+                particlesFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(particlesByPron, CollectionMode.pron),
+                verbsFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(verbsByPron, CollectionMode.pron),
+                adverbsFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(adverbsByPron, CollectionMode.pron),
+                conjunctionsFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(conjunctionsByPron, CollectionMode.pron),
+                nounsFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(nounsByPron, CollectionMode.pron),
+                prefixesFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(prefixesByPron, CollectionMode.pron),
+                adjectivesFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(adjectivesByPron, CollectionMode.pron),
+                adnominalsFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(adnominalsByPron, CollectionMode.pron),
+                exclamationsFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(exclamationsByPron, CollectionMode.pron),
+                symbolsFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(symbolsByPron, CollectionMode.pron),
+                fillersFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(fillersByPron, CollectionMode.pron),
+                othersFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(othersByPron, CollectionMode.pron),
+                unclassifiedFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(unclassifiedByPron, CollectionMode.pron),
+        ;
+
+        // Or iterate through all the tokens in 'particles' and remove from tokensToSearch if particlesFound countains the reading of the token.
+        tokensToSearch.removeIf(token -> particles.contains(token) && particlesFound.contains(Utils.convertKana(token.getReading())));
+        tokensToSearch.removeIf(token -> verbsAndAux.contains(token) && verbsFound.contains(token.getBaseForm()));
+        tokensToSearch.removeIf(token -> adverbs.contains(token) && adverbsFound.contains(Utils.convertKana(token.getReading())));
+        tokensToSearch.removeIf(token -> conjunctions.contains(token) && conjunctionsFound.contains(Utils.convertKana(token.getReading())));
+        tokensToSearch.removeIf(token -> nouns.contains(token) && nounsFound.contains(Utils.convertKana(token.getReading())));
+        tokensToSearch.removeIf(token -> prefixes.contains(token) && prefixesFound.contains(Utils.convertKana(token.getReading())));
+        tokensToSearch.removeIf(token -> adjectives.contains(token) && adjectivesFound.contains(Utils.convertKana(token.getReading())));
+        tokensToSearch.removeIf(token -> adnominals.contains(token) && adnominalsFound.contains(Utils.convertKana(token.getReading())));
+        tokensToSearch.removeIf(token -> exclamations.contains(token) && exclamationsFound.contains(Utils.convertKana(token.getReading())));
+        tokensToSearch.removeIf(token -> symbols.contains(token) && symbolsFound.contains(Utils.convertKana(token.getReading())));
+        tokensToSearch.removeIf(token -> fillers.contains(token) && fillersFound.contains(Utils.convertKana(token.getReading())));
+        tokensToSearch.removeIf(token -> others.contains(token) && othersFound.contains(Utils.convertKana(token.getReading())));
+        tokensToSearch.removeIf(token -> unclassified.contains(token) && unclassifiedFound.contains(Utils.convertKana(token.getReading())));
 
 
 //        List<JMDictEntry> particlesByPronNoCond = Lists.newArrayList(jmDictPronunciationRepo2.getEntriesFromPron(particles,

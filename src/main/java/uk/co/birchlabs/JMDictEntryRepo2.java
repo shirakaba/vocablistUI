@@ -8,6 +8,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by jamiebirch on 29/06/2016.
@@ -32,5 +33,48 @@ public class JMDictEntryRepo2 {
         );
         query.setParameter("data", baseFormsToQuery);
         return query.getResultList();
+    }
+
+
+    public enum CollectionMode {
+        pron,
+        word
+    }
+
+    public static List<String> collectWordsOrPronOfEntries(List<JMDictEntry> entries, CollectionMode mode){
+        switch (mode) {
+            case pron:
+                return entries
+                        .stream()
+                        .flatMap(
+                                entry -> entry
+                                        .getPron()
+                                        .stream()
+                                        .map(
+                                                pron -> pron
+                                                        .getIdDataKey()
+                                                        .getData()
+                                        )
+                        )
+                        .collect(Collectors.toList()
+                        );
+            break;
+            case word:
+                return entries
+                        .stream()
+                        .flatMap(
+                                entry -> entry
+                                        .getWords()
+                                        .stream()
+                                        .map(
+                                                word -> word
+                                                        .getIdDataKey()
+                                                        .getData()
+                                        )
+                        )
+                        .collect(Collectors.toList()
+                        );
+            break;
+        }
     }
 }
