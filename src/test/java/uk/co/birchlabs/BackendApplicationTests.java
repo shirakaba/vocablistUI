@@ -158,24 +158,24 @@ public class BackendApplicationTests {
                 symbolsFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(symbolsByPron, CollectionMode.pron),
                 fillersFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(fillersByPron, CollectionMode.pron),
                 othersFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(othersByPron, CollectionMode.pron),
-                unclassifiedFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(unclassifiedByPron, CollectionMode.pron),
+                unclassifiedFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(unclassifiedByPron, CollectionMode.pron)
         ;
 
-        // Or iterate through all the tokens in 'particles' and remove from tokensToSearch if particlesFound countains the reading of the token.
-        tokensToSearch.removeIf(token -> particles.contains(token) && particlesFound.contains(Utils.convertKana(token.getReading())));
-        tokensToSearch.removeIf(token -> verbsAndAux.contains(token) && verbsFound.contains(token.getBaseForm()));
-        tokensToSearch.removeIf(token -> adverbs.contains(token) && adverbsFound.contains(Utils.convertKana(token.getReading())));
-        tokensToSearch.removeIf(token -> conjunctions.contains(token) && conjunctionsFound.contains(Utils.convertKana(token.getReading())));
-        tokensToSearch.removeIf(token -> nouns.contains(token) && nounsFound.contains(Utils.convertKana(token.getReading())));
-        tokensToSearch.removeIf(token -> prefixes.contains(token) && prefixesFound.contains(Utils.convertKana(token.getReading())));
-        tokensToSearch.removeIf(token -> adjectives.contains(token) && adjectivesFound.contains(Utils.convertKana(token.getReading())));
-        tokensToSearch.removeIf(token -> adnominals.contains(token) && adnominalsFound.contains(Utils.convertKana(token.getReading())));
-        tokensToSearch.removeIf(token -> exclamations.contains(token) && exclamationsFound.contains(Utils.convertKana(token.getReading())));
-        tokensToSearch.removeIf(token -> symbols.contains(token) && symbolsFound.contains(Utils.convertKana(token.getReading())));
-        tokensToSearch.removeIf(token -> fillers.contains(token) && fillersFound.contains(Utils.convertKana(token.getReading())));
-        tokensToSearch.removeIf(token -> others.contains(token) && othersFound.contains(Utils.convertKana(token.getReading())));
-        tokensToSearch.removeIf(token -> unclassified.contains(token) && unclassifiedFound.contains(Utils.convertKana(token.getReading())));
-
+        // TODO: ISSUE - Excluding verbs, ForwardingTokens appear to be hashed based only on their baseform, which is unaware of POS differences.
+        // Thus, there is no distinction between しか (n) and しか (prt).
+        particles.forEach(token -> { if(particlesFound.contains(Utils.convertKana(token.getReading()))) tokensToSearch.remove(token); });
+        verbsAndAux.forEach(token -> { if(verbsFound.contains(token.getBaseForm())) tokensToSearch.remove(token); });
+        adverbs.forEach(token -> { if(adverbsFound.contains(Utils.convertKana(token.getReading()))) tokensToSearch.remove(token); });
+        conjunctions.forEach(token -> { if(conjunctionsFound.contains(Utils.convertKana(token.getReading()))) tokensToSearch.remove(token); });
+        nouns.forEach(token -> { if(nounsFound.contains(Utils.convertKana(token.getReading()))) tokensToSearch.remove(token); });
+        prefixes.forEach(token -> { if(prefixesFound.contains(Utils.convertKana(token.getReading()))) tokensToSearch.remove(token); });
+        adjectives.forEach(token -> { if(adjectivesFound.contains(Utils.convertKana(token.getReading()))) tokensToSearch.remove(token); });
+        adnominals.forEach(token -> { if(adnominalsFound.contains(Utils.convertKana(token.getReading()))) tokensToSearch.remove(token); });
+        exclamations.forEach(token -> { if(exclamationsFound.contains(Utils.convertKana(token.getReading()))) tokensToSearch.remove(token); });
+        symbols.forEach(token -> { if(symbolsFound.contains(Utils.convertKana(token.getReading()))) tokensToSearch.remove(token); });
+        fillers.forEach(token -> { if(fillersFound.contains(Utils.convertKana(token.getReading()))) tokensToSearch.remove(token); });
+        others.forEach(token -> { if(othersFound.contains(Utils.convertKana(token.getReading()))) tokensToSearch.remove(token); });
+        unclassified.forEach(token -> { if(unclassifiedFound.contains(Utils.convertKana(token.getReading()))) tokensToSearch.remove(token); });
 
 //        List<JMDictEntry> particlesByPronNoCond = Lists.newArrayList(jmDictPronunciationRepo2.getEntriesFromPron(particles,
 //                JMDictPronunciationRepository2.POS.others)); // size = 109 for 29 particles

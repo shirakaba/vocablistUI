@@ -26,7 +26,7 @@ public class JMDictEntry {
     @OneToMany(mappedBy = "jmDictEntryW", fetch = FetchType.EAGER)
     private List<JMDictWord> words;
 
-    @OneToMany(mappedBy = "jmDictEntryP", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "jmDictEntryP", fetch = FetchType.EAGER)
     private List<JMDictPron> pron;
 
     public Integer getId() {

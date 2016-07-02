@@ -17,7 +17,7 @@ public class JMDictPron {
     @EmbeddedId
     private IdDataKey idDataKey;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional=false)
+    @ManyToOne(fetch = FetchType.EAGER, optional=false)
     // This FK's annotated name must equal the annotated name for the target partial key in IdDataKey.
     @JoinColumn(
 //            foreignKey = @ForeignKey(name = "FK_JMDICT_PRONUNCIATION_ID"), // not sure whether necessary

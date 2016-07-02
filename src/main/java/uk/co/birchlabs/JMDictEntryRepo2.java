@@ -58,7 +58,6 @@ public class JMDictEntryRepo2 {
                         )
                         .collect(Collectors.toList()
                         );
-            break;
             case word:
                 return entries
                         .stream()
@@ -74,7 +73,8 @@ public class JMDictEntryRepo2 {
                         )
                         .collect(Collectors.toList()
                         );
-            break;
+            default:
+                throw new IllegalStateException();
         }
     }
 }
