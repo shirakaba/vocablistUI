@@ -140,31 +140,19 @@ public class BackendApplicationTests {
 		// List of all JMDictEntrys with a valid
         List<JMDictEntry>
                 particlesByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(particles, POS.particles)),
-
 				// size = 48 for 26 verbsAndAux (mainly due to suru/aru/iru). Costs 5 seconds.
                 verbsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(verbsAndAux, POS.verbsAndAux)),
-
                 adverbsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(adverbs, POS.adverbs)),
-
                 conjunctionsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(conjunctions, POS.conjunctions)),
-
 				// size = 136 for 151 nouns (due to some being katakana, some being pronouns.
                 nounsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(nouns, POS.nouns)),
-
                 prefixesByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(prefixes, POS.prefixes)),
-
                 adjectivesByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(adjectives, POS.adjectives)),
-
                 adnominalsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(adnominals, POS.adnominals)),
-
                 exclamationsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(exclamations, POS.exclamations)),
-
                 symbolsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(symbols, POS.symbols)),
-
                 fillersByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(fillers, POS.fillers)),
-
                 othersByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(others, POS.others)),
-
                 unclassifiedByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(unclassified, POS.unclassified))
         ;
 

@@ -180,19 +180,21 @@ public class JMDictPronRepo2 {
         final String restrictPOSClause;
         boolean restrictPOS = true;
 
-        tokensToSearch.forEach(forwardingToken -> {
-            switch (mode) { // Note: most likely could search by baseForm for all of these. Not sure there's ever any difference in these cases.
-                case READINGS_IN_HIRAGANA:
+        switch (mode) { // Note: most likely could search by baseForm for all of these. Not sure there's ever any difference in these cases.
+            case READINGS_IN_HIRAGANA:
+                tokensToSearch.forEach(forwardingToken -> {
                     if (forwardingToken.isVerb()) readingsToQuery.add(forwardingToken.getBaseForm()); // search for verbs by their baseform eg. する
                     else readingsToQuery.add(Utils.convertKana(forwardingToken.getReading())); // search for native words in hiragana eg. として
-                    break;
-                case READINGS_IN_KATAKANA:
+                });
+                break;
+            case READINGS_IN_KATAKANA:
+                tokensToSearch.forEach(forwardingToken -> {
                     readingsToQuery.add(forwardingToken.getReading()); // search for possible loan words in their native katakana. eg. キャンパス
-                    break;
-                default:
-                    throw new NotImplementedException();
-            }
-        });
+                });
+                break;
+            default:
+                throw new NotImplementedException();
+        }
 
 
         switch(pos){
