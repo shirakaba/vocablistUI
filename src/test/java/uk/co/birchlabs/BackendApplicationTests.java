@@ -5,8 +5,11 @@ import com.google.common.collect.Lists;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.boot.test.SpringApplicationContextLoader;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.birchlabs.JMDictEntryRepo2.CollectionMode;
 import uk.co.birchlabs.JMDictPronRepo2.Mode;
@@ -20,11 +23,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.assertEquals;
-import static uk.co.birchlabs.JMDictPronRepo2.POS;
-
 @RunWith(SpringRunner.class)
-@SpringBootTest
+//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+@ContextConfiguration(classes = TestConfig.class)
+@ActiveProfiles(profiles = {"test"})
 public class BackendApplicationTests {
 
 	@Autowired

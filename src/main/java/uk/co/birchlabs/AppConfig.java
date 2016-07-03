@@ -1,23 +1,23 @@
 package uk.co.birchlabs;
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 import javax.sql.DataSource;
 
 /**
  * Created by jamiebirch on 21/06/2016.
  */
-@Configuration
+//@SpringBootApplication
+@Profile("web")
 public class AppConfig {
-    @Bean
-    public DataSource dataSource() {
-        DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
-        dataSourceBuilder.driverClassName("org.sqlite.JDBC");
-//        dataSourceBuilder.type(org.sqlite.SQLiteDataSource.class);
-//        dataSourceBuilder.url("jdbc:sqlite:pokedex.sqlite");
-        dataSourceBuilder.url("jdbc:sqlite:normalised_jmdict_e_and_kanjidic.sqlite");
-        return dataSourceBuilder.build();
+    public static void main(String[] args) {
+        SpringApplication.run(AppConfig.class, args);
     }
 }
