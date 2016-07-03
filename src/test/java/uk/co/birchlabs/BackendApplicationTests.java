@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.birchlabs.JMDictEntryRepo2.CollectionMode;
@@ -41,6 +42,9 @@ public class BackendApplicationTests {
 //	@Autowired
 //	private MyCoolService myCoolService;
 
+    @Autowired
+    EntriesByMecabPOSService entriesByMecabPOSService;
+
 	public BackendApplicationTests() {
 	}
 
@@ -48,6 +52,8 @@ public class BackendApplicationTests {
 //	public void contextLoads() {
 //		assertEquals("oh shit whaddup", myCoolService.doCoolThing());
 //	}
+
+
 
 	@Test
 	public void doJoins() throws IOException {
@@ -97,7 +103,7 @@ public class BackendApplicationTests {
         TokensByMecabPOS tokensByMecabPOS = new TokensByMecabPOS(tokensToSearch);
 
 
-        EntriesByMecabPOS entriesByMecabPOSHiragana = new EntriesByMecabPOS(tokensByMecabPOS, Mode.READINGS_IN_HIRAGANA);
+        EntriesByMecabPOS entriesByMecabPOSHiragana = entriesByMecabPOSService.construct(tokensByMecabPOS, Mode.READINGS_IN_HIRAGANA);
 
 		// List of all JMDictEntrys with a valid hiragana reading
         PronsFoundByMecabPOS pronsFoundByMecabPOSHiragana = new PronsFoundByMecabPOS(entriesByMecabPOSHiragana);
@@ -106,7 +112,7 @@ public class BackendApplicationTests {
         TokensByMecabPOS.updateTokensRemainingToBeSearched(tokensByMecabPOS, pronsFoundByMecabPOSHiragana, tokensToSearch, Mode.READINGS_IN_HIRAGANA);
         // tokensToSearch == 109
 
-        EntriesByMecabPOS entriesByMecabPOSKatakana = new EntriesByMecabPOS(tokensByMecabPOS, Mode.READINGS_IN_KATAKANA);
+        EntriesByMecabPOS entriesByMecabPOSKatakana = entriesByMecabPOSService.construct(tokensByMecabPOS, Mode.READINGS_IN_KATAKANA);
 
         PronsFoundByMecabPOS pronsFoundByMecabPOSKatakana = new PronsFoundByMecabPOS(entriesByMecabPOSKatakana);
 
@@ -132,17 +138,17 @@ public class BackendApplicationTests {
 //            else unclassified.add(t);
 //        });
 
-        List<VocabListRowCumulativeMapped> list = cumulative
-                .stream()
-                .map(
-                        row ->
-                                new VocabListRowCumulativeMapped(
-                                        row,
-                                        entriesByMecabPOSHiragana,
-                                        entriesByMecabPOSKatakana
-                                )
-                )
-                .collect(Collectors.toList());
+//        List<VocabListRowCumulativeMapped> list = cumulative
+//                .stream()
+//                .map(
+//                        row ->
+//                                new VocabListRowCumulativeMapped(
+//                                        row,
+//                                        entriesByMecabPOSHiragana,
+//                                        entriesByMecabPOSKatakana
+//                                )
+//                )
+//                .collect(Collectors.toList());
 
 		System.out.println("You're too slow!");
 	}
