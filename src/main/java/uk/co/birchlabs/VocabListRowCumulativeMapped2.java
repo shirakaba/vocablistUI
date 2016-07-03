@@ -15,6 +15,7 @@ import java.util.stream.StreamSupport;
 public class VocabListRowCumulativeMapped2 {
     private final VocabListRowCumulative vocabListRowCumulative;
     private final Collection<JMDictEntry> e;
+    private final String rowBaseForm;
 
     public VocabListRowCumulativeMapped2(
             VocabListRowCumulative vocabListRowCumulative,
@@ -22,63 +23,38 @@ public class VocabListRowCumulativeMapped2 {
             EntriesByMecabPOS hiraganaEntriesByPOS,
             EntriesByMecabPOS katakanaEntriesByPOS
     ) {
-        final String rowBaseForm = vocabListRowCumulative.getVocabListRow().getToken().getBaseForm();
         this.vocabListRowCumulative = vocabListRowCumulative;
+        this.rowBaseForm = vocabListRowCumulative.getVocabListRow().getToken().getBaseForm();
         e = new HashSet<>();
 
-//        JMDictEntryRepo2.collectWordsOrPronOfEntries((List<JMDictEntry>)e, CollectionMode.word);
+        e.addAll(collectEntriesMatchingTokenProperty(wordEntries));
 
-//        e // searches jmdict_word by baseForm
-//                .addAll( // TODO: test whether matching by baseForm ever successfully adds anything to the list.
-//                        StreamSupport
-//                                .stream(wordEntries.spliterator(), false)
-//                                .filter(entry -> entry
-//                                        .getIdDataKey()
-//                                        .getData()
-//                                        .equals(
-//                                                vocabListRowCumulative
-//                                                        .getVocabListRow()
-//                                                        .getToken()
-//                                                        .getBaseForm()
-//                                        )
-//                                )
-//                                .map(word -> word.getIdDataKey().getId())
-////                                .map(JMDictWord::getId)
-//                                .collect(Collectors.toList())
-//                );
-
-//        wordEntries
+        if(e.isEmpty()) e.addAll(collectEntriesMatchingTokenProperty(wordEntries));
 
 
-//        vocabListRowCumulative
-//                .getVocabListRow()
-//                .getToken();
-
-
-
-        e // searches jmdict_word by baseForm
-                .addAll( // TODO: test whether matching by baseForm ever successfully adds anything to the list.
-                        StreamSupport
-                                .stream(wordEntries.spliterator(), false)
-                                // take only whose words...data equals the token's baseForm.
-                                .filter(
-                                        entry -> Iterables.tryFind(
-                                                entry
-                                                        .getWords()
-                                                        .stream()
-                                                        .map(
-                                                                word -> word
-                                                                        .getIdDataKey()
-                                                                        .getData()
-                                                        )
-                                                        .filter(datum -> datum != null)
-                                                        .collect(Collectors.toList()),
-                                                datum -> datum.equals(rowBaseForm)
-                                        )
-                                                .isPresent()
-                                )
-                        .collect(Collectors.toList())
-                );
         System.out.println("Gotta go fast!");
+    }
+
+    private List<JMDictEntry> collectEntriesMatchingTokenProperty(Iterable<JMDictEntry> wordEntries) {
+        return StreamSupport
+                .stream(wordEntries.spliterator(), false)
+                // take only whose words...data equals the token's baseForm.
+                .filter(
+                        entry -> Iterables.tryFind(
+                                entry
+                                        .getWords()
+                                        .stream()
+                                        .map(
+                                                word -> word
+                                                        .getIdDataKey()
+                                                        .getData()
+                                        )
+                                        .filter(datum -> datum != null)
+                                        .collect(Collectors.toList()),
+                                datum -> datum.equals(rowBaseForm)
+                        )
+                                .isPresent()
+                )
+        .collect(Collectors.toList());
     }
 }
