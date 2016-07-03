@@ -2,6 +2,7 @@ package uk.co.birchlabs;
 
 import catRecurserPkg.ForwardingToken;
 import uk.co.birchlabs.JMDictPronRepo2.Mode;
+import uk.co.birchlabs.JMDictPronRepo2.POS;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,21 +30,84 @@ public class TokensByMecabPOS {
 
     public TokensByMecabPOS(Set<ForwardingToken> tokensToSearch) {
         tokensToSearch.forEach(t -> {
-            String firstFeature = t.getAllFeaturesArray()[0];
-            if (firstFeature.startsWith("助詞")) particles.add(t);
-            else if (t.isVerb()) verbsAndAux.add(t);
-            else if (firstFeature.startsWith("副詞")) adverbs.add(t);
-            else if (firstFeature.startsWith("接続詞")) conjunctions.add(t);
-            else if (firstFeature.startsWith("名詞")) nouns.add(t);
-            else if (firstFeature.startsWith("接頭詞")) prefixes.add(t);
-            else if (firstFeature.startsWith("形容詞")) adjectives.add(t);
-            else if (firstFeature.startsWith("連体詞")) adnominals.add(t);
-            else if (firstFeature.startsWith("感動詞")) exclamations.add(t);
-            else if (firstFeature.startsWith("フィラー")) fillers.add(t);
-            else if (firstFeature.startsWith("その他")) others.add(t);
-            else if (firstFeature.startsWith("記号")) symbols.add(t);
-            else unclassified.add(t);
+            POS pos = determinePOS(t);
+
+            switch(pos){
+                case particles:
+                    particles.add(t);
+                    break;
+                case verbsAndAux:
+                    verbsAndAux.add(t);
+                    break;
+                case adverbs:
+                    adverbs.add(t);
+                    break;
+                case conjunctions:
+                    conjunctions.add(t);
+                    break;
+                case nouns:
+                    nouns.add(t);
+                    break;
+                case prefixes:
+                    prefixes.add(t);
+                    break;
+                case adjectives:
+                    adjectives.add(t);
+                    break;
+                case adnominals:
+                    adnominals.add(t);
+                    break;
+                case exclamations:
+                    exclamations.add(t);
+                    break;
+                case symbols:
+                    symbols.add(t);
+                    break;
+                case fillers:
+                    fillers.add(t);
+                    break;
+                case others:
+                    others.add(t);
+                    break;
+                case unclassified:
+                    unclassified.add(t);
+                    break;
+                default:
+                    unclassified.add(t);
+                    break;
+            }
+//            String firstFeature = t.getAllFeaturesArray()[0];
+//            if (firstFeature.startsWith("助詞")) particles.add(t);
+//            else if (t.isVerb()) verbsAndAux.add(t);
+//            else if (firstFeature.startsWith("副詞")) adverbs.add(t);
+//            else if (firstFeature.startsWith("接続詞")) conjunctions.add(t);
+//            else if (firstFeature.startsWith("名詞")) nouns.add(t);
+//            else if (firstFeature.startsWith("接頭詞")) prefixes.add(t);
+//            else if (firstFeature.startsWith("形容詞")) adjectives.add(t);
+//            else if (firstFeature.startsWith("連体詞")) adnominals.add(t);
+//            else if (firstFeature.startsWith("感動詞")) exclamations.add(t);
+//            else if (firstFeature.startsWith("フィラー")) fillers.add(t);
+//            else if (firstFeature.startsWith("その他")) others.add(t);
+//            else if (firstFeature.startsWith("記号")) symbols.add(t);
+//            else unclassified.add(t);
         });
+    }
+
+    public static POS determinePOS(ForwardingToken token){
+        String feature1 = token.getAllFeaturesArray()[0];
+        if (feature1.startsWith("助詞")) return POS.particles;
+        else if (token.isVerb()) return POS.verbsAndAux;
+        else if (feature1.startsWith("副詞")) return POS.adverbs;
+        else if (feature1.startsWith("接続詞")) return POS.conjunctions;
+        else if (feature1.startsWith("名詞")) return POS.nouns;
+        else if (feature1.startsWith("接頭詞")) return POS.prefixes;
+        else if (feature1.startsWith("形容詞")) return POS.adjectives;
+        else if (feature1.startsWith("連体詞")) return POS.adnominals;
+        else if (feature1.startsWith("感動詞")) return POS.exclamations;
+        else if (feature1.startsWith("フィラー")) return POS.fillers;
+        else if (feature1.startsWith("その他")) return POS.others;
+        else if (feature1.startsWith("記号")) return POS.symbols;
+        else return POS.unclassified;
     }
 
     public List<ForwardingToken> getParticles() {
