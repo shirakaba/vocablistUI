@@ -1,10 +1,5 @@
 package uk.co.birchlabs;
 
-import com.google.common.collect.Lists;
-import org.springframework.beans.factory.annotation.Autowired;
-import uk.co.birchlabs.JMDictPronRepo2.Mode;
-import uk.co.birchlabs.JMDictPronRepo2.POS;
-
 import java.util.List;
 
 /**
@@ -26,6 +21,7 @@ public class EntriesByMecabPOS {
             fillersByPron,
             othersByPron,
             unclassifiedByPron;
+
 
     public EntriesByMecabPOS(
             List<JMDictEntry> particlesByPron,
@@ -56,28 +52,6 @@ public class EntriesByMecabPOS {
         this.othersByPron = othersByPron;
         this.unclassifiedByPron = unclassifiedByPron;
     }
-
-    //    public EntriesByMecabPOS(TokensByMecabPOS tokensByMecabPOS, Mode mode) {
-//        this.tokensByMecabPOS = tokensByMecabPOS;
-//        this.mode = mode;
-//    }
-//
-//    public void init() {
-//        particlesByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(tokensByMecabPOS.getParticles(), mode, POS.particles));
-//        verbsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(tokensByMecabPOS.getVerbsAndAux(), mode, POS.verbsAndAux));
-//        adverbsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(tokensByMecabPOS.getAdverbs(), mode, POS.adverbs));
-//        conjunctionsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(tokensByMecabPOS.getConjunctions(), mode, POS.conjunctions));
-//        nounsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(tokensByMecabPOS.getNouns(), mode, POS.nouns));
-//        prefixesByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(tokensByMecabPOS.getPrefixes(), mode, POS.prefixes));
-//        adjectivesByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(tokensByMecabPOS.getAdjectives(), mode, POS.adjectives));
-//        adnominalsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(tokensByMecabPOS.getAdnominals(), mode, POS.adnominals));
-//        exclamationsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(tokensByMecabPOS.getExclamations(), mode, POS.exclamations));
-//        symbolsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(tokensByMecabPOS.getSymbols(), mode, POS.symbols));
-//        fillersByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(tokensByMecabPOS.getFillers(), mode, POS.fillers));
-//        othersByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(tokensByMecabPOS.getOthers(), mode, POS.others));
-//        unclassifiedByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(tokensByMecabPOS.getUnclassified(), mode, POS.unclassified));
-//    }
-
 
 
     public List<JMDictEntry> getParticlesByPron() {

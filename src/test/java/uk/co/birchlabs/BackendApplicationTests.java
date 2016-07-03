@@ -138,17 +138,18 @@ public class BackendApplicationTests {
 //            else unclassified.add(t);
 //        });
 
-//        List<VocabListRowCumulativeMapped> list = cumulative
-//                .stream()
-//                .map(
-//                        row ->
-//                                new VocabListRowCumulativeMapped(
-//                                        row,
-//                                        entriesByMecabPOSHiragana,
-//                                        entriesByMecabPOSKatakana
-//                                )
-//                )
-//                .collect(Collectors.toList());
+        List<VocabListRowCumulativeMapped> list = cumulative
+                .stream()
+                .map(
+                        row ->
+                                new VocabListRowCumulativeMapped2(
+                                        row,
+                                        wordEntries,
+                                        entriesByMecabPOSHiragana,
+                                        entriesByMecabPOSKatakana
+                                )
+                )
+                .collect(Collectors.toList());
 
 		System.out.println("You're too slow!");
 	}
