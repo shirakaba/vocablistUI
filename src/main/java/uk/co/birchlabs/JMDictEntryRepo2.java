@@ -41,6 +41,13 @@ public class JMDictEntryRepo2 {
         word
     }
 
+    /**
+     * Builds a list of all the kanji forms (from jmdict_word) or hiragana forms (from jmdict_pronunciation) that a List
+     * JMDictEntries join to.
+     * @param entries - the entries to collect the words or pronunciations for.
+     * @param mode - if 'word': gets the data from jmdict_word. If 'pron': gets the data from jmdict_pronunciation.
+     * @return - a flat list of strings.
+     */
     public static List<String> collectWordsOrPronOfEntries(List<JMDictEntry> entries, CollectionMode mode){
         switch (mode) {
             case pron:

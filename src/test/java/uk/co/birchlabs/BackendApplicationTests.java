@@ -138,7 +138,7 @@ public class BackendApplicationTests {
 //            else unclassified.add(t);
 //        });
 
-        List<VocabListRowCumulativeMapped> list = cumulative
+        List<VocabListRowCumulativeMapped2> list = cumulative
                 .stream()
                 .map(
                         row ->
