@@ -177,19 +177,20 @@ public class BackendApplicationTests {
         unclassified.forEach(token -> { if(unclassifiedFound.contains(Utils.convertKana(token.getReading()))) tokensToSearch.remove(token); });
         // tokensToSearch == 109
 
-//        particlesByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(particles, Mode.READINGS_IN_KATAKANA, POS.particles));
-//        verbsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(verbsAndAux, Mode.READINGS_IN_KATAKANA, POS.verbsAndAux));
-//        adverbsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(adverbs, Mode.READINGS_IN_KATAKANA, POS.adverbs));
-//        conjunctionsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(conjunctions, Mode.READINGS_IN_KATAKANA, POS.conjunctions));
-        nounsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(nouns, Mode.READINGS_IN_KATAKANA, POS.nouns)); // size: 57
-//        prefixesByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(prefixes, Mode.READINGS_IN_KATAKANA, POS.prefixes));
-//        adjectivesByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(adjectives, Mode.READINGS_IN_KATAKANA, POS.adjectives));
-//        adnominalsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(adnominals, Mode.READINGS_IN_KATAKANA, POS.adnominals));
-//        exclamationsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(exclamations, Mode.READINGS_IN_KATAKANA, POS.exclamations));
-//        symbolsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(symbols, Mode.READINGS_IN_KATAKANA, POS.symbols));
-//        fillersByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(fillers, Mode.READINGS_IN_KATAKANA, POS.fillers));
-//        othersByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(others, Mode.READINGS_IN_KATAKANA, POS.others));
-//        unclassifiedByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(unclassified, Mode.READINGS_IN_KATAKANA, POS.unclassified));
+        List<JMDictEntry> // needs to be new lists so we can stream through them, treating katakana
+        particlesByPron2 = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(particles, Mode.READINGS_IN_KATAKANA, POS.particles)),
+        verbsByPron2 = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(verbsAndAux, Mode.READINGS_IN_KATAKANA, POS.verbsAndAux)),
+        adverbsByPron2 = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(adverbs, Mode.READINGS_IN_KATAKANA, POS.adverbs)),
+        conjunctionsByPron2 = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(conjunctions, Mode.READINGS_IN_KATAKANA, POS.conjunctions)),
+        nounsByPron2 = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(nouns, Mode.READINGS_IN_KATAKANA, POS.nouns)), // size: 57
+        prefixesByPron2 = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(prefixes, Mode.READINGS_IN_KATAKANA, POS.prefixes)),
+        adjectivesByPron2 = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(adjectives, Mode.READINGS_IN_KATAKANA, POS.adjectives)),
+        adnominalsByPron2 = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(adnominals, Mode.READINGS_IN_KATAKANA, POS.adnominals)),
+        exclamationsByPron2 = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(exclamations, Mode.READINGS_IN_KATAKANA, POS.exclamations)),
+        symbolsByPron2 = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(symbols, Mode.READINGS_IN_KATAKANA, POS.symbols)),
+        fillersByPron2 = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(fillers, Mode.READINGS_IN_KATAKANA, POS.fillers)),
+        othersByPron2 = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(others, Mode.READINGS_IN_KATAKANA, POS.others)),
+        unclassifiedByPron2 = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(unclassified, Mode.READINGS_IN_KATAKANA, POS.unclassified));
 
         // Error:(169, 37) java: local variables referenced from a lambda expression must be final or effectively final, so rebuilding nounsFound
         List<String>
@@ -225,7 +226,60 @@ public class BackendApplicationTests {
 //        unclassified.forEach(token -> { if(unclassifiedFound2.contains(token.getReading())) tokensToSearch.remove(token); });
         // tokensToSearch == 65. All seem to be proper nouns, or conjugative particles like -ta.
 
+//        cumulative.forEach(row -> {
+//            ForwardingToken token = row.getVocabListRow().getToken();
+//            String feature1 = token.getAllFeaturesArray()[0];
+//
+//            if (feature1.startsWith("助詞")) particles.add(t);
+//            else if (token.isVerb()) verbsAndAux.add(t);
+//            else if (feature1.startsWith("副詞")) adverbs.add(t);
+//            else if (feature1.startsWith("接続詞")) conjunctions.add(t);
+//            else if (feature1.startsWith("名詞")) nouns.add(t);
+//            else if (feature1.startsWith("接頭詞")) prefixes.add(t);
+//            else if (feature1.startsWith("形容詞")) adjectives.add(t);
+//            else if (feature1.startsWith("連体詞")) adnominals.add(t);
+//            else if (feature1.startsWith("感動詞")) exclamations.add(t);
+//            else if (feature1.startsWith("フィラー")) fillers.add(t);
+//            else if (feature1.startsWith("その他")) others.add(t);
+//            else if (feature1.startsWith("記号")) symbols.add(t);
+//            else unclassified.add(t);
+//        });
 
+        List<VocabListRowCumulativeMapped> list = cumulative
+                .stream()
+                .map(
+                        row ->
+                                new VocabListRowCumulativeMapped(
+                                        row,
+                                        particlesByPron,
+                                        verbsByPron,
+                                        adverbsByPron,
+                                        conjunctionsByPron,
+                                        nounsByPron,
+                                        prefixesByPron,
+                                        adjectivesByPron,
+                                        adnominalsByPron,
+                                        exclamationsByPron,
+                                        symbolsByPron,
+                                        fillersByPron,
+                                        othersByPron,
+                                        unclassifiedByPron,
+                                        particlesByPron2,
+                                        verbsByPron2,
+                                        adverbsByPron2,
+                                        conjunctionsByPron2,
+                                        nounsByPron2,
+                                        prefixesByPron2,
+                                        adjectivesByPron2,
+                                        adnominalsByPron2,
+                                        exclamationsByPron2,
+                                        symbolsByPron2,
+                                        fillersByPron2,
+                                        othersByPron2,
+                                        unclassifiedByPron2
+                                )
+                )
+                .collect(Collectors.toList());
 
 		System.out.println("You're too slow!");
 	}
