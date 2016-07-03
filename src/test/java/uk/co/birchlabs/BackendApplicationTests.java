@@ -94,57 +94,59 @@ public class BackendApplicationTests {
 
         tokensToSearch.removeIf(token -> baseFormsFound.contains(token.getBaseForm()));
 
+        TokensByMecabPOS tokensByMecabPOS = new TokensByMecabPOS(tokensToSearch);
+//        List<ForwardingToken>
+//                particles = new ArrayList<>(),
+//                verbsAndAux = new ArrayList<>(), // includes auxiliaries because we conglomerate いる into one row.
+//                adverbs = new ArrayList<>(),
+//                conjunctions = new ArrayList<>(),
+//                nouns = new ArrayList<>(),
+//                prefixes = new ArrayList<>(),
+//                adjectives = new ArrayList<>(),
+//                adnominals = new ArrayList<>(),
+//                exclamations = new ArrayList<>(),
+//                symbols = new ArrayList<>(),
+//                fillers = new ArrayList<>(),
+//                others = new ArrayList<>(),
+//                unclassified = new ArrayList<>();
+//
+//		tokensToSearch.forEach(t -> {
+//            String firstFeature = t.getAllFeaturesArray()[0];
+//            if (firstFeature.startsWith("助詞")) particles.add(t);
+//            else if (t.isVerb()) verbsAndAux.add(t);
+//            else if (firstFeature.startsWith("副詞")) adverbs.add(t);
+//            else if (firstFeature.startsWith("接続詞")) conjunctions.add(t);
+//            else if (firstFeature.startsWith("名詞")) nouns.add(t);
+//            else if (firstFeature.startsWith("接頭詞")) prefixes.add(t);
+//            else if (firstFeature.startsWith("形容詞")) adjectives.add(t);
+//            else if (firstFeature.startsWith("連体詞")) adnominals.add(t);
+//            else if (firstFeature.startsWith("感動詞")) exclamations.add(t);
+//            else if (firstFeature.startsWith("フィラー")) fillers.add(t);
+//            else if (firstFeature.startsWith("その他")) others.add(t);
+//            else if (firstFeature.startsWith("記号")) symbols.add(t);
+//            else unclassified.add(t);
+//        });
 
-        List<ForwardingToken>
-                particles = new ArrayList<>(),
-                verbsAndAux = new ArrayList<>(), // includes auxiliaries because we conglomerate いる into one row.
-                adverbs = new ArrayList<>(),
-                conjunctions = new ArrayList<>(),
-                nouns = new ArrayList<>(),
-                prefixes = new ArrayList<>(),
-                adjectives = new ArrayList<>(),
-                adnominals = new ArrayList<>(),
-                exclamations = new ArrayList<>(),
-                symbols = new ArrayList<>(),
-                fillers = new ArrayList<>(),
-                others = new ArrayList<>(),
-                unclassified = new ArrayList<>();
 
-		tokensToSearch.forEach(t -> {
-            String firstFeature = t.getAllFeaturesArray()[0];
-            if (firstFeature.startsWith("助詞")) particles.add(t);
-            else if (t.isVerb()) verbsAndAux.add(t);
-            else if (firstFeature.startsWith("副詞")) adverbs.add(t);
-            else if (firstFeature.startsWith("接続詞")) conjunctions.add(t);
-            else if (firstFeature.startsWith("名詞")) nouns.add(t);
-            else if (firstFeature.startsWith("接頭詞")) prefixes.add(t);
-            else if (firstFeature.startsWith("形容詞")) adjectives.add(t);
-            else if (firstFeature.startsWith("連体詞")) adnominals.add(t);
-            else if (firstFeature.startsWith("感動詞")) exclamations.add(t);
-            else if (firstFeature.startsWith("フィラー")) fillers.add(t);
-            else if (firstFeature.startsWith("その他")) others.add(t);
-            else if (firstFeature.startsWith("記号")) symbols.add(t);
-            else unclassified.add(t);
-        });
-
+        EntriesByMecabPOS entriesByMecabPOSHiragana = new EntriesByMecabPOS(tokensByMecabPOS);
 		// List of all JMDictEntrys with a valid hiragana reading
-        List<JMDictEntry>
-                particlesByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(particles, POS.particles)),
-				// size = 48 for 26 verbsAndAux (mainly due to suru/aru/iru). Costs 5 seconds.
-                verbsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(verbsAndAux, POS.verbsAndAux)),
-                adverbsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(adverbs, POS.adverbs)),
-                conjunctionsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(conjunctions, POS.conjunctions)),
-				// size = 136 for 151 nouns (due to some being katakana, some being pronouns.
-                nounsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(nouns, POS.nouns)),
-                prefixesByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(prefixes, POS.prefixes)),
-                adjectivesByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(adjectives, POS.adjectives)),
-                adnominalsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(adnominals, POS.adnominals)),
-                exclamationsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(exclamations, POS.exclamations)),
-                symbolsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(symbols, POS.symbols)),
-                fillersByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(fillers, POS.fillers)),
-                othersByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(others, POS.others)),
-                unclassifiedByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(unclassified, POS.unclassified))
-        ;
+//        List<JMDictEntry>
+//                particlesByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(particles, POS.particles)),
+//				// size = 48 for 26 verbsAndAux (mainly due to suru/aru/iru). Costs 5 seconds.
+//                verbsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(verbsAndAux, POS.verbsAndAux)),
+//                adverbsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(adverbs, POS.adverbs)),
+//                conjunctionsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(conjunctions, POS.conjunctions)),
+//				// size = 136 for 151 nouns (due to some being katakana, some being pronouns.
+//                nounsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(nouns, POS.nouns)),
+//                prefixesByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(prefixes, POS.prefixes)),
+//                adjectivesByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(adjectives, POS.adjectives)),
+//                adnominalsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(adnominals, POS.adnominals)),
+//                exclamationsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(exclamations, POS.exclamations)),
+//                symbolsByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(symbols, POS.symbols)),
+//                fillersByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(fillers, POS.fillers)),
+//                othersByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(others, POS.others)),
+//                unclassifiedByPron = Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(unclassified, POS.unclassified))
+//        ;
 
         List<String>
                 particlesFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(particlesByPron, CollectionMode.pron),
