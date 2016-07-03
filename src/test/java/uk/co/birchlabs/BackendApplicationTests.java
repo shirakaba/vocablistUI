@@ -193,37 +193,40 @@ public class BackendApplicationTests {
 
         // Error:(169, 37) java: local variables referenced from a lambda expression must be final or effectively final, so rebuilding nounsFound
         List<String>
-//        particlesFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(particlesByPron, CollectionMode.pron);
-//        verbsFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(verbsByPron, CollectionMode.pron);
-//        adverbsFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(adverbsByPron, CollectionMode.pron);
-//        conjunctionsFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(conjunctionsByPron, CollectionMode.pron);
+//        particlesFound2 = JMDictEntryRepo2.collectWordsOrPronOfEntries(particlesByPron, CollectionMode.pron);
+//        verbsFound2 = JMDictEntryRepo2.collectWordsOrPronOfEntries(verbsByPron, CollectionMode.pron);
+//        adverbsFound2 = JMDictEntryRepo2.collectWordsOrPronOfEntries(adverbsByPron, CollectionMode.pron);
+//        conjunctionsFound2 = JMDictEntryRepo2.collectWordsOrPronOfEntries(conjunctionsByPron, CollectionMode.pron);
         nounsFound2 = JMDictEntryRepo2.collectWordsOrPronOfEntries(nounsByPron, CollectionMode.pron)
-//        prefixesFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(prefixesByPron, CollectionMode.pron);
-//        adjectivesFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(adjectivesByPron, CollectionMode.pron);
-//        adnominalsFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(adnominalsByPron, CollectionMode.pron);
-//        exclamationsFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(exclamationsByPron, CollectionMode.pron);
-//        symbolsFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(symbolsByPron, CollectionMode.pron);
-//        fillersFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(fillersByPron, CollectionMode.pron);
-//        othersFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(othersByPron, CollectionMode.pron);
-//        unclassifiedFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(unclassifiedByPron, CollectionMode.pron);
+//        prefixesFound2 = JMDictEntryRepo2.collectWordsOrPronOfEntries(prefixesByPron, CollectionMode.pron);
+//        adjectivesFound2 = JMDictEntryRepo2.collectWordsOrPronOfEntries(adjectivesByPron, CollectionMode.pron);
+//        adnominalsFound2 = JMDictEntryRepo2.collectWordsOrPronOfEntries(adnominalsByPron, CollectionMode.pron);
+//        exclamationsFound2 = JMDictEntryRepo2.collectWordsOrPronOfEntries(exclamationsByPron, CollectionMode.pron);
+//        symbolsFound2 = JMDictEntryRepo2.collectWordsOrPronOfEntries(symbolsByPron, CollectionMode.pron);
+//        fillersFound2 = JMDictEntryRepo2.collectWordsOrPronOfEntries(fillersByPron, CollectionMode.pron);
+//        othersFound2 = JMDictEntryRepo2.collectWordsOrPronOfEntries(othersByPron, CollectionMode.pron);
+//        unclassifiedFound2 = JMDictEntryRepo2.collectWordsOrPronOfEntries(unclassifiedByPron, CollectionMode.pron);
         ;
 
 
         // TODO: figure out whether verb's token.getReading() needs convertKana (probably does), or at least remove it altogether.
-//        particles.forEach(token -> { if(particlesFound.contains(token.getReading())) tokensToSearch.remove(token); });
-//        verbsAndAux.forEach(token -> { if(verbsFound.contains(token.getBaseForm())) tokensToSearch.remove(token); });
-//        adverbs.forEach(token -> { if(adverbsFound.contains(token.getReading())) tokensToSearch.remove(token); });
-//        conjunctions.forEach(token -> { if(conjunctionsFound.contains(token.getReading())) tokensToSearch.remove(token); });
+//        particles.forEach(token -> { if(particlesFound2.contains(token.getReading())) tokensToSearch.remove(token); });
+//        verbsAndAux.forEach(token -> { if(verbsFound2.contains(token.getBaseForm())) tokensToSearch.remove(token); });
+//        adverbs.forEach(token -> { if(adverbsFound2.contains(token.getReading())) tokensToSearch.remove(token); });
+//        conjunctions.forEach(token -> { if(conjunctionsFound2.contains(token.getReading())) tokensToSearch.remove(token); });
         nouns.forEach(token -> { if(nounsFound2.contains(token.getReading())) tokensToSearch.remove(token); });
-//        prefixes.forEach(token -> { if(prefixesFound.contains(token.getReading())) tokensToSearch.remove(token); });
-//        adjectives.forEach(token -> { if(adjectivesFound.contains(token.getReading())) tokensToSearch.remove(token); });
-//        adnominals.forEach(token -> { if(adnominalsFound.contains(token.getReading())) tokensToSearch.remove(token); });
-//        exclamations.forEach(token -> { if(exclamationsFound.contains(token.getReading())) tokensToSearch.remove(token); });
-//        symbols.forEach(token -> { if(symbolsFound.contains(token.getReading())) tokensToSearch.remove(token); });
-//        fillers.forEach(token -> { if(fillersFound.contains(token.getReading())) tokensToSearch.remove(token); });
-//        others.forEach(token -> { if(othersFound.contains(token.getReading())) tokensToSearch.remove(token); });
-//        unclassified.forEach(token -> { if(unclassifiedFound.contains(token.getReading())) tokensToSearch.remove(token); });
+//        prefixes.forEach(token -> { if(prefixesFound2.contains(token.getReading())) tokensToSearch.remove(token); });
+//        adjectives.forEach(token -> { if(adjectivesFound2.contains(token.getReading())) tokensToSearch.remove(token); });
+//        adnominals.forEach(token -> { if(adnominalsFound2.contains(token.getReading())) tokensToSearch.remove(token); });
+//        exclamations.forEach(token -> { if(exclamationsFound2.contains(token.getReading())) tokensToSearch.remove(token); });
+//        symbols.forEach(token -> { if(symbolsFound2.contains(token.getReading())) tokensToSearch.remove(token); });
+//        fillers.forEach(token -> { if(fillersFound2.contains(token.getReading())) tokensToSearch.remove(token); });
+//        others.forEach(token -> { if(othersFound2.contains(token.getReading())) tokensToSearch.remove(token); });
+//        unclassified.forEach(token -> { if(unclassifiedFound2.contains(token.getReading())) tokensToSearch.remove(token); });
         // tokensToSearch == 65. All seem to be proper nouns, or conjugative particles like -ta.
+
+
+
 		System.out.println("You're too slow!");
 	}
 
