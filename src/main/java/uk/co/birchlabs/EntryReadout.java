@@ -12,12 +12,14 @@ import java.util.stream.Collectors;
  */
 public class EntryReadout {
     private final ForwardingToken token;
+    private final JMDictEntry entry;
     private final String description;
     private final List<JMDictSense> senses;
     private final SetMultimap<JMDictSense, String> sensesToDefs = HashMultimap.create();
     private final SetMultimap<JMDictSense, String> sensesToPOS = HashMultimap.create();
 
     public EntryReadout(JMDictEntry entry, ForwardingToken token) {
+        this.entry = entry;
         this.token = token;
         this.senses = entry.getSenses();
         senses.forEach(sense -> sensesToDefs.putAll(sense, extractDefs(sense)));
@@ -35,15 +37,31 @@ public class EntryReadout {
 
     private String initDescription() {
         StringBuilder sb = new StringBuilder();
-        sb.append(token.getBaseForm());
-        // For verbs, just show baseform. For non-verbs, show reading provided it differs from baseform.
-        if(!token.isVerb())
-            if(!token.getBaseForm().equals(Utils.convertKana(token.getReading())))
-                sb.append(String.format(" [%s]", Utils.convertKana(token.getReading())));
+//        sb.append(token.getBaseForm());
+        List<JMDictWord> words = entry.getWords();
+        List<JMDictPron> prons = entry.getPron();
 
-        sb.append(" ");
+        for(int i = 0; i < words.size(); i++){
+            sb.append(words.get(i).getIdDataKey().getData());
+            if(i+1 < words.size()) sb.append(" / ");
+        }
+
+        if(!words.isEmpty()) sb.append(" [");
+        for(int i = 0; i < prons.size(); i++){
+            sb.append(prons.get(i).getIdDataKey().getData());
+            if(i+1 < prons.size()) sb.append(" / ");
+        }
+        if(!words.isEmpty()) sb.append(']');
+
+        sb.append(' ');
+
+//        // For verbs, just show baseform. For non-verbs, show reading provided it differs from baseform.
+//        if(!token.isVerb())
+//            if(!token.getBaseForm().equals(Utils.convertKana(token.getReading())))
+//                sb.append(String.format(" [%s]", Utils.convertKana(token.getReading())));
+
         for(int i = 0; i < senses.size(); i++){
-            sb.append(String.format("(%d) ", i + 1));
+            if(senses.size() > 1) sb.append(String.format("(%d) ", i + 1));
             sensesToDefs.get(senses.get(i)).forEach(sense -> sb.append(sense).append(" ･ "));
         }
 //        sb.append('.');

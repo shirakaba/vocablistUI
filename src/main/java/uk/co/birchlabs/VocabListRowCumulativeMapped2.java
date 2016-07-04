@@ -1,5 +1,6 @@
 package uk.co.birchlabs;
 
+import catRecurserPkg.ForwardingToken;
 import com.google.common.collect.Iterables;
 import uk.co.birchlabs.JMDictEntryRepo2.CollectionMode;
 import uk.co.birchlabs.JMDictPronRepo2.Mode;
@@ -18,10 +19,12 @@ import java.util.stream.StreamSupport;
 public class VocabListRowCumulativeMapped2 {
     private final VocabListRowCumulative vocabListRowCumulative;
     private final Collection<JMDictEntry> e;
+    private final ForwardingToken token;
     private final String rowBaseForm;
     private final String tokenHiraganaPron;
     private final String tokenKatakanaPron;
     private final List<EntryReadout> entryReadouts;
+//    private final String representativePron;
 
     public VocabListRowCumulativeMapped2(
             VocabListRowCumulative vocabListRowCumulative,
@@ -30,9 +33,10 @@ public class VocabListRowCumulativeMapped2 {
             EntriesByMecabPOS katakanaEntriesByPOS
     ) {
         this.vocabListRowCumulative = vocabListRowCumulative;
-        this.rowBaseForm = vocabListRowCumulative.getVocabListRow().getToken().getBaseForm();
-        this.tokenKatakanaPron = vocabListRowCumulative.getVocabListRow().getToken().getReading();
-        this.tokenHiraganaPron = Utils.convertKana(this.tokenKatakanaPron);
+        token = vocabListRowCumulative.getVocabListRow().getToken();
+        rowBaseForm = token.getBaseForm();
+        tokenKatakanaPron = token.getReading();
+        tokenHiraganaPron = Utils.convertKana(this.tokenKatakanaPron);
         e = new HashSet<>();
 
         e.addAll(collectEntriesMatchingTokenProperty(wordEntries, CollectionMode.word));
@@ -133,7 +137,7 @@ public class VocabListRowCumulativeMapped2 {
                              * 動詞,自立,*,*,サ変・スル,未然レル接続,する,サ,サ -> generally 1157170 (為る)
                              * 名詞,固有名詞,地域,一般,*,*,練馬,ネリマ,ネリマ -> needs jmn_edict
                              */
-                            if(vocabListRowCumulative.getVocabListRow().getToken().isVerb()) return datum.equals(rowBaseForm);
+                            if(token.isVerb()) return datum.equals(rowBaseForm);
                             else if(mode.equals(Mode.READINGS_IN_HIRAGANA)) return datum.equals(tokenHiraganaPron);
                             // confirmed to work: catches 名詞,一般,*,*,*,*,アニメ,アニメ,アニメ
                             else if(mode.equals(Mode.READINGS_IN_KATAKANA)) return datum.equals(tokenKatakanaPron);
