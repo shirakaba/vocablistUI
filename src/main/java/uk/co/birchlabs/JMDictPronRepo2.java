@@ -10,7 +10,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by jamiebirch on 23/06/2016.
@@ -35,7 +34,7 @@ public class JMDictPronRepo2 {
             // There are ~fifteen しか, and multiple of の, よく, も, ない, いる found.
             switch(mode){ // Note: most likely could search by baseForm for all of these. Not sure there's ever any difference in these cases.
                 case READINGS_IN_HIRAGANA:
-                    if(forwardingToken.isVerb()) readingsToQuery.add(forwardingToken.getBaseForm()); // search for verbs by their baseform eg. する
+                    if(forwardingToken.isVerb()) readingsToQuery.add(forwardingToken.getBaseForm()); // search for verbsAndAux by their baseform eg. する
                     else readingsToQuery.add(Utils.convertKana(forwardingToken.getReading())); // search for native words in hiragana eg. として
                     break;
                 case READINGS_IN_KATAKANA:
@@ -85,6 +84,7 @@ public class JMDictPronRepo2 {
             "adj-pn",
             "adj-t",
             "adj-f",
+            "aux-adj", // for -づらい, -ほしい
             "adj"
     );
 
@@ -118,7 +118,10 @@ public class JMDictPronRepo2 {
     );
 
 
-    public static final List<String> verbs = Lists.newArrayList(
+    public static final List<String> verbsAndAux = Lists.newArrayList(
+            "aux", // Mecab tags です and であろう as 助動詞; jmdict tags them as aux.
+            "aux-adj", // Mecab tags らしい and -ない as 助動詞; jmdict tags them as aux.
+            "aux-v",
             "iv",
             "v1",
             "v2a-s",
@@ -184,7 +187,7 @@ public class JMDictPronRepo2 {
         switch (mode) { // Note: most likely could search by baseForm for all of these. Not sure there's ever any difference in these cases.
             case READINGS_IN_HIRAGANA:
                 tokensToSearch.forEach(forwardingToken -> {
-                    if (forwardingToken.isVerb()) readingsToQuery.add(forwardingToken.getBaseForm()); // search for verbs by their baseform eg. する
+                    if (forwardingToken.isVerb()) readingsToQuery.add(forwardingToken.getBaseForm()); // search for verbsAndAux by their baseform eg. する
                     else readingsToQuery.add(Utils.convertKana(forwardingToken.getReading())); // search for native words in hiragana eg. として
                 });
                 break;
@@ -219,7 +222,7 @@ public class JMDictPronRepo2 {
                 acceptablePOS = nouns;
                 break;
             case verbsAndAux:
-                acceptablePOS = verbs;
+                acceptablePOS = verbsAndAux;
                 break;
             // Take all you can find
             case exclamations:

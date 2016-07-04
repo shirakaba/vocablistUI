@@ -43,7 +43,7 @@ public class VocabListRowCumulativeMapped2 {
     }
 
 
-    // TODO: ascertain whether these are handling hiragana/katakana correctly (particularly with verbs).
+    // TODO: ascertain whether these are handling hiragana/katakana correctly (particularly with verbsAndAux).
     // Likely isn't, as の isn't getting any list additions.
     private List<JMDictEntry> collectEntriesMatchingTokenProperty(EntriesByMecabPOS entriesByMecabPOS, CollectionMode collectionMode, Mode mode) {
         List<JMDictEntry> list = new ArrayList<>();
@@ -120,6 +120,10 @@ public class VocabListRowCumulativeMapped2 {
                                                 .filter(datum -> datum != null)
                                                 .collect(Collectors.toList()),
                                         datum -> {
+                            /* ISSUES:
+                             * 動詞,自立,*,*,サ変・スル,未然レル接続,する,サ,サ -> generally 1157170 (為る)
+                             * 名詞,固有名詞,地域,一般,*,*,練馬,ネリマ,ネリマ -> needs jmn_edict
+                             */
                             if(vocabListRowCumulative.getVocabListRow().getToken().isVerb()) return datum.equals(rowBaseForm);
                             else if(mode.equals(Mode.READINGS_IN_HIRAGANA)) return datum.equals(tokenHiraganaPron);
                             else if(mode.equals(Mode.READINGS_IN_KATAKANA)) return datum.equals(tokenKatakanaPron);
