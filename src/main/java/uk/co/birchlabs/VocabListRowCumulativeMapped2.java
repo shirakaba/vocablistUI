@@ -2,6 +2,7 @@ package uk.co.birchlabs;
 
 import com.google.common.collect.Iterables;
 import uk.co.birchlabs.JMDictEntryRepo2.CollectionMode;
+import uk.co.birchlabs.JMDictPronRepo2.Mode;
 import uk.co.birchlabs.JMDictPronRepo2.POS;
 
 import java.util.ArrayList;
@@ -18,6 +19,8 @@ public class VocabListRowCumulativeMapped2 {
     private final VocabListRowCumulative vocabListRowCumulative;
     private final Collection<JMDictEntry> e;
     private final String rowBaseForm;
+    private final String tokenHiraganaPron;
+    private final String tokenKatakanaPron;
 
     public VocabListRowCumulativeMapped2(
             VocabListRowCumulative vocabListRowCumulative,
@@ -27,11 +30,13 @@ public class VocabListRowCumulativeMapped2 {
     ) {
         this.vocabListRowCumulative = vocabListRowCumulative;
         this.rowBaseForm = vocabListRowCumulative.getVocabListRow().getToken().getBaseForm();
+        this.tokenKatakanaPron = vocabListRowCumulative.getVocabListRow().getToken().getReading();
+        this.tokenHiraganaPron = Utils.convertKana(this.tokenKatakanaPron);
         e = new HashSet<>();
 
-        e.addAll(collectEntriesMatchingTokenProperty(wordEntries));
-        if(e.isEmpty()) e.addAll(collectEntriesMatchingTokenProperty(hiraganaEntriesByPOS));
-        if(e.isEmpty()) e.addAll(collectEntriesMatchingTokenProperty(katakanaEntriesByPOS));
+        e.addAll(collectEntriesMatchingTokenProperty(wordEntries, CollectionMode.word));
+        if(e.isEmpty()) e.addAll(collectEntriesMatchingTokenProperty(hiraganaEntriesByPOS, CollectionMode.pron, Mode.READINGS_IN_HIRAGANA));
+        if(e.isEmpty()) e.addAll(collectEntriesMatchingTokenProperty(katakanaEntriesByPOS, CollectionMode.pron, Mode.READINGS_IN_KATAKANA));
         // else: no matches were found. May need a placeholder. Eventually should integrate jmn_edict.
 
         System.out.println("Gotta go fast!");
@@ -40,50 +45,50 @@ public class VocabListRowCumulativeMapped2 {
 
     // TODO: ascertain whether these are handling hiragana/katakana correctly (particularly with verbs).
     // Likely isn't, as の isn't getting any list additions.
-    private List<JMDictEntry> collectEntriesMatchingTokenProperty(EntriesByMecabPOS entriesByMecabPOS) {
+    private List<JMDictEntry> collectEntriesMatchingTokenProperty(EntriesByMecabPOS entriesByMecabPOS, CollectionMode collectionMode, Mode mode) {
         List<JMDictEntry> list = new ArrayList<>();
         // TODO: expose POS as a field, and possibly give the enum a toString method so browser can display POS.
         POS pos = TokensByMecabPOS.determinePOS(vocabListRowCumulative.getVocabListRow().getToken());
 
         switch (pos){
             case particles:
-                list.addAll(collectEntriesMatchingTokenProperty(entriesByMecabPOS.getParticlesByPron()));
+                list.addAll(collectEntriesMatchingTokenProperty(entriesByMecabPOS.getParticlesByPron(), collectionMode, mode));
                 break;
             case verbsAndAux:
-                list.addAll(collectEntriesMatchingTokenProperty(entriesByMecabPOS.getVerbsByPron()));
+                list.addAll(collectEntriesMatchingTokenProperty(entriesByMecabPOS.getVerbsByPron(), collectionMode, mode));
                 break;
             case adverbs:
-                list.addAll(collectEntriesMatchingTokenProperty(entriesByMecabPOS.getAdverbsByPron()));
+                list.addAll(collectEntriesMatchingTokenProperty(entriesByMecabPOS.getAdverbsByPron(), collectionMode, mode));
                 break;
             case conjunctions:
-                list.addAll(collectEntriesMatchingTokenProperty(entriesByMecabPOS.getConjunctionsByPron()));
+                list.addAll(collectEntriesMatchingTokenProperty(entriesByMecabPOS.getConjunctionsByPron(), collectionMode, mode));
                 break;
             case nouns:
-                list.addAll(collectEntriesMatchingTokenProperty(entriesByMecabPOS.getNounsByPron()));
+                list.addAll(collectEntriesMatchingTokenProperty(entriesByMecabPOS.getNounsByPron(), collectionMode, mode));
                 break;
             case prefixes:
-                list.addAll(collectEntriesMatchingTokenProperty(entriesByMecabPOS.getPrefixesByPron()));
+                list.addAll(collectEntriesMatchingTokenProperty(entriesByMecabPOS.getPrefixesByPron(), collectionMode, mode));
                 break;
             case adjectives:
-                list.addAll(collectEntriesMatchingTokenProperty(entriesByMecabPOS.getAdjectivesByPron()));
+                list.addAll(collectEntriesMatchingTokenProperty(entriesByMecabPOS.getAdjectivesByPron(), collectionMode, mode));
                 break;
             case adnominals:
-                list.addAll(collectEntriesMatchingTokenProperty(entriesByMecabPOS.getAdnominalsByPron()));
+                list.addAll(collectEntriesMatchingTokenProperty(entriesByMecabPOS.getAdnominalsByPron(), collectionMode, mode));
                 break;
             case exclamations:
-                list.addAll(collectEntriesMatchingTokenProperty(entriesByMecabPOS.getExclamationsByPron()));
+                list.addAll(collectEntriesMatchingTokenProperty(entriesByMecabPOS.getExclamationsByPron(), collectionMode, mode));
                 break;
             case symbols:
-                list.addAll(collectEntriesMatchingTokenProperty(entriesByMecabPOS.getSymbolsByPron()));
+                list.addAll(collectEntriesMatchingTokenProperty(entriesByMecabPOS.getSymbolsByPron(), collectionMode, mode));
                 break;
             case fillers:
-                list.addAll(collectEntriesMatchingTokenProperty(entriesByMecabPOS.getFillersByPron()));
+                list.addAll(collectEntriesMatchingTokenProperty(entriesByMecabPOS.getFillersByPron(), collectionMode, mode));
                 break;
             case others:
-                list.addAll(collectEntriesMatchingTokenProperty(entriesByMecabPOS.getOthersByPron()));
+                list.addAll(collectEntriesMatchingTokenProperty(entriesByMecabPOS.getOthersByPron(), collectionMode, mode));
                 break;
             case unclassified:
-                list.addAll(collectEntriesMatchingTokenProperty(entriesByMecabPOS.getUnclassifiedByPron()));
+                list.addAll(collectEntriesMatchingTokenProperty(entriesByMecabPOS.getUnclassifiedByPron(), collectionMode, mode));
                 break;
             default:
                 throw new IllegalStateException();
@@ -92,26 +97,62 @@ public class VocabListRowCumulativeMapped2 {
         return list;
     }
 
-    private List<JMDictEntry> collectEntriesMatchingTokenProperty(Iterable<JMDictEntry> wordEntries) {
-        return StreamSupport
-                .stream(wordEntries.spliterator(), false)
-                // take only whose words...data equals the token's baseForm.
-                .filter(
-                        entry -> Iterables.tryFind(
-                                entry
-                                        .getWords()
-                                        .stream()
-                                        .map(
-                                                word -> word
-                                                        .getIdDataKey()
-                                                        .getData()
-                                        )
-                                        .filter(datum -> datum != null)
-                                        .collect(Collectors.toList()),
-                                datum -> datum.equals(rowBaseForm)
+    private List<JMDictEntry> collectEntriesMatchingTokenProperty(Iterable<JMDictEntry> wordEntries, CollectionMode collectionMode) {
+        return collectEntriesMatchingTokenProperty(wordEntries, collectionMode, Mode.READINGS_IN_HIRAGANA);
+    }
+
+    private List<JMDictEntry> collectEntriesMatchingTokenProperty(Iterable<JMDictEntry> wordEntries, CollectionMode collectionMode, Mode mode) {
+        switch(collectionMode){
+            case pron:
+                return StreamSupport
+                        .stream(wordEntries.spliterator(), false)
+                        // take only whose words...data equals the token's baseForm.
+                        .filter(
+                                entry -> Iterables.tryFind(
+                                        entry
+                                                .getPron()
+                                                .stream()
+                                                .map(
+                                                        pron -> pron
+                                                                .getIdDataKey()
+                                                                .getData()
+                                                )
+                                                .filter(datum -> datum != null)
+                                                .collect(Collectors.toList()),
+                                        datum -> {
+                            if(vocabListRowCumulative.getVocabListRow().getToken().isVerb()) return datum.equals(rowBaseForm);
+                            else if(mode.equals(Mode.READINGS_IN_HIRAGANA)) return datum.equals(tokenHiraganaPron);
+                            else if(mode.equals(Mode.READINGS_IN_KATAKANA)) return datum.equals(tokenKatakanaPron);
+                            else throw new IllegalStateException();
+                        }
+                                )
+                                        .isPresent()
                         )
-                                .isPresent()
-                )
-        .collect(Collectors.toList());
+                        .collect(Collectors.toList());
+            case word:
+                return StreamSupport
+                        .stream(wordEntries.spliterator(), false)
+                        // take only whose words...data equals the token's baseForm.
+                        .filter(
+                                entry -> Iterables.tryFind(
+                                        entry
+                                                .getWords()
+                                                .stream()
+                                                .map(
+                                                        word -> word
+                                                                .getIdDataKey()
+                                                                .getData()
+                                                )
+                                                .filter(datum -> datum != null)
+                                                .collect(Collectors.toList()),
+                                        datum -> datum.equals(rowBaseForm)
+                                )
+                                        .isPresent()
+                        )
+                .collect(Collectors.toList());
+            default:
+                throw new IllegalStateException();
+        }
+
     }
 }

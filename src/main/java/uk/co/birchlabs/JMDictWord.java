@@ -16,7 +16,7 @@ public class JMDictWord {
     @EmbeddedId
     private IdDataKey idDataKey;
 
-    @ManyToOne(optional=false)
+    @ManyToOne(optional=true)
     // This FK's annotated name must equal the annotated name for the target partial key in IdDataKey.
     @JoinColumn(
 //            foreignKey = @ForeignKey(name = "FK_JMDICT_WORD_ID"), // not sure whether necessary
