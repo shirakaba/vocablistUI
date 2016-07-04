@@ -19,7 +19,7 @@ public class JMDictEntry {
     public JMDictEntry() {
     }
 
-    @OneToMany(mappedBy = "jmDictEntryS", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "jmDictEntryS", fetch = FetchType.EAGER)
     private List<JMDictSense> senses;
 
     // can't seem to change this to lazy. Only used by jmDictEntryRepository2.getEntries() though.

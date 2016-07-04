@@ -21,6 +21,7 @@ public class VocabListRowCumulativeMapped2 {
     private final String rowBaseForm;
     private final String tokenHiraganaPron;
     private final String tokenKatakanaPron;
+    private final List<EntryReadout> entryReadouts;
 
     public VocabListRowCumulativeMapped2(
             VocabListRowCumulative vocabListRowCumulative,
@@ -39,12 +40,20 @@ public class VocabListRowCumulativeMapped2 {
         if(e.isEmpty()) e.addAll(collectEntriesMatchingTokenProperty(katakanaEntriesByPOS, CollectionMode.pron, Mode.READINGS_IN_KATAKANA));
         // else: no matches were found. May need a placeholder. Eventually should integrate jmn_edict.
 
+        // JMDictPronRepo2.getEntriesFromPron() got us all the
+        entryReadouts = e
+                .stream()
+                .map(entry -> new EntryReadout(entry, vocabListRowCumulative.getVocabListRow().getToken()))
+                .collect(Collectors.toList())
+        ;
+
         System.out.println("Gotta go fast!");
     }
 
+    public List<EntryReadout> getEntryReadouts() {
+        return entryReadouts;
+    }
 
-    // TODO: ascertain whether these are handling hiragana/katakana correctly (particularly with verbsAndAux).
-    // Likely isn't, as の isn't getting any list additions.
     private List<JMDictEntry> collectEntriesMatchingTokenProperty(EntriesByMecabPOS entriesByMecabPOS, CollectionMode collectionMode, Mode mode) {
         List<JMDictEntry> list = new ArrayList<>();
         // TODO: expose POS as a field, and possibly give the enum a toString method so browser can display POS.
@@ -126,6 +135,7 @@ public class VocabListRowCumulativeMapped2 {
                              */
                             if(vocabListRowCumulative.getVocabListRow().getToken().isVerb()) return datum.equals(rowBaseForm);
                             else if(mode.equals(Mode.READINGS_IN_HIRAGANA)) return datum.equals(tokenHiraganaPron);
+                            // confirmed to work: catches 名詞,一般,*,*,*,*,アニメ,アニメ,アニメ
                             else if(mode.equals(Mode.READINGS_IN_KATAKANA)) return datum.equals(tokenKatakanaPron);
                             else throw new IllegalStateException();
                         }

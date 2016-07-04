@@ -15,7 +15,7 @@ public class JMDictType {
     @EmbeddedId
     private SenseDataKey senseDataKey;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name="sense", insertable = false, updatable = false)
     private JMDictSense jmDictSenseT;
 
