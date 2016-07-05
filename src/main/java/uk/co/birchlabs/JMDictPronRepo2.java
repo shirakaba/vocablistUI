@@ -249,7 +249,9 @@ public class JMDictPronRepo2 {
                         "  ON s.id = a.id "
                         + "JOIN FETCH JMDictType t " +
                         "ON t.senseDataKey.sense = s.data "
-                        + "WHERE p.idDataKey.data IN :readingsToQuery "
+                        + "WHERE a.id < 5000000 " // 24s 146ms before adding this line. 12-13s after adding it. 9s 512ms on the old database.
+//                        + "WHERE p.idDataKey.data IN :readingsToQuery "
+                        + "AND p.idDataKey.data IN :readingsToQuery "
                         + restrictPOSClause
                         + "GROUP BY p.idDataKey.id"
                 ,

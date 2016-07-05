@@ -51,7 +51,7 @@ public class VocabListRowCumulativeMapped2 {
                 .collect(Collectors.toList())
         ;
 
-        System.out.println("Gotta go fast!");
+//        System.out.println("Gotta go fast!");
     }
 
     public List<EntryReadout> getEntryReadouts() {

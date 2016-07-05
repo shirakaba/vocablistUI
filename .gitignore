@@ -1,3 +1,5 @@
+/jmnedict.db
+/abnormal_alldicts.sqlite3
 ### Maven template
 target/
 pom.xml.tag
@@ -32,6 +34,7 @@ hs_err_pid*
 .idea/dictionaries
 .idea/vcs.xml
 .idea/jsLibraryMappings.xml
+/prior db versions
 
 # Sensitive or high-churn files:
 .idea/dataSources.ids

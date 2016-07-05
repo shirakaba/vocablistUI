@@ -27,7 +27,9 @@ public class JMDictEntryRepo2 {
                         // only need to specify the join because we're using a WHERE clause on it?
                         "JOIN FETCH JMDictWord w " +
                         "  ON a.id = w.idDataKey.id " +
-                        "WHERE w.idDataKey.data IN :data " +
+                        "WHERE a.id < 5000000 " +
+                        "AND w.idDataKey.data IN :data " +
+//                        "WHERE w.idDataKey.data IN :data " +
                         "GROUP BY w.idDataKey.id",
                 JMDictEntry.class
         );

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+
+    <persistence-unit name="persistenceUnit">
+        <properties>
+            <property name="hibernate.dialect"
+            value="uk.co.birchlabs.SQLiteDialect"/>
+            <property name="hibernate.connection.driver_class" value="org.sqlite.JDBC" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:sqlite:/Users/jamiebirch/git/vocablistUI/normalised_jmdict_e_and_kanjidic.sqlite"/>
+        </properties>
+    </persistence-unit>
+</persistence>
