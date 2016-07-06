@@ -16,6 +16,12 @@ import static uk.co.birchlabs.JMDictPronRepo2.Mode.*;
 @Service
 public class JMDictPronService {
     @Autowired
+    JMDictEntryRepo2 jmDictEntryRepo2;
+
+    @Autowired
+    EntriesByMecabPOSService entriesByMecabPOSService;
+
+    @Autowired
     JMDictPronRepo2 jmDictPronRepo2;
 
     @Autowired
@@ -35,11 +41,8 @@ public class JMDictPronService {
         float runningPercent = 0;
         for (int i = 0; i < sortedByFreq.size(); i++) {
             VocabListRow vocabListRow = sortedByFreq.get(i);
-//            baseForms.add(vocabListRow.getToken().getBaseForm());
-//            readings.add(Utils.convertKana(vocabListRow.getToken().getReading()));
             float myPercent = (float)vocabListRow.getCount() / (float)s;
             runningPercent += myPercent;
-            // Evaluates to true if FUNDAMENTAL filtering level excludes the Token.
             boolean fundamental = Vocablist.filterOut(vocabListRow.getToken(), Vocablist.Filtering.FUNDAMENTAL);
             boolean n5 = Filter.N5_BLACKLIST.contains(vocabListRow.getToken().getBaseForm());
             boolean n4 = Filter.N4_BLACKLIST.contains(vocabListRow.getToken().getBaseForm());
@@ -59,40 +62,52 @@ public class JMDictPronService {
         }
 
         Set<ForwardingToken> tokensToSearch = new HashSet<>();
-        sortedByFreq.forEach(vocablistRow -> tokensToSearch.add(vocablistRow.getToken()));
+        Set<ForwardingToken> tokensToSearchInProperNouns = new HashSet<>();
+        sortedByFreq.forEach(vocablistRow -> {
+            ForwardingToken token = vocablistRow.getToken();
+            if(TokensByMecabPOS.determinePOS(token).equals(JMDictPronRepo2.POS.properNouns)) tokensToSearchInProperNouns.add(token);
+            else tokensToSearch.add(token);
+        });
 
-        // Searches jmdict_word for tokens by their baseForms
-        // (for list entries likely to have at least one kanji such as 作る、日、又)
-        List<JMDictWord> idWordPairs = Lists.newArrayList(jmDictWordRepo2.getSome(tokensToSearch));
-        Set<String> wordsFound = new HashSet<>();
-        idWordPairs.forEach(word -> wordsFound.add(word.getIdDataKey().getData()));
-        tokensToSearch.removeIf(token -> wordsFound.contains(token.getBaseForm())); // tokensToSearch goes from 159 -> 66 here.
+        List<JMDictEntry> wordEntries = Lists.newArrayList(jmDictEntryRepo2.getEntries(tokensToSearch, true));
+        List<JMDictEntry> wordEntriesFromProperNouns = Lists.newArrayList(jmDictEntryRepo2.getEntries(tokensToSearchInProperNouns, false));
 
-        // Searches jmdict_pronunciation for any still-unfound tokens by their readings converted into hiragana
-        // (for list entries likely rendered without any kanji such as する、ある、いる、として).
-        List<JMDictPron> idReadingPairs = Lists.newArrayList(jmDictPronRepo2.getSome(tokensToSearch, READINGS_IN_HIRAGANA));
-        idReadingPairs.forEach(reading -> wordsFound.add(Utils.convertKana(reading.getIdDataKey().getData())));
-        tokensToSearch.removeIf(token -> wordsFound.contains(token.getReading())); // tokensToSearch goes from 66 -> 17 here.
+        HashSet<String> baseFormsFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(
+                Lists.newArrayList(Iterables.concat(wordEntries, wordEntriesFromProperNouns)),
+                JMDictEntryRepo2.CollectionMode.word
+        );
+        wordEntries.addAll(wordEntriesFromProperNouns);
+        tokensToSearch.addAll(tokensToSearchInProperNouns);
+        tokensToSearch.removeIf(token -> baseFormsFound.contains(token.getBaseForm()));
 
-        // Searches jmdict_pronunciation for the remaining tokens by their katakana readings
-        // (for list entries likely to be loan words such as キャンパス)
-        List<JMDictPron> idReadingPairs2 = Lists.newArrayList(jmDictPronRepo2.getSome(tokensToSearch, READINGS_IN_KATAKANA));
-//        Lists.newArrayList(Iterables.concat(idReadingPairs, idReadingPairs2));
-        Iterables
-                .concat(idReadingPairs, idReadingPairs2)
-                .forEach(reading -> wordsFound.add(reading.getIdDataKey().getData()));
-        tokensToSearch.removeIf(token -> wordsFound.contains(token.getReading()));  // tokensToSearch goes from 17 -> 11 here.
-        // Remaining Tokens are generally proper nouns or auxiliary verb stems.
+        TokensByMecabPOS tokensByMecabPOS = new TokensByMecabPOS(tokensToSearch);
 
-        List<VocabListRowCumulativeMapped> list = cumulative
+
+        EntriesByMecabPOS entriesByMecabPOSHiragana = entriesByMecabPOSService.construct(tokensByMecabPOS, JMDictPronRepo2.Mode.READINGS_IN_HIRAGANA);
+
+        // List of all JMDictEntrys with a valid hiragana reading
+        PronsFoundByMecabPOS pronsFoundByMecabPOSHiragana = new PronsFoundByMecabPOS(entriesByMecabPOSHiragana);
+
+        // tokensToSearch == 220
+        TokensByMecabPOS.updateTokensRemainingToBeSearched(tokensByMecabPOS, pronsFoundByMecabPOSHiragana, tokensToSearch, JMDictPronRepo2.Mode.READINGS_IN_HIRAGANA);
+        // tokensToSearch == 109
+
+        EntriesByMecabPOS entriesByMecabPOSKatakana = entriesByMecabPOSService.construct(tokensByMecabPOS, JMDictPronRepo2.Mode.READINGS_IN_KATAKANA);
+
+        PronsFoundByMecabPOS pronsFoundByMecabPOSKatakana = new PronsFoundByMecabPOS(entriesByMecabPOSKatakana);
+
+        TokensByMecabPOS.updateTokensRemainingToBeSearched(tokensByMecabPOS, pronsFoundByMecabPOSKatakana, tokensToSearch, JMDictPronRepo2.Mode.READINGS_IN_KATAKANA);
+        // tokensToSearch == 65. All seem to be proper nouns, or conjugative particles like -ta.
+
+        List<VocabListRowCumulativeMapped2> list = cumulative
                 .stream()
                 .map(
                         row ->
-                                new VocabListRowCumulativeMapped(
+                                new VocabListRowCumulativeMapped2(
                                         row,
-                                        idWordPairs,
-                                        idReadingPairs,
-                                        idReadingPairs2
+                                        wordEntries,
+                                        entriesByMecabPOSHiragana,
+                                        entriesByMecabPOSKatakana
                                 )
                 )
                 .collect(Collectors.toList());

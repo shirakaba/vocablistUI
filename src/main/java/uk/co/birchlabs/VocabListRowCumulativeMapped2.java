@@ -54,6 +54,8 @@ public class VocabListRowCumulativeMapped2 {
 //        System.out.println("Gotta go fast!");
     }
 
+    // TODO: decide which fields beyond entryReadouts to expose to the website with getters.
+
     public List<EntryReadout> getEntryReadouts() {
         return entryReadouts;
     }
