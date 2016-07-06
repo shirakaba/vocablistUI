@@ -11,6 +11,8 @@ import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
 
+import static uk.co.birchlabs.JMDictEntry.START_OF_PROPER_NOUNS_ID;
+
 /**
  * Created by jamiebirch on 23/06/2016.
  */
@@ -166,7 +168,6 @@ public class JMDictPronRepo2 {
             "conj" // Included so we can handle conjunctions and particles in same acceptablePOS set 'keredomo'.
     );
 
-    public final static Integer START_OF_PROPER_NOUNS_ID = 5000000;
 
     /**
      * Calls getEntriesFromPron() by the 'search readings in hiragana' mode.
@@ -250,8 +251,8 @@ public class JMDictPronRepo2 {
                 throw new IllegalStateException();
         }
 
-        if(ignoreProperNouns) properNounsClause = "WHERE a.id > " + (START_OF_PROPER_NOUNS_ID - 1) + " ";
-        else properNounsClause = "WHERE a.id < " + START_OF_PROPER_NOUNS_ID + " ";
+        if(ignoreProperNouns) properNounsClause = "WHERE a.id < " + START_OF_PROPER_NOUNS_ID + " ";
+        else properNounsClause = "WHERE a.id > " + (START_OF_PROPER_NOUNS_ID - 1) + " ";
         if(restrictPOS) restrictPOSClause = "AND t.senseDataKey.data IN :acceptablePOS ";
         else restrictPOSClause = "";
 

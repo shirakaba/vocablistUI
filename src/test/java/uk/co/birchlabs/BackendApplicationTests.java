@@ -1,6 +1,7 @@
 package uk.co.birchlabs;
 
 import catRecurserPkg.*;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,11 +15,9 @@ import uk.co.birchlabs.JMDictPronRepo2.Mode;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
 import static uk.co.birchlabs.JMDictPronRepo2.POS;
@@ -94,9 +93,20 @@ public class BackendApplicationTests {
 		}
 
 		Set<ForwardingToken> tokensToSearch = new HashSet<>();
-		sortedByFreq.forEach(vocablistRow -> tokensToSearch.add(vocablistRow.getToken()));
-		List<JMDictEntry> wordEntries = Lists.newArrayList(jmDictEntryRepo2.getEntries(tokensToSearch));
-        List<String> baseFormsFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(wordEntries, CollectionMode.word);
+		Set<ForwardingToken> tokensToSearchInProperNouns = new HashSet<>();
+		sortedByFreq.forEach(vocablistRow -> {
+			ForwardingToken token = vocablistRow.getToken();
+			if(TokensByMecabPOS.determinePOS(token).equals(POS.properNouns)) tokensToSearchInProperNouns.add(token);
+			else tokensToSearch.add(token);
+		});
+
+		List<JMDictEntry> wordEntries = Lists.newArrayList(jmDictEntryRepo2.getEntries(tokensToSearch, true));
+		List<JMDictEntry> wordEntriesFromPronouns = Lists.newArrayList(jmDictEntryRepo2.getEntries(tokensToSearchInProperNouns, false));
+
+        List<String> baseFormsFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(
+				Lists.newArrayList(Iterables.concat(wordEntries, wordEntriesFromPronouns)),
+				CollectionMode.word
+		);
 
         tokensToSearch.removeIf(token -> baseFormsFound.contains(token.getBaseForm()));
 

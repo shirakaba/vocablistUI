@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static uk.co.birchlabs.JMDictEntry.START_OF_PROPER_NOUNS_ID;
+
 /**
  * Created by jamiebirch on 29/06/2016.
  */
@@ -18,7 +20,11 @@ public class JMDictEntryRepo2 {
     @PersistenceContext
     EntityManager em;
 
-    public Iterable<JMDictEntry> getEntries(Iterable<ForwardingToken> tokensToSearch) {
+    public Iterable<JMDictEntry> getEntries(Iterable<ForwardingToken> tokensToSearch, boolean ignoreProperNouns) {
+        final String properNounsClause;
+
+        if(ignoreProperNouns) properNounsClause = "WHERE a.id < " + START_OF_PROPER_NOUNS_ID + " ";
+        else properNounsClause = "WHERE a.id > " + (START_OF_PROPER_NOUNS_ID - 1) + " ";
         List<String> baseFormsToQuery = new ArrayList<>();
         tokensToSearch.forEach(forwardingToken -> baseFormsToQuery.add(forwardingToken.getBaseForm()));
         TypedQuery<JMDictEntry> query = em.createQuery(
@@ -27,8 +33,9 @@ public class JMDictEntryRepo2 {
                         // only need to specify the join because we're using a WHERE clause on it?
                         "JOIN FETCH JMDictWord w " +
                         "  ON a.id = w.idDataKey.id " +
-                        "WHERE a.id < 5000000 " +
-                        "AND w.idDataKey.data IN :data " +
+//                        "WHERE a.id < 5000000 " +
+                        properNounsClause +
+                        " AND w.idDataKey.data IN :data " +
 //                        "WHERE w.idDataKey.data IN :data " +
                         "GROUP BY w.idDataKey.id",
                 JMDictEntry.class

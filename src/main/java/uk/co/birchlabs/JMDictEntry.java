@@ -12,6 +12,8 @@ import java.util.List;
 @Entity
 @Table(name="jmdict_entry")
 public class JMDictEntry {
+    public final static Integer START_OF_PROPER_NOUNS_ID = 5000000;
+
     @Id
 //    @Column(name = "id", nullable=false, updatable=false)
     private Integer id;
