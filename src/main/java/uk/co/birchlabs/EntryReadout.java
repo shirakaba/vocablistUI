@@ -1,10 +1,12 @@
 package uk.co.birchlabs;
 
 import catRecurserPkg.ForwardingToken;
+import com.google.common.base.Joiner;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -62,7 +64,13 @@ public class EntryReadout {
 
         for(int i = 0; i < senses.size(); i++){
             if(senses.size() > 1) sb.append(String.format("(%d) ", i + 1));
-            sensesToDefs.get(senses.get(i)).forEach(sense -> sb.append(sense).append(" ･ "));
+            sb.append(
+                    Joiner.on(" ･ ")
+                    .join(
+                            sensesToDefs.get(senses.get(i))
+                    )
+            );
+            if (i < senses.size()-1) sb.append(";  ");
         }
 //        sb.append('.');
 

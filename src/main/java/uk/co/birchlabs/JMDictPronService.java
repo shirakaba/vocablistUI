@@ -88,16 +88,13 @@ public class JMDictPronService {
         // List of all JMDictEntrys with a valid hiragana reading
         PronsFoundByMecabPOS pronsFoundByMecabPOSHiragana = new PronsFoundByMecabPOS(entriesByMecabPOSHiragana);
 
-        // tokensToSearch == 220
         TokensByMecabPOS.updateTokensRemainingToBeSearched(tokensByMecabPOS, pronsFoundByMecabPOSHiragana, tokensToSearch, JMDictPronRepo2.Mode.READINGS_IN_HIRAGANA);
-        // tokensToSearch == 109
 
         EntriesByMecabPOS entriesByMecabPOSKatakana = entriesByMecabPOSService.construct(tokensByMecabPOS, JMDictPronRepo2.Mode.READINGS_IN_KATAKANA);
 
         PronsFoundByMecabPOS pronsFoundByMecabPOSKatakana = new PronsFoundByMecabPOS(entriesByMecabPOSKatakana);
 
         TokensByMecabPOS.updateTokensRemainingToBeSearched(tokensByMecabPOS, pronsFoundByMecabPOSKatakana, tokensToSearch, JMDictPronRepo2.Mode.READINGS_IN_KATAKANA);
-        // tokensToSearch == 65. All seem to be proper nouns, or conjugative particles like -ta.
 
         List<VocabListRowCumulativeMapped2> list = cumulative
                 .stream()
