@@ -101,12 +101,13 @@ public class BackendApplicationTests {
 		});
 
 		List<JMDictEntry> wordEntries = Lists.newArrayList(jmDictEntryRepo2.getEntries(tokensToSearch, true));
-		List<JMDictEntry> wordEntriesFromPronouns = Lists.newArrayList(jmDictEntryRepo2.getEntries(tokensToSearchInProperNouns, false));
+		List<JMDictEntry> wordEntriesFromProperNouns = Lists.newArrayList(jmDictEntryRepo2.getEntries(tokensToSearchInProperNouns, false));
 
         HashSet<String> baseFormsFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(
-				Lists.newArrayList(Iterables.concat(wordEntries, wordEntriesFromPronouns)),
+				Lists.newArrayList(Iterables.concat(wordEntries, wordEntriesFromProperNouns)),
 				CollectionMode.word
 		);
+        wordEntries.addAll(wordEntriesFromProperNouns);
         tokensToSearch.addAll(tokensToSearchInProperNouns);
         tokensToSearch.removeIf(token -> baseFormsFound.contains(token.getBaseForm()));
 
