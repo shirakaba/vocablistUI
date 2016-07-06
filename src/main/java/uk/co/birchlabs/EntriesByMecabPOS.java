@@ -13,6 +13,7 @@ public class EntriesByMecabPOS {
             adverbsByPron,
             conjunctionsByPron,
             nounsByPron,
+            properNounsByPron,
             prefixesByPron,
             adjectivesByPron,
             adnominalsByPron,
@@ -29,6 +30,7 @@ public class EntriesByMecabPOS {
             List<JMDictEntry> adverbsByPron,
             List<JMDictEntry> conjunctionsByPron,
             List<JMDictEntry> nounsByPron,
+            List<JMDictEntry> properNounsByPron,
             List<JMDictEntry> prefixesByPron,
             List<JMDictEntry> adjectivesByPron,
             List<JMDictEntry> adnominalsByPron,
@@ -43,6 +45,7 @@ public class EntriesByMecabPOS {
         this.adverbsByPron = adverbsByPron;
         this.conjunctionsByPron = conjunctionsByPron;
         this.nounsByPron = nounsByPron;
+        this.properNounsByPron = properNounsByPron;
         this.prefixesByPron = prefixesByPron;
         this.adjectivesByPron = adjectivesByPron;
         this.adnominalsByPron = adnominalsByPron;
@@ -72,6 +75,10 @@ public class EntriesByMecabPOS {
 
     public List<JMDictEntry> getNounsByPron() {
         return nounsByPron;
+    }
+
+    public List<JMDictEntry> getProperNounsByPron() {
+        return properNounsByPron;
     }
 
     public List<JMDictEntry> getPrefixesByPron() {

@@ -13,6 +13,7 @@ public class PronsFoundByMecabPOS {
             adverbsFound,
             conjunctionsFound,
             nounsFound,
+            properNounsFound,
             prefixesFound,
             adjectivesFound,
             adnominalsFound,
@@ -29,6 +30,7 @@ public class PronsFoundByMecabPOS {
         adverbsFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(e.getAdverbsByPron(), JMDictEntryRepo2.CollectionMode.pron);
         conjunctionsFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(e.getConjunctionsByPron(), JMDictEntryRepo2.CollectionMode.pron);
         nounsFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(e.getNounsByPron(), JMDictEntryRepo2.CollectionMode.pron);
+        properNounsFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(e.getProperNounsByPron(), JMDictEntryRepo2.CollectionMode.pron);
         prefixesFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(e.getPrefixesByPron(), JMDictEntryRepo2.CollectionMode.pron);
         adjectivesFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(e.getAdjectivesByPron(), JMDictEntryRepo2.CollectionMode.pron);
         adnominalsFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(e.getAdnominalsByPron(), JMDictEntryRepo2.CollectionMode.pron);
@@ -57,6 +59,10 @@ public class PronsFoundByMecabPOS {
 
     public List<String> getNounsFound() {
         return nounsFound;
+    }
+
+    public List<String> getProperNounsFound() {
+        return properNounsFound;
     }
 
     public List<String> getPrefixesFound() {

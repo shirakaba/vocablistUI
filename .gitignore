@@ -34,6 +34,7 @@ hs_err_pid*
 .idea/dictionaries
 .idea/vcs.xml
 .idea/jsLibraryMappings.xml
+/normalised_jmdict_e_and_kanjidic_v2.sqlite
 /prior db versions
 
 # Sensitive or high-churn files:

@@ -119,25 +119,6 @@ public class BackendApplicationTests {
         TokensByMecabPOS.updateTokensRemainingToBeSearched(tokensByMecabPOS, pronsFoundByMecabPOSKatakana, tokensToSearch, Mode.READINGS_IN_KATAKANA);
         // tokensToSearch == 65. All seem to be proper nouns, or conjugative particles like -ta.
 
-//        cumulative.forEach(row -> {
-//            ForwardingToken token = row.getVocabListRow().getToken();
-//            String feature1 = token.getAllFeaturesArray()[0];
-//
-//            if (feature1.startsWith("助詞")) particles.add(t);
-//            else if (token.isVerb()) verbsAndAux.add(t);
-//            else if (feature1.startsWith("副詞")) adverbs.add(t);
-//            else if (feature1.startsWith("接続詞")) conjunctions.add(t);
-//            else if (feature1.startsWith("名詞")) nouns.add(t);
-//            else if (feature1.startsWith("接頭詞")) prefixes.add(t);
-//            else if (feature1.startsWith("形容詞")) adjectives.add(t);
-//            else if (feature1.startsWith("連体詞")) adnominals.add(t);
-//            else if (feature1.startsWith("感動詞")) exclamations.add(t);
-//            else if (feature1.startsWith("フィラー")) fillers.add(t);
-//            else if (feature1.startsWith("その他")) others.add(t);
-//            else if (feature1.startsWith("記号")) symbols.add(t);
-//            else unclassified.add(t);
-//        });
-
         List<VocabListRowCumulativeMapped2> list = cumulative
                 .stream()
                 .map(

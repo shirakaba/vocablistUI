@@ -4,6 +4,8 @@ import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 /**
  * Created by jamiebirch on 03/07/2016.
  */
@@ -27,6 +29,7 @@ public class EntriesByMecabPOSService {
                 Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(tokensByMecabPOS.getAdverbs(), mode, JMDictPronRepo2.POS.adverbs)),
                 Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(tokensByMecabPOS.getConjunctions(), mode, JMDictPronRepo2.POS.conjunctions)),
                 Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(tokensByMecabPOS.getNouns(), mode, JMDictPronRepo2.POS.nouns)),
+                Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(tokensByMecabPOS.getProperNouns(), mode, JMDictPronRepo2.POS.properNouns)),
                 Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(tokensByMecabPOS.getPrefixes(), mode, JMDictPronRepo2.POS.prefixes)),
                 Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(tokensByMecabPOS.getAdjectives(), mode, JMDictPronRepo2.POS.adjectives)),
                 Lists.newArrayList(jmDictPronRepo2.getEntriesFromPron(tokensByMecabPOS.getAdnominals(), mode, JMDictPronRepo2.POS.adnominals)),

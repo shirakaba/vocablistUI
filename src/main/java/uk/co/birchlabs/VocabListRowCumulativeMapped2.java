@@ -79,6 +79,9 @@ public class VocabListRowCumulativeMapped2 {
             case nouns:
                 list.addAll(collectEntriesMatchingTokenProperty(entriesByMecabPOS.getNounsByPron(), collectionMode, mode));
                 break;
+            case properNouns:
+                list.addAll(collectEntriesMatchingTokenProperty(entriesByMecabPOS.getProperNounsByPron(), collectionMode, mode));
+                break;
             case prefixes:
                 list.addAll(collectEntriesMatchingTokenProperty(entriesByMecabPOS.getPrefixesByPron(), collectionMode, mode));
                 break;

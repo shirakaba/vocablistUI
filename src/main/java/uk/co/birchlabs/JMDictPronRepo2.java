@@ -60,6 +60,7 @@ public class JMDictPronRepo2 {
         adverbs,
         conjunctions,
         nouns,
+        properNouns,
         prefixes,
         adjectives,
         adnominals,
@@ -117,6 +118,10 @@ public class JMDictPronRepo2 {
             "pn"
     );
 
+    public static final List<String> properNouns = Lists.newArrayList(
+            "pn"
+    );
+
 
     public static final List<String> verbsAndAux = Lists.newArrayList(
             "aux", // Mecab tags です and であろう as 助動詞; jmdict tags them as aux.
@@ -161,6 +166,8 @@ public class JMDictPronRepo2 {
             "conj" // Included so we can handle conjunctions and particles in same acceptablePOS set 'keredomo'.
     );
 
+    public final static Integer START_OF_PROPER_NOUNS_ID = 5000000;
+
     /**
      * Calls getEntriesFromPron() by the 'search readings in hiragana' mode.
      * @param tokensToSearch - Tokens to search for the readings of in jmdict_pronunciation.
@@ -182,7 +189,9 @@ public class JMDictPronRepo2 {
         List<String> readingsToQuery = new ArrayList<>();
         List<String> acceptablePOS;
         final String restrictPOSClause;
+        final String properNounsClause;
         boolean restrictPOS = true;
+        boolean ignoreProperNouns = true;
 
         switch (mode) { // Note: most likely could search by baseForm for all of these. Not sure there's ever any difference in these cases.
             case READINGS_IN_HIRAGANA:
@@ -221,6 +230,10 @@ public class JMDictPronRepo2 {
             case nouns:
                 acceptablePOS = nouns;
                 break;
+            case properNouns:
+                acceptablePOS = properNouns;
+                ignoreProperNouns = false;
+                break;
             case verbsAndAux:
                 acceptablePOS = verbsAndAux;
                 break;
@@ -237,6 +250,8 @@ public class JMDictPronRepo2 {
                 throw new IllegalStateException();
         }
 
+        if(ignoreProperNouns) properNounsClause = "WHERE a.id > " + (START_OF_PROPER_NOUNS_ID - 1) + " ";
+        else properNounsClause = "WHERE a.id < " + START_OF_PROPER_NOUNS_ID + " ";
         if(restrictPOS) restrictPOSClause = "AND t.senseDataKey.data IN :acceptablePOS ";
         else restrictPOSClause = "";
 
@@ -249,11 +264,10 @@ public class JMDictPronRepo2 {
                         "  ON s.id = a.id "
                         + "JOIN FETCH JMDictType t " +
                         "ON t.senseDataKey.sense = s.data "
-                        + "WHERE a.id < 5000000 " // 24s 146ms before adding this line. 12-13s after adding it. 9s 512ms on the old database.
-//                        + "WHERE p.idDataKey.data IN :readingsToQuery "
-                        + "AND p.idDataKey.data IN :readingsToQuery "
+                        + properNounsClause
+                        + " AND p.idDataKey.data IN :readingsToQuery "
                         + restrictPOSClause
-                        + "GROUP BY p.idDataKey.id"
+                        + " GROUP BY p.idDataKey.id"
                 ,
                 JMDictEntry.class
         );

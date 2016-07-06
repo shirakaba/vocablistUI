@@ -19,6 +19,7 @@ public class TokensByMecabPOS {
             adverbs = new ArrayList<>(),
             conjunctions = new ArrayList<>(),
             nouns = new ArrayList<>(),
+            properNouns = new ArrayList<>(),
             prefixes = new ArrayList<>(),
             adjectives = new ArrayList<>(),
             adnominals = new ArrayList<>(),
@@ -48,6 +49,9 @@ public class TokensByMecabPOS {
                 case nouns:
                     nouns.add(t);
                     break;
+                case properNouns:
+                    properNouns.add(t);
+                    break;
                 case prefixes:
                     prefixes.add(t);
                     break;
@@ -76,20 +80,6 @@ public class TokensByMecabPOS {
                     unclassified.add(t);
                     break;
             }
-//            String firstFeature = t.getAllFeaturesArray()[0];
-//            if (firstFeature.startsWith("助詞")) particles.add(t);
-//            else if (t.isVerb()) verbsAndAux.add(t);
-//            else if (firstFeature.startsWith("副詞")) adverbs.add(t);
-//            else if (firstFeature.startsWith("接続詞")) conjunctions.add(t);
-//            else if (firstFeature.startsWith("名詞")) nouns.add(t);
-//            else if (firstFeature.startsWith("接頭詞")) prefixes.add(t);
-//            else if (firstFeature.startsWith("形容詞")) adjectives.add(t);
-//            else if (firstFeature.startsWith("連体詞")) adnominals.add(t);
-//            else if (firstFeature.startsWith("感動詞")) exclamations.add(t);
-//            else if (firstFeature.startsWith("フィラー")) fillers.add(t);
-//            else if (firstFeature.startsWith("その他")) others.add(t);
-//            else if (firstFeature.startsWith("記号")) symbols.add(t);
-//            else unclassified.add(t);
         });
     }
 
@@ -99,7 +89,10 @@ public class TokensByMecabPOS {
         else if (token.isVerb()) return POS.verbsAndAux;
         else if (feature1.startsWith("副詞")) return POS.adverbs;
         else if (feature1.startsWith("接続詞")) return POS.conjunctions;
-        else if (feature1.startsWith("名詞")) return POS.nouns;
+        else if (feature1.startsWith("名詞")) {
+            if(token.getAllFeaturesArray()[1].startsWith("固有名詞")) return POS.properNouns;
+            else return POS.nouns;
+        }
         else if (feature1.startsWith("接頭詞")) return POS.prefixes;
         else if (feature1.startsWith("形容詞")) return POS.adjectives;
         else if (feature1.startsWith("連体詞")) return POS.adnominals;
@@ -128,6 +121,10 @@ public class TokensByMecabPOS {
 
     public List<ForwardingToken> getNouns() {
         return nouns;
+    }
+
+    public List<ForwardingToken> getProperNouns() {
+        return properNouns;
     }
 
     public List<ForwardingToken> getPrefixes() {
@@ -171,6 +168,7 @@ public class TokensByMecabPOS {
                 t.getAdverbs().forEach(token -> { if(p.getAdverbsFound().contains(Utils.convertKana(token.getReading()))) tokensToSearch.remove(token); });
                 t.getConjunctions().forEach(token -> { if(p.getConjunctionsFound().contains(Utils.convertKana(token.getReading()))) tokensToSearch.remove(token); });
                 t.getNouns().forEach(token -> { if(p.getNounsFound().contains(Utils.convertKana(token.getReading()))) tokensToSearch.remove(token); });
+                t.getProperNouns().forEach(token -> { if(p.getProperNounsFound().contains(Utils.convertKana(token.getReading()))) tokensToSearch.remove(token); });
                 t.getPrefixes().forEach(token -> { if(p.getPrefixesFound().contains(Utils.convertKana(token.getReading()))) tokensToSearch.remove(token); });
                 t.getAdjectives().forEach(token -> { if(p.getAdjectivesFound().contains(Utils.convertKana(token.getReading()))) tokensToSearch.remove(token); });
                 t.getAdnominals().forEach(token -> { if(p.getAdnominalsFound().contains(Utils.convertKana(token.getReading()))) tokensToSearch.remove(token); });
@@ -186,6 +184,7 @@ public class TokensByMecabPOS {
                 t.getAdverbs().forEach(token -> { if(p.getAdverbsFound().contains(token.getReading())) tokensToSearch.remove(token); });
                 t.getConjunctions().forEach(token -> { if(p.getConjunctionsFound().contains(token.getReading())) tokensToSearch.remove(token); });
                 t.getNouns().forEach(token -> { if(p.getNounsFound().contains(token.getReading())) tokensToSearch.remove(token); });
+                t.getProperNouns().forEach(token -> { if(p.getProperNounsFound().contains(token.getReading())) tokensToSearch.remove(token); });
                 t.getPrefixes().forEach(token -> { if(p.getPrefixesFound().contains(token.getReading())) tokensToSearch.remove(token); });
                 t.getAdjectives().forEach(token -> { if(p.getAdjectivesFound().contains(token.getReading())) tokensToSearch.remove(token); });
                 t.getAdnominals().forEach(token -> { if(p.getAdnominalsFound().contains(token.getReading())) tokensToSearch.remove(token); });
