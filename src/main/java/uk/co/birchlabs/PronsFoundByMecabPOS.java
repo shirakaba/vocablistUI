@@ -1,13 +1,13 @@
 package uk.co.birchlabs;
 
-import java.util.List;
+import java.util.HashSet;
 
 /**
  * Created by jamiebirch on 03/07/2016.
  */
 public class PronsFoundByMecabPOS {
 
-    private final List<String>
+    private final HashSet<String>
             particlesFound,
             verbsFound,
             adverbsFound,
@@ -41,59 +41,59 @@ public class PronsFoundByMecabPOS {
         unclassifiedFound = JMDictEntryRepo2.collectWordsOrPronOfEntries(e.getUnclassifiedByPron(), JMDictEntryRepo2.CollectionMode.pron);
     }
 
-    public List<String> getParticlesFound() {
+    public HashSet<String> getParticlesFound() {
         return particlesFound;
     }
 
-    public List<String> getVerbsFound() {
+    public HashSet<String> getVerbsFound() {
         return verbsFound;
     }
 
-    public List<String> getAdverbsFound() {
+    public HashSet<String> getAdverbsFound() {
         return adverbsFound;
     }
 
-    public List<String> getConjunctionsFound() {
+    public HashSet<String> getConjunctionsFound() {
         return conjunctionsFound;
     }
 
-    public List<String> getNounsFound() {
+    public HashSet<String> getNounsFound() {
         return nounsFound;
     }
 
-    public List<String> getProperNounsFound() {
+    public HashSet<String> getProperNounsFound() {
         return properNounsFound;
     }
 
-    public List<String> getPrefixesFound() {
+    public HashSet<String> getPrefixesFound() {
         return prefixesFound;
     }
 
-    public List<String> getAdjectivesFound() {
+    public HashSet<String> getAdjectivesFound() {
         return adjectivesFound;
     }
 
-    public List<String> getAdnominalsFound() {
+    public HashSet<String> getAdnominalsFound() {
         return adnominalsFound;
     }
 
-    public List<String> getExclamationsFound() {
+    public HashSet<String> getExclamationsFound() {
         return exclamationsFound;
     }
 
-    public List<String> getSymbolsFound() {
+    public HashSet<String> getSymbolsFound() {
         return symbolsFound;
     }
 
-    public List<String> getFillersFound() {
+    public HashSet<String> getFillersFound() {
         return fillersFound;
     }
 
-    public List<String> getOthersFound() {
+    public HashSet<String> getOthersFound() {
         return othersFound;
     }
 
-    public List<String> getUnclassifiedFound() {
+    public HashSet<String> getUnclassifiedFound() {
         return unclassifiedFound;
     }
 }

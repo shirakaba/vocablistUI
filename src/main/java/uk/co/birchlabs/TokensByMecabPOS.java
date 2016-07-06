@@ -4,8 +4,9 @@ import catRecurserPkg.ForwardingToken;
 import uk.co.birchlabs.JMDictPronRepo2.Mode;
 import uk.co.birchlabs.JMDictPronRepo2.POS;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.HashSet;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -13,21 +14,21 @@ import java.util.Set;
  */
 public class TokensByMecabPOS {
 
-    private final List<ForwardingToken>
-            particles = new ArrayList<>(),
-            verbsAndAux = new ArrayList<>(), // includes auxiliaries because we conglomerate いる into one row.
-            adverbs = new ArrayList<>(),
-            conjunctions = new ArrayList<>(),
-            nouns = new ArrayList<>(),
-            properNouns = new ArrayList<>(),
-            prefixes = new ArrayList<>(),
-            adjectives = new ArrayList<>(),
-            adnominals = new ArrayList<>(),
-            exclamations = new ArrayList<>(),
-            symbols = new ArrayList<>(),
-            fillers = new ArrayList<>(),
-            others = new ArrayList<>(),
-            unclassified = new ArrayList<>();
+    private final HashSet<ForwardingToken>
+            particles = new HashSet<>(),
+            verbsAndAux = new HashSet<>(), // includes auxiliaries because we conglomerate いる into one row.
+            adverbs = new HashSet<>(),
+            conjunctions = new HashSet<>(),
+            nouns = new HashSet<>(),
+            properNouns = new HashSet<>(),
+            prefixes = new HashSet<>(),
+            adjectives = new HashSet<>(),
+            adnominals = new HashSet<>(),
+            exclamations = new HashSet<>(),
+            symbols = new HashSet<>(),
+            fillers = new HashSet<>(),
+            others = new HashSet<>(),
+            unclassified = new HashSet<>();
 
     public TokensByMecabPOS(Set<ForwardingToken> tokensToSearch) {
         tokensToSearch.forEach(t -> {
@@ -103,59 +104,59 @@ public class TokensByMecabPOS {
         else return POS.unclassified;
     }
 
-    public List<ForwardingToken> getParticles() {
+    public HashSet<ForwardingToken> getParticles() {
         return particles;
     }
 
-    public List<ForwardingToken> getVerbsAndAux() {
+    public HashSet<ForwardingToken> getVerbsAndAux() {
         return verbsAndAux;
     }
 
-    public List<ForwardingToken> getAdverbs() {
+    public HashSet<ForwardingToken> getAdverbs() {
         return adverbs;
     }
 
-    public List<ForwardingToken> getConjunctions() {
+    public HashSet<ForwardingToken> getConjunctions() {
         return conjunctions;
     }
 
-    public List<ForwardingToken> getNouns() {
+    public HashSet<ForwardingToken> getNouns() {
         return nouns;
     }
 
-    public List<ForwardingToken> getProperNouns() {
+    public HashSet<ForwardingToken> getProperNouns() {
         return properNouns;
     }
 
-    public List<ForwardingToken> getPrefixes() {
+    public HashSet<ForwardingToken> getPrefixes() {
         return prefixes;
     }
 
-    public List<ForwardingToken> getAdjectives() {
+    public HashSet<ForwardingToken> getAdjectives() {
         return adjectives;
     }
 
-    public List<ForwardingToken> getAdnominals() {
+    public HashSet<ForwardingToken> getAdnominals() {
         return adnominals;
     }
 
-    public List<ForwardingToken> getExclamations() {
+    public HashSet<ForwardingToken> getExclamations() {
         return exclamations;
     }
 
-    public List<ForwardingToken> getSymbols() {
+    public HashSet<ForwardingToken> getSymbols() {
         return symbols;
     }
 
-    public List<ForwardingToken> getFillers() {
+    public HashSet<ForwardingToken> getFillers() {
         return fillers;
     }
 
-    public List<ForwardingToken> getOthers() {
+    public HashSet<ForwardingToken> getOthers() {
         return others;
     }
 
-    public List<ForwardingToken> getUnclassified() {
+    public HashSet<ForwardingToken> getUnclassified() {
         return unclassified;
     }
 

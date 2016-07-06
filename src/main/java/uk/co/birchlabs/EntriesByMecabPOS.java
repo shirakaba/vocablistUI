@@ -1,13 +1,14 @@
 package uk.co.birchlabs;
 
 import java.util.List;
+import java.util.HashSet;
 
 /**
  * Created by jamiebirch on 03/07/2016.
  */
 public class EntriesByMecabPOS {
 
-    private final List<JMDictEntry>
+    private final HashSet<JMDictEntry>
             particlesByPron,
             verbsByPron,
             adverbsByPron,
@@ -25,20 +26,20 @@ public class EntriesByMecabPOS {
 
 
     public EntriesByMecabPOS(
-            List<JMDictEntry> particlesByPron,
-            List<JMDictEntry> verbsByPron,
-            List<JMDictEntry> adverbsByPron,
-            List<JMDictEntry> conjunctionsByPron,
-            List<JMDictEntry> nounsByPron,
-            List<JMDictEntry> properNounsByPron,
-            List<JMDictEntry> prefixesByPron,
-            List<JMDictEntry> adjectivesByPron,
-            List<JMDictEntry> adnominalsByPron,
-            List<JMDictEntry> exclamationsByPron,
-            List<JMDictEntry> symbolsByPron,
-            List<JMDictEntry> fillersByPron,
-            List<JMDictEntry> othersByPron,
-            List<JMDictEntry> unclassifiedByPron
+            HashSet<JMDictEntry> particlesByPron,
+            HashSet<JMDictEntry> verbsByPron,
+            HashSet<JMDictEntry> adverbsByPron,
+            HashSet<JMDictEntry> conjunctionsByPron,
+            HashSet<JMDictEntry> nounsByPron,
+            HashSet<JMDictEntry> properNounsByPron,
+            HashSet<JMDictEntry> prefixesByPron,
+            HashSet<JMDictEntry> adjectivesByPron,
+            HashSet<JMDictEntry> adnominalsByPron,
+            HashSet<JMDictEntry> exclamationsByPron,
+            HashSet<JMDictEntry> symbolsByPron,
+            HashSet<JMDictEntry> fillersByPron,
+            HashSet<JMDictEntry> othersByPron,
+            HashSet<JMDictEntry> unclassifiedByPron
     ) {
         this.particlesByPron = particlesByPron;
         this.verbsByPron = verbsByPron;
@@ -57,59 +58,59 @@ public class EntriesByMecabPOS {
     }
 
 
-    public List<JMDictEntry> getParticlesByPron() {
+    public HashSet<JMDictEntry> getParticlesByPron() {
         return particlesByPron;
     }
 
-    public List<JMDictEntry> getVerbsByPron() {
+    public HashSet<JMDictEntry> getVerbsByPron() {
         return verbsByPron;
     }
 
-    public List<JMDictEntry> getAdverbsByPron() {
+    public HashSet<JMDictEntry> getAdverbsByPron() {
         return adverbsByPron;
     }
 
-    public List<JMDictEntry> getConjunctionsByPron() {
+    public HashSet<JMDictEntry> getConjunctionsByPron() {
         return conjunctionsByPron;
     }
 
-    public List<JMDictEntry> getNounsByPron() {
+    public HashSet<JMDictEntry> getNounsByPron() {
         return nounsByPron;
     }
 
-    public List<JMDictEntry> getProperNounsByPron() {
+    public HashSet<JMDictEntry> getProperNounsByPron() {
         return properNounsByPron;
     }
 
-    public List<JMDictEntry> getPrefixesByPron() {
+    public HashSet<JMDictEntry> getPrefixesByPron() {
         return prefixesByPron;
     }
 
-    public List<JMDictEntry> getAdjectivesByPron() {
+    public HashSet<JMDictEntry> getAdjectivesByPron() {
         return adjectivesByPron;
     }
 
-    public List<JMDictEntry> getAdnominalsByPron() {
+    public HashSet<JMDictEntry> getAdnominalsByPron() {
         return adnominalsByPron;
     }
 
-    public List<JMDictEntry> getExclamationsByPron() {
+    public HashSet<JMDictEntry> getExclamationsByPron() {
         return exclamationsByPron;
     }
 
-    public List<JMDictEntry> getSymbolsByPron() {
+    public HashSet<JMDictEntry> getSymbolsByPron() {
         return symbolsByPron;
     }
 
-    public List<JMDictEntry> getFillersByPron() {
+    public HashSet<JMDictEntry> getFillersByPron() {
         return fillersByPron;
     }
 
-    public List<JMDictEntry> getOthersByPron() {
+    public HashSet<JMDictEntry> getOthersByPron() {
         return othersByPron;
     }
 
-    public List<JMDictEntry> getUnclassifiedByPron() {
+    public HashSet<JMDictEntry> getUnclassifiedByPron() {
         return unclassifiedByPron;
     }
 }
