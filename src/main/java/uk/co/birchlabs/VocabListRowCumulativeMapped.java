@@ -74,6 +74,12 @@ public class VocabListRowCumulativeMapped {
     public Float getIso() { return vocabListRowCumulative.getIsolatePercent(); }
 
     public Float getCumu() { return vocabListRowCumulative.getCumulativePercent(); }
+    public boolean isFundamental() { return vocabListRowCumulative.isFundamental(); }
+    public boolean isN5() { return vocabListRowCumulative.isN5(); }
+    public boolean isN4() { return vocabListRowCumulative.isN4(); }
+    public boolean isN3() { return vocabListRowCumulative.isN3(); }
+    public boolean isN2() { return vocabListRowCumulative.isN2(); }
+    public boolean isN1() { return vocabListRowCumulative.isN1(); }
 
     // Currently gets the MeCab pos. We have access to the more expansive JMdict POS, but this is simpler to read.
     public String getPos() {
