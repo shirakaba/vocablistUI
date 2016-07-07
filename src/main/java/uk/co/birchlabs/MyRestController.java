@@ -39,7 +39,7 @@ public class MyRestController {
 //        Vocablist vocablist = new Vocablist(input, Vocablist.Filtering.MANDATORY);
 //        List<VocabListRow> sortedByFreq = vocablist.getSortedByFreq();
 //
-//        List<VocabListRowCumulative> cumulative = new ArrayList<>();
+//        List<VocabListRowCumulative> list = new ArrayList<>();
 //
 //        final int s = vocablist.getTokenCount().size();
 //        float runningPercent = 0;
@@ -47,10 +47,10 @@ public class MyRestController {
 //            VocabListRow vocabListRow = sortedByFreq.get(i);
 //            float myPercent = (float)vocabListRow.getCount() / (float)s;
 //            runningPercent += myPercent;
-//            cumulative.add(new VocabListRowCumulative(vocabListRow, myPercent, runningPercent));
+//            list.add(new VocabListRowCumulative(vocabListRow, myPercent, runningPercent));
 //        }
 //
-//        return cumulative;
+//        return list;
 //    }
 
     @RequestMapping("/test6")

@@ -2,6 +2,7 @@ package uk.co.birchlabs;
 
 import catRecurserPkg.ForwardingToken;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import uk.co.birchlabs.JMDictEntryRepo2.CollectionMode;
 import uk.co.birchlabs.JMDictPronRepo2.Mode;
 import uk.co.birchlabs.JMDictPronRepo2.POS;
@@ -24,6 +25,8 @@ public class VocabListRowCumulativeMapped2 {
     private final String tokenHiraganaPron;
     private final String tokenKatakanaPron;
     private final List<EntryReadout> entryReadouts;
+    private final List<String> defs;
+    private final POS pos;
 //    private final String representativePron;
 
     public VocabListRowCumulativeMapped2(
@@ -36,34 +39,80 @@ public class VocabListRowCumulativeMapped2 {
         token = vocabListRowCumulative.getVocabListRow().getToken();
         rowBaseForm = token.getBaseForm();
         tokenKatakanaPron = token.getReading();
-        tokenHiraganaPron = Utils.convertKana(this.tokenKatakanaPron);
+        tokenHiraganaPron = Utils.convertKana(tokenKatakanaPron);
+        pos = TokensByMecabPOS.determinePOS(vocabListRowCumulative.getVocabListRow().getToken());
         e = new HashSet<>();
 
         e.addAll(collectEntriesMatchingTokenProperty(wordEntries, CollectionMode.word));
         if(e.isEmpty()) e.addAll(collectEntriesMatchingTokenProperty(hiraganaEntriesByPOS, CollectionMode.pron, Mode.READINGS_IN_HIRAGANA));
         if(e.isEmpty()) e.addAll(collectEntriesMatchingTokenProperty(katakanaEntriesByPOS, CollectionMode.pron, Mode.READINGS_IN_KATAKANA));
-        // else: no matches were found. May need a placeholder. Eventually should integrate jmn_edict.
-
-        // JMDictPronRepo2.getEntriesFromPron() got us all the
-        entryReadouts = e
-                .stream()
-                .map(entry -> new EntryReadout(entry, vocabListRowCumulative.getVocabListRow().getToken()))
-                .collect(Collectors.toList())
-        ;
+        if(e.isEmpty()) {
+            entryReadouts = null;
+            defs = Lists.newArrayList("No definitions found in dictionary.");
+        }
+        else {
+            entryReadouts = e
+                    .stream()
+                    .map(entry -> new EntryReadout(entry, vocabListRowCumulative.getVocabListRow().getToken()))
+                    .collect(Collectors.toList())
+            ;
+            defs = entryReadouts.stream().map(EntryReadout::getDescription).collect(Collectors.toList());
+        }
 
 //        System.out.println("Gotta go fast!");
     }
 
-    // TODO: decide which fields beyond entryReadouts to expose to the website with getters.
 
-    public List<EntryReadout> getEntryReadouts() {
-        return entryReadouts;
+    public List<String> getDefs() {
+        return defs;
+    }
+
+    public String getBf() {
+        return rowBaseForm;
+    }
+
+    public Float getIso() { return vocabListRowCumulative.getIsolatePercent(); }
+
+    public Float getCumu() { return vocabListRowCumulative.getCumulativePercent(); }
+
+    // Currently gets the MeCab pos. We have access to the more expansive JMdict POS, but this is simpler to read.
+    public String getPos() {
+        switch (pos) {
+            case particles:
+                return "particle";
+            case verbsAndAux:
+                return "verb";
+            case adverbs:
+                return "adverb";
+            case conjunctions:
+                return "conjunction";
+            case nouns:
+                return "noun";
+            case properNouns:
+                return "proper noun";
+            case prefixes:
+                return "prefix";
+            case adjectives:
+                return "adjective";
+            case adnominals:
+                return "adnominal";
+            case exclamations:
+                return "exclamation";
+            case symbols:
+                return "symbol";
+            case fillers:
+                return "filler";
+            case others:
+                return "other";
+            case unclassified:
+                return "unclassified";
+            default:
+                return "undocumented POS";
+        }
     }
 
     private List<JMDictEntry> collectEntriesMatchingTokenProperty(EntriesByMecabPOS entriesByMecabPOS, CollectionMode collectionMode, Mode mode) {
         List<JMDictEntry> list = new ArrayList<>();
-        // TODO: expose POS as a field, and possibly give the enum a toString method so browser can display POS.
-        POS pos = TokensByMecabPOS.determinePOS(vocabListRowCumulative.getVocabListRow().getToken());
 
         switch (pos){
             case particles:
