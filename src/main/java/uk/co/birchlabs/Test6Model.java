@@ -6,13 +6,13 @@ import java.util.List;
  * Created by jamiebirch on 22/06/2016.
  */
 public class Test6Model {
-    List<VocabListRowCumulativeMapped2> list;
+    List<VocabListRowCumulativeMapped> list;
 
-    public Test6Model(List<VocabListRowCumulativeMapped2> list) {
+    public Test6Model(List<VocabListRowCumulativeMapped> list) {
         this.list = list;
     }
 
-    public List<VocabListRowCumulativeMapped2> getList() {
+    public List<VocabListRowCumulativeMapped> getList() {
         return list;
     }
 }

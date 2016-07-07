@@ -6,7 +6,6 @@ import com.google.common.collect.Lists;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.birchlabs.JMDictEntryRepo2.CollectionMode;
@@ -17,7 +16,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
 import static uk.co.birchlabs.JMDictPronRepo2.POS;
@@ -128,11 +126,11 @@ public class BackendApplicationTests {
 
         TokensByMecabPOS.updateTokensRemainingToBeSearched(tokensByMecabPOS, pronsFoundByMecabPOSKatakana, tokensToSearch, Mode.READINGS_IN_KATAKANA);
 
-        List<VocabListRowCumulativeMapped2> list = cumulative
+        List<VocabListRowCumulativeMapped> list = cumulative
                 .stream()
                 .map(
                         row ->
-                                new VocabListRowCumulativeMapped2(
+                                new VocabListRowCumulativeMapped(
                                         row,
                                         wordEntries,
                                         entriesByMecabPOSHiragana,

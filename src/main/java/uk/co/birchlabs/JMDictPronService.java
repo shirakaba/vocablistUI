@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static uk.co.birchlabs.JMDictPronRepo2.Mode.*;
-
 /**
  * Created by jamiebirch on 23/06/2016.
  */
@@ -96,11 +94,11 @@ public class JMDictPronService {
 
         TokensByMecabPOS.updateTokensRemainingToBeSearched(tokensByMecabPOS, pronsFoundByMecabPOSKatakana, tokensToSearch, JMDictPronRepo2.Mode.READINGS_IN_KATAKANA);
 
-        List<VocabListRowCumulativeMapped2> list = cumulative
+        List<VocabListRowCumulativeMapped> list = cumulative
                 .stream()
                 .map(
                         row ->
-                                new VocabListRowCumulativeMapped2(
+                                new VocabListRowCumulativeMapped(
                                         row,
                                         wordEntries,
                                         entriesByMecabPOSHiragana,
