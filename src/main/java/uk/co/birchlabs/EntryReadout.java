@@ -33,7 +33,7 @@ public class EntryReadout {
         this.entry = null;
         this.token = token;
         this.senses = null;
-        description = String.format("%d more results hidden. See all possibilities at:" +
+        description = String.format("%d more results hidden. Search off-site at:" +
                 "http://www.edrdg.org/cgi-bin/wwwjdic/wwwjdic?2MUE%s", count.intValue(), token.getBaseForm());
     }
 

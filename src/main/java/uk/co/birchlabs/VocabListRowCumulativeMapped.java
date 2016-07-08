@@ -54,7 +54,9 @@ public class VocabListRowCumulativeMapped {
         if(e.isEmpty()) e.addAll(collectEntriesMatchingTokenProperty(katakanaEntriesByPOS, CollectionMode.pron, Mode.READINGS_IN_KATAKANA));
         if(e.isEmpty()) {
             entryReadouts = null;
-            defs = Lists.newArrayList("No definitions found in dictionary.");
+//            defs = Lists.newArrayList("No definitions found in dictionary.");
+            defs = Lists.newArrayList(String.format("No definitions found in dictionary. Search off-site at:" +
+                    "http://www.edrdg.org/cgi-bin/wwwjdic/wwwjdic?2MUE%s", token.getBaseForm()));
         }
         else {
             entryReadouts = e
