@@ -33,6 +33,8 @@ public class VocabListRowCumulativeMapped {
     private final POS pos;
 //    private final String representativePron;
 
+    private static final Integer MAX_PHONETIC_PROPER_NOUN_ENTRYREADOUTS = 4;
+
     public VocabListRowCumulativeMapped(
             VocabListRowCumulative vocabListRowCumulative,
             Iterable<JMDictEntry> wordEntries,
@@ -55,13 +57,16 @@ public class VocabListRowCumulativeMapped {
             defs = Lists.newArrayList("No definitions found in dictionary.");
         }
         else {
-            Stream<EntryReadout> entryReadoutStream = e
+            entryReadouts = e
                     .stream()
-                    .map(entry -> new EntryReadout(entry, token));
-            if(pos.equals(properNouns)
-                    && (rowBaseForm.equals(tokenHiraganaPron)
-                    || rowBaseForm.equals(tokenKatakanaPron))) entryReadoutStream.limit(4);
-            entryReadouts = entryReadoutStream.collect(Collectors.toList());
+                    .map(entry -> new EntryReadout(entry, token)).collect(Collectors.toList());
+            if(pos.equals(properNouns) && (rowBaseForm.equals(tokenHiraganaPron) || rowBaseForm.equals(tokenKatakanaPron))) {
+                int count = entryReadouts.size();
+                if(count > MAX_PHONETIC_PROPER_NOUN_ENTRYREADOUTS){
+                    entryReadouts.subList(MAX_PHONETIC_PROPER_NOUN_ENTRYREADOUTS -1, count -1).clear();
+                    entryReadouts.add(new EntryReadout(count - MAX_PHONETIC_PROPER_NOUN_ENTRYREADOUTS, token));
+                }
+            }
             defs = entryReadouts.stream().map(EntryReadout::getDescription).collect(Collectors.toList());
         }
 

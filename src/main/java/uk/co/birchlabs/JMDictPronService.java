@@ -44,10 +44,11 @@ public class JMDictPronService {
         }
 
         Vocablist vocablist = new Vocablist(
+//                "天皇皇后がタイ、マレーシア、インドネシア、シンガポール、フィリピンを訪問している。"
 //                input,
-                nerima +
-                nihon
-               + eva
+//                nerima +
+//                nihon +
+               eva
                 ,
                 Vocablist.Filtering.MANDATORY
         );

@@ -29,6 +29,14 @@ public class EntryReadout {
         description = initDescription();
     }
 
+    public EntryReadout(Number count, ForwardingToken token) {
+        this.entry = null;
+        this.token = token;
+        this.senses = null;
+        description = String.format("%d more results hidden. See all possibilities at:" +
+                "http://www.edrdg.org/cgi-bin/wwwjdic/wwwjdic?2MUE%s", count.intValue(), token.getBaseForm());
+    }
+
     private List<String> extractDefs (JMDictSense sense) {
         return sense.getDefs().stream().map(def -> def.getSenseDataKey().getData()).collect(Collectors.toList());
     }

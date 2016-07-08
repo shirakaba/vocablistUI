@@ -14,7 +14,9 @@ public class Test6Model {
         this.list = list;
     }
 
-    public List<VocabListRowCumulativeMapped> getList() {
-        return Lists.partition(list, 100).get(0);
+    public List<VocabListRowCumulativeMapped> getList()
+    {
+//        return Lists.partition(list, 100).get(0);
+        return list;
     }
 }
