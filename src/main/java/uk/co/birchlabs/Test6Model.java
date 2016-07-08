@@ -1,5 +1,7 @@
 package uk.co.birchlabs;
 
+import com.google.common.collect.Lists;
+
 import java.util.List;
 
 /**
@@ -13,6 +15,6 @@ public class Test6Model {
     }
 
     public List<VocabListRowCumulativeMapped> getList() {
-        return list;
+        return Lists.partition(list, 100).get(0);
     }
 }

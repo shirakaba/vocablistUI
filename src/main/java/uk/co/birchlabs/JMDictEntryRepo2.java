@@ -1,6 +1,7 @@
 package uk.co.birchlabs;
 
 import catRecurserPkg.ForwardingToken;
+import com.google.common.collect.Lists;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -10,6 +11,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static uk.co.birchlabs.JMDictEntry.START_OF_PROPER_NOUNS_ID;
+import static uk.co.birchlabs.SQLiteDialect.MAX_HOST_PARAMETERS;
 
 /**
  * Created by jamiebirch on 29/06/2016.
@@ -18,6 +20,7 @@ import static uk.co.birchlabs.JMDictEntry.START_OF_PROPER_NOUNS_ID;
 public class JMDictEntryRepo2 {
     @PersistenceContext
     EntityManager em;
+
 
     /**
      * Gets all entries by their kanji forms by searching in the jmdict_word table. Will only search for proper nouns if
@@ -41,19 +44,27 @@ public class JMDictEntryRepo2 {
         else properNounsClause = "WHERE a.id > " + (START_OF_PROPER_NOUNS_ID - 1) + " ";
         List<String> baseFormsToQuery = new ArrayList<>();
         tokensToSearch.forEach(forwardingToken -> baseFormsToQuery.add(forwardingToken.getBaseForm()));
-        TypedQuery<JMDictEntry> query = em.createQuery(
-                "SELECT a " +
-                        "FROM JMDictEntry a " +
-                        // only need to specify the join because we're using a WHERE clause on it?
-                        "JOIN FETCH JMDictWord w " +
-                        "  ON a.id = w.idDataKey.id " +
-                        properNounsClause +
-                        " AND w.idDataKey.data IN :data " +
-                        "GROUP BY w.idDataKey.id",
-                JMDictEntry.class
-        );
-        query.setParameter("data", baseFormsToQuery);
-        return query.getResultList();
+
+        List<List<String>> partitionedReadingsToQuery = Lists.partition(baseFormsToQuery, MAX_HOST_PARAMETERS);
+
+        List<JMDictEntry> resultList = new ArrayList<>();
+        for (List<String> partition : partitionedReadingsToQuery) {
+            TypedQuery<JMDictEntry> query = em.createQuery(
+                    "SELECT a " +
+                            "FROM JMDictEntry a " +
+                            // only need to specify the join because we're using a WHERE clause on it?
+                            "JOIN FETCH JMDictWord w " +
+                            "  ON a.id = w.idDataKey.id " +
+                            properNounsClause +
+                            " AND w.idDataKey.data IN :data " +
+                            "GROUP BY w.idDataKey.id",
+                    JMDictEntry.class
+            );
+            query.setParameter("data", partition);
+            resultList.addAll(query.getResultList());
+        }
+
+        return resultList;
     }
 
 

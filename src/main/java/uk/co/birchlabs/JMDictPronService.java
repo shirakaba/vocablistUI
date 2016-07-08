@@ -1,10 +1,14 @@
 package uk.co.birchlabs;
 
 import catRecurserPkg.*;
+import com.google.common.base.Strings;
 import com.google.common.collect.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -28,9 +32,25 @@ public class JMDictPronService {
 //    @Autowired
 //    JMDictPronRepo jmDictPronunciationRepository;
 
-    @Deprecated
     public Test6Model test6(String input) {
-        Vocablist vocablist = new Vocablist(input, Vocablist.Filtering.MANDATORY);
+
+        String nerima = null, nihon = null, eva = null;
+        try {
+            nerima = new String(Files.readAllBytes(Paths.get("src/test/java/uk/co/birchlabs/nerima.txt")));
+            nihon = new String(Files.readAllBytes(Paths.get("src/test/java/uk/co/birchlabs/nihon.txt")));
+            eva = new String(Files.readAllBytes(Paths.get("src/test/java/uk/co/birchlabs/evangelion.txt")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Vocablist vocablist = new Vocablist(
+//                input,
+                nerima +
+                nihon
+               + eva
+                ,
+                Vocablist.Filtering.MANDATORY
+        );
         List<VocabListRow> sortedByFreq = vocablist.getSortedByFreq();
 
         List<VocabListRowCumulative> cumulative = new ArrayList<>();

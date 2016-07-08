@@ -11,7 +11,10 @@ import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 import static uk.co.birchlabs.JMDictEntry.START_OF_PROPER_NOUNS_ID;
+import static uk.co.birchlabs.SQLiteDialect.MAX_HOST_PARAMETERS;
 
 /**
  * Created by jamiebirch on 23/06/2016.
@@ -251,30 +254,37 @@ public class JMDictPronRepo2 {
                 throw new IllegalStateException();
         }
 
+
         if(ignoreProperNouns) properNounsClause = "WHERE a.id < " + START_OF_PROPER_NOUNS_ID + " ";
         else properNounsClause = "WHERE a.id > " + (START_OF_PROPER_NOUNS_ID - 1) + " ";
         if(restrictPOS) restrictPOSClause = "AND t.senseDataKey.data IN :acceptablePOS ";
         else restrictPOSClause = "";
 
-        TypedQuery<JMDictEntry> query = em.createQuery(
-                "SELECT a " + // JOIN FETCH is certainly faster (2s).
-                        "FROM JMDictEntry a " +
-                        "JOIN FETCH JMDictPron p " +
-                        "  ON a.id = p.idDataKey.id " +
-                        "JOIN FETCH JMDictSense s " +
-                        "  ON s.id = a.id "
-                        + "JOIN FETCH JMDictType t " +
-                        "ON t.senseDataKey.sense = s.data "
-                        + properNounsClause
-                        + " AND p.idDataKey.data IN :readingsToQuery "
-                        + restrictPOSClause
-                        + " GROUP BY p.idDataKey.id"
-                ,
-                JMDictEntry.class
-        );
-        query.setParameter("readingsToQuery", readingsToQuery);
-        if(restrictPOS) query.setParameter("acceptablePOS", acceptablePOS);
-//        query.setMaxResults(50);
-        return query.getResultList();
+        List<List<String>> partitionedReadingsToQuery = Lists.partition(readingsToQuery, MAX_HOST_PARAMETERS - acceptablePOS.size());
+
+        List<JMDictEntry> resultList = new ArrayList<>();
+        for (List<String> partition : partitionedReadingsToQuery) {
+            TypedQuery<JMDictEntry> query = em.createQuery(
+                    "SELECT a " + // JOIN FETCH is certainly faster (2s).
+                            "FROM JMDictEntry a " +
+                            "JOIN FETCH JMDictPron p " +
+                            "  ON a.id = p.idDataKey.id " +
+                            "JOIN FETCH JMDictSense s " +
+                            "  ON s.id = a.id "
+                            + "JOIN FETCH JMDictType t " +
+                            "ON t.senseDataKey.sense = s.data "
+                            + properNounsClause
+                            + " AND p.idDataKey.data IN :readingsToQuery "
+                            + restrictPOSClause
+                            + " GROUP BY p.idDataKey.id"
+                    ,
+                    JMDictEntry.class
+            );
+            query.setParameter("readingsToQuery", partition);
+            if(restrictPOS) query.setParameter("acceptablePOS", acceptablePOS);
+            resultList.addAll(query.getResultList());
+        }
+
+        return resultList;
     }
 }

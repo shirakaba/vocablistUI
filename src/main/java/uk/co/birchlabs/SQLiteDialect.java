@@ -12,6 +12,10 @@ import java.sql.Types;
  * Created by birch on 20/06/2016.
  */
 public class SQLiteDialect extends Dialect {
+
+    // https://www.sqlite.org/limits.html
+    public static final Integer MAX_HOST_PARAMETERS = 999;
+
     public SQLiteDialect() {
         registerColumnType(Types.BIT, "integer");
         registerColumnType(Types.TINYINT, "tinyint");
