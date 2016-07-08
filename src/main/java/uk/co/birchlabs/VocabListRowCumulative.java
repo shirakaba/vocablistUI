@@ -30,16 +30,11 @@ public class VocabListRowCumulative {
         this.isolatePercent = isolatePercent;
         this.cumulativePercent = cumulativePercent;
         // Can only expose as n1 if incoming n1 is the lowest applicable level.
-        if(!n2 && !n3 && !n4 && !n5 && !fundamental) this.n1 = n1;
-        else this.n1 = false;
-        if(!n3 && !n4 && !n5 && !fundamental) this.n2 = n2;
-        else this.n2= false;
-        if(!n4 && !n5 && !fundamental) this.n3 = n3;
-        else this.n3= false;
-        if(!n5 && !fundamental) this.n4 = n4;
-        else this.n4= false;
-        if(!fundamental) this.n5 = n5;
-        else this.n5= false;
+        this.n1 = (!n2 && !n3 && !n4 && !n5 && !fundamental) && n1;
+        this.n2 = (!n3 && !n4 && !n5 && !fundamental) && n2;
+        this.n3 = (!n4 && !n5 && !fundamental) && n3;
+        this.n4 = (!n5 && !fundamental) && n4;
+        this.n5 = !fundamental && n5;
         this.fundamental = fundamental;
     }
 
