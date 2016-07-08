@@ -3,6 +3,7 @@ package uk.co.birchlabs;
 import catRecurserPkg.ForwardingToken;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.sun.tools.javac.parser.Tokens;
 import uk.co.birchlabs.JMDictEntryRepo2.CollectionMode;
 import uk.co.birchlabs.JMDictPronRepo2.Mode;
 import uk.co.birchlabs.JMDictPronRepo2.POS;
@@ -12,7 +13,10 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import static uk.co.birchlabs.JMDictPronRepo2.POS.properNouns;
 
 /**
  * Created by jamiebirch on 03/07/2016.
@@ -51,11 +55,13 @@ public class VocabListRowCumulativeMapped {
             defs = Lists.newArrayList("No definitions found in dictionary.");
         }
         else {
-            entryReadouts = e
+            Stream<EntryReadout> entryReadoutStream = e
                     .stream()
-                    .map(entry -> new EntryReadout(entry, vocabListRowCumulative.getVocabListRow().getToken()))
-                    .collect(Collectors.toList())
-            ;
+                    .map(entry -> new EntryReadout(entry, token));
+            if(pos.equals(properNouns)
+                    && (rowBaseForm.equals(tokenHiraganaPron)
+                    || rowBaseForm.equals(tokenKatakanaPron))) entryReadoutStream.limit(4);
+            entryReadouts = entryReadoutStream.collect(Collectors.toList());
             defs = entryReadouts.stream().map(EntryReadout::getDescription).collect(Collectors.toList());
         }
 
