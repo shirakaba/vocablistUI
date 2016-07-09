@@ -53,6 +53,8 @@ public class JMDictPronService {
                 ,
                 Vocablist.Filtering.MANDATORY
         );
+        // TODO: enable the return of a List<Sentence> in response to an input ForwardingToken's hash
+        SetMultimap<ForwardingToken, Sentence> exampleSentences = unsortedVocablist.getTokensToSentences();
         List<VocabListRow> sortedByFreq = unsortedVocablist.getSortedByFreq();
 
         List<VocabListRowCumu> cumulative = buildVocabListCumu(percentLimit, unsortedVocablist, sortedByFreq);
@@ -98,6 +100,7 @@ public class JMDictPronService {
                         row ->
                                 new VocabListRowCumulativeMapped(
                                         row,
+                                        exampleSentences,
                                         wordEntries,
                                         entriesByMecabPOSHiragana,
                                         entriesByMecabPOSKatakana

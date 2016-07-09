@@ -1,16 +1,15 @@
 package uk.co.birchlabs;
 
 import catRecurserPkg.ForwardingToken;
+import catRecurserPkg.Sentence;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.google.common.collect.SetMultimap;
 import uk.co.birchlabs.JMDictEntryRepo2.CollectionMode;
 import uk.co.birchlabs.JMDictPronRepo2.Mode;
 import uk.co.birchlabs.JMDictPronRepo2.POS;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -29,12 +28,14 @@ public class VocabListRowCumulativeMapped {
     private final List<EntryReadout> entryReadouts;
     private final List<String> defs;
     private final POS pos;
-//    private final String representativePron;
+    private final List<String> exampleSentences;
 
     private static final Integer MAX_PHONETIC_PROPER_NOUN_ENTRYREADOUTS = 4;
+    private static final Integer MAX_EG_SENTENCES = 3;
 
     public VocabListRowCumulativeMapped(
             VocabListRowCumu vocabListRowCumu,
+            SetMultimap<ForwardingToken, Sentence> exampleSentences,
             Iterable<JMDictEntry> wordEntries,
             EntriesByMecabPOS hiraganaEntriesByPOS,
             EntriesByMecabPOS katakanaEntriesByPOS
@@ -44,7 +45,16 @@ public class VocabListRowCumulativeMapped {
         rowBaseForm = token.getBaseForm();
         tokenKatakanaPron = token.getReading();
         tokenHiraganaPron = Utils.convertKana(tokenKatakanaPron);
-        pos = TokensByMecabPOS.determinePOS(vocabListRowCumu.getVocabListRow().getToken());
+        pos = TokensByMecabPOS.determinePOS(token);
+        this.exampleSentences = exampleSentences
+                .get(token)
+                .stream()
+                .unordered()
+                .map(Sentence::getSentence)
+                .limit(MAX_EG_SENTENCES)
+                .collect(Collectors.toList())
+        ;
+
         e = new HashSet<>();
 
         e.addAll(collectEntriesMatchingTokenProperty(wordEntries, CollectionMode.word));
@@ -52,7 +62,6 @@ public class VocabListRowCumulativeMapped {
         if(e.isEmpty()) e.addAll(collectEntriesMatchingTokenProperty(katakanaEntriesByPOS, CollectionMode.pron, Mode.READINGS_IN_KATAKANA));
         if(e.isEmpty()) {
             entryReadouts = null;
-//            defs = Lists.newArrayList("No definitions found in dictionary.");
             defs = Lists.newArrayList(String.format("No definitions found in dictionary. Search off-site at:" +
                     "http://www.edrdg.org/cgi-bin/wwwjdic/wwwjdic?QMDJ%s", token.getBaseForm()));
         }
@@ -69,10 +78,13 @@ public class VocabListRowCumulativeMapped {
             }
             defs = entryReadouts.stream().map(EntryReadout::getDescription).collect(Collectors.toList());
         }
-
-//        System.out.println("Gotta go fast!");
+        System.out.println("Gotta go fast!");
     }
 
+    public List<String> getExampleSentences() {
+//        return Lists.partition(exampleSentences, MAX_EG_SENTENCES).get(0);
+        return exampleSentences;
+    }
 
     public List<String> getDefs() {
         return defs;
