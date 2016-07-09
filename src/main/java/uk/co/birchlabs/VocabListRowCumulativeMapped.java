@@ -3,7 +3,6 @@ package uk.co.birchlabs;
 import catRecurserPkg.ForwardingToken;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.sun.tools.javac.parser.Tokens;
 import uk.co.birchlabs.JMDictEntryRepo2.CollectionMode;
 import uk.co.birchlabs.JMDictPronRepo2.Mode;
 import uk.co.birchlabs.JMDictPronRepo2.POS;
@@ -13,7 +12,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import static uk.co.birchlabs.JMDictPronRepo2.POS.properNouns;
@@ -22,7 +20,7 @@ import static uk.co.birchlabs.JMDictPronRepo2.POS.properNouns;
  * Created by jamiebirch on 03/07/2016.
  */
 public class VocabListRowCumulativeMapped {
-    private final VocabListRowCumulative vocabListRowCumulative;
+    private final VocabListRowCumu vocabListRowCumu;
     private final Collection<JMDictEntry> e;
     private final ForwardingToken token;
     private final String rowBaseForm;
@@ -36,17 +34,17 @@ public class VocabListRowCumulativeMapped {
     private static final Integer MAX_PHONETIC_PROPER_NOUN_ENTRYREADOUTS = 4;
 
     public VocabListRowCumulativeMapped(
-            VocabListRowCumulative vocabListRowCumulative,
+            VocabListRowCumu vocabListRowCumu,
             Iterable<JMDictEntry> wordEntries,
             EntriesByMecabPOS hiraganaEntriesByPOS,
             EntriesByMecabPOS katakanaEntriesByPOS
     ) {
-        this.vocabListRowCumulative = vocabListRowCumulative;
-        token = vocabListRowCumulative.getVocabListRow().getToken();
+        this.vocabListRowCumu = vocabListRowCumu;
+        token = vocabListRowCumu.getVocabListRow().getToken();
         rowBaseForm = token.getBaseForm();
         tokenKatakanaPron = token.getReading();
         tokenHiraganaPron = Utils.convertKana(tokenKatakanaPron);
-        pos = TokensByMecabPOS.determinePOS(vocabListRowCumulative.getVocabListRow().getToken());
+        pos = TokensByMecabPOS.determinePOS(vocabListRowCumu.getVocabListRow().getToken());
         e = new HashSet<>();
 
         e.addAll(collectEntriesMatchingTokenProperty(wordEntries, CollectionMode.word));
@@ -84,15 +82,15 @@ public class VocabListRowCumulativeMapped {
         return rowBaseForm;
     }
 
-    public Float getIso() { return vocabListRowCumulative.getIsolatePercent(); }
+    public Float getIso() { return vocabListRowCumu.getIsolatePercent(); }
 
-    public Float getCumu() { return vocabListRowCumulative.getCumulativePercent(); }
-    public boolean isFundamental() { return vocabListRowCumulative.isFundamental(); }
-    public boolean isN5() { return vocabListRowCumulative.isN5(); }
-    public boolean isN4() { return vocabListRowCumulative.isN4(); }
-    public boolean isN3() { return vocabListRowCumulative.isN3(); }
-    public boolean isN2() { return vocabListRowCumulative.isN2(); }
-    public boolean isN1() { return vocabListRowCumulative.isN1(); }
+    public Float getCumu() { return vocabListRowCumu.getCumulativePercent(); }
+    public boolean isFundamental() { return vocabListRowCumu.isFundamental(); }
+    public boolean isN5() { return vocabListRowCumu.isN5(); }
+    public boolean isN4() { return vocabListRowCumu.isN4(); }
+    public boolean isN3() { return vocabListRowCumu.isN3(); }
+    public boolean isN2() { return vocabListRowCumu.isN2(); }
+    public boolean isN1() { return vocabListRowCumu.isN1(); }
 
     // Currently gets the MeCab pos. We have access to the more expansive JMdict POS, but this is simpler to read.
     public String getPos() {

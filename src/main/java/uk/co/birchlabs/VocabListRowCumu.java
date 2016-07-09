@@ -5,7 +5,7 @@ import catRecurserPkg.VocabListRow;
 /**
  * Created by jamiebirch on 22/06/2016.
  */
-public class VocabListRowCumulative {
+public class VocabListRowCumu {
     private final VocabListRow vocabListRow;
     private final Float cumulativePercent;
     private final Float isolatePercent;
@@ -16,15 +16,15 @@ public class VocabListRowCumulative {
     private final boolean n2;
     private final boolean n1;
 
-    public VocabListRowCumulative(VocabListRow vocabListRow,
-                                  Float isolatePercent,
-                                  Float cumulativePercent,
-                                  boolean fundamental,
-                                  boolean n5,
-                                  boolean n4,
-                                  boolean n3,
-                                  boolean n2,
-                                  boolean n1
+    public VocabListRowCumu(VocabListRow vocabListRow,
+                            Float isolatePercent,
+                            Float cumulativePercent,
+                            boolean fundamental,
+                            boolean n5,
+                            boolean n4,
+                            boolean n3,
+                            boolean n2,
+                            boolean n1
     ) {
         this.vocabListRow = vocabListRow;
         this.isolatePercent = isolatePercent;

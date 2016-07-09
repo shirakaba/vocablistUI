@@ -1,7 +1,6 @@
 package uk.co.birchlabs;
 
 import catRecurserPkg.*;
-import com.google.common.base.Strings;
 import com.google.common.collect.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +31,9 @@ public class JMDictPronService {
 //    @Autowired
 //    JMDictPronRepo jmDictPronunciationRepository;
 
-    public Test6Model test6(String input) {
+    private static Integer PERCENT_TO_DECIMAL = 100;
+
+    public Test6Model test6(Integer partition, Float percentLimit, String input) {
 
         String nerima = null, nihon = null, eva = null;
         try {
@@ -43,7 +44,7 @@ public class JMDictPronService {
             e.printStackTrace();
         }
 
-        Vocablist vocablist = new Vocablist(
+        Vocablist unsortedVocablist = new Vocablist(
 //                "よしのり"
 //                input
 //                nerima +
@@ -52,33 +53,9 @@ public class JMDictPronService {
                 ,
                 Vocablist.Filtering.MANDATORY
         );
-        List<VocabListRow> sortedByFreq = vocablist.getSortedByFreq();
+        List<VocabListRow> sortedByFreq = unsortedVocablist.getSortedByFreq();
 
-        List<VocabListRowCumulative> cumulative = new ArrayList<>();
-
-        final int s = vocablist.getTokenCount().size();
-        float runningPercent = 0;
-        for (int i = 0; i < sortedByFreq.size(); i++) {
-            VocabListRow vocabListRow = sortedByFreq.get(i);
-            float myPercent = (float)vocabListRow.getCount() / (float)s;
-            runningPercent += myPercent;
-            boolean fundamental = Vocablist.filterOut(vocabListRow.getToken(), Vocablist.Filtering.FUNDAMENTAL);
-            boolean n5 = Filter.N5_BLACKLIST.contains(vocabListRow.getToken().getBaseForm());
-            boolean n4 = Filter.N4_BLACKLIST.contains(vocabListRow.getToken().getBaseForm());
-            boolean n3 = Filter.N3_BLACKLIST.contains(vocabListRow.getToken().getBaseForm());
-            boolean n2 = Filter.N2_BLACKLIST.contains(vocabListRow.getToken().getBaseForm());
-            boolean n1 = Filter2.N1_BLACKLIST.contains(vocabListRow.getToken().getBaseForm());
-            cumulative.add(new VocabListRowCumulative(vocabListRow,
-                    myPercent,
-                    runningPercent,
-                    fundamental,
-                    n5,
-                    n4,
-                    n3,
-                    n2,
-                    n1
-            ));
-        }
+        List<VocabListRowCumu> cumulative = buildVocabListCumu(percentLimit, unsortedVocablist, sortedByFreq);
 
         Set<ForwardingToken> tokensToSearch = new HashSet<>();
         Set<ForwardingToken> tokensToSearchInProperNouns = new HashSet<>();
@@ -128,6 +105,39 @@ public class JMDictPronService {
                 )
                 .collect(Collectors.toList());
 
-        return new Test6Model(list);
+        // Partition the list only if partition size is non-zero.
+        if(partition.equals(0)) return new Test6Model(list);
+        else return new Test6Model(Lists.partition(list, partition).get(0));
+    }
+
+
+    private List<VocabListRowCumu> buildVocabListCumu(Float limit, Vocablist vocablist, List<VocabListRow> sortedByFreq) {
+        List<VocabListRowCumu> cumulative = new ArrayList<>();
+
+        final int s = vocablist.getTokenCount().size();
+        float runningPercent = 0;
+        for (int i = 0; i < sortedByFreq.size(); i++) {
+            VocabListRow vocabListRow = sortedByFreq.get(i);
+            float myPercent = (float)vocabListRow.getCount() / (float)s;
+            runningPercent += myPercent;
+            if(runningPercent > (limit/PERCENT_TO_DECIMAL)) return cumulative; // bail out early if limit has been reached.
+            boolean fundamental = Vocablist.filterOut(vocabListRow.getToken(), Vocablist.Filtering.FUNDAMENTAL);
+            boolean n5 = Filter.N5_BLACKLIST.contains(vocabListRow.getToken().getBaseForm());
+            boolean n4 = Filter.N4_BLACKLIST.contains(vocabListRow.getToken().getBaseForm());
+            boolean n3 = Filter.N3_BLACKLIST.contains(vocabListRow.getToken().getBaseForm());
+            boolean n2 = Filter.N2_BLACKLIST.contains(vocabListRow.getToken().getBaseForm());
+            boolean n1 = Filter2.N1_BLACKLIST.contains(vocabListRow.getToken().getBaseForm());
+            cumulative.add(new VocabListRowCumu(vocabListRow,
+                    myPercent,
+                    runningPercent,
+                    fundamental,
+                    n5,
+                    n4,
+                    n3,
+                    n2,
+                    n1
+            ));
+        }
+        return cumulative;
     }
 }

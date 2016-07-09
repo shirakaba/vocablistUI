@@ -60,7 +60,7 @@ public class MyController {
         Vocablist vocablist = new Vocablist(input, Vocablist.Filtering.MANDATORY);
         List<VocabListRow> sortedByFreq = vocablist.getSortedByFreq();
 
-        List<VocabListRowCumulative> cumulative = new ArrayList<>();
+        List<VocabListRowCumu> cumulative = new ArrayList<>();
 
         final int s = vocablist.getTokenCount().size();
         float runningPercent = 0;
@@ -68,7 +68,7 @@ public class MyController {
             VocabListRow vocabListRow = sortedByFreq.get(i);
             float myPercent = (float)vocabListRow.getCount() / (float)s;
             runningPercent += myPercent;
-            cumulative.add(new VocabListRowCumulative(vocabListRow, myPercent, runningPercent, false, false, false, false, false, false));
+            cumulative.add(new VocabListRowCumu(vocabListRow, myPercent, runningPercent, false, false, false, false, false, false));
         }
 
 //        model.addAttribute("theObject", vocablist);

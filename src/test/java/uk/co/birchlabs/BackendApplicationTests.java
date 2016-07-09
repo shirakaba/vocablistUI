@@ -65,7 +65,7 @@ public class BackendApplicationTests {
 				Vocablist.Filtering.MANDATORY);
 		List<VocabListRow> sortedByFreq = vocablist.getSortedByFreq();
 
-		List<VocabListRowCumulative> cumulative = new ArrayList<>();
+		List<VocabListRowCumu> cumulative = new ArrayList<>();
 
 		final int s = vocablist.getTokenCount().size();
 		float runningPercent = 0;
@@ -79,7 +79,7 @@ public class BackendApplicationTests {
 			boolean n3 = Filter.N3_BLACKLIST.contains(vocabListRow.getToken().getBaseForm());
 			boolean n2 = Filter.N2_BLACKLIST.contains(vocabListRow.getToken().getBaseForm());
 			boolean n1 = Filter2.N1_BLACKLIST.contains(vocabListRow.getToken().getBaseForm());
-			cumulative.add(new VocabListRowCumulative(vocabListRow,
+			cumulative.add(new VocabListRowCumu(vocabListRow,
 					myPercent,
 					runningPercent,
 					fundamental,
