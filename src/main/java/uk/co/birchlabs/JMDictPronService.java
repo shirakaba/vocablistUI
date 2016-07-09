@@ -44,11 +44,11 @@ public class JMDictPronService {
         }
 
         Vocablist vocablist = new Vocablist(
-                "よしのり"
+//                "よしのり"
 //                input
 //                nerima +
 //                nihon +
-//               eva
+               eva
                 ,
                 Vocablist.Filtering.MANDATORY
         );

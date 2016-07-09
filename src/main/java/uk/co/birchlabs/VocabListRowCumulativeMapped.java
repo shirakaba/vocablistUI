@@ -56,7 +56,7 @@ public class VocabListRowCumulativeMapped {
             entryReadouts = null;
 //            defs = Lists.newArrayList("No definitions found in dictionary.");
             defs = Lists.newArrayList(String.format("No definitions found in dictionary. Search off-site at:" +
-                    "http://www.edrdg.org/cgi-bin/wwwjdic/wwwjdic?2MUE%s", token.getBaseForm()));
+                    "http://www.edrdg.org/cgi-bin/wwwjdic/wwwjdic?QMDJ%s", token.getBaseForm()));
         }
         else {
             entryReadouts = e
