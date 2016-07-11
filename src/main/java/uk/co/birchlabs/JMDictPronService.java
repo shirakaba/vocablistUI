@@ -33,7 +33,7 @@ public class JMDictPronService {
 
     private static Integer PERCENT_TO_DECIMAL = 100;
 
-    public Test6Model test6(Integer partition, Float percentLimit, String input) {
+    public Test6Model test6(Float minYield, Integer partition, Float percentLimit, String input) {
 
         String nerima = null, nihon = null, eva = null;
         try {
@@ -49,10 +49,10 @@ public class JMDictPronService {
 //                input
 //                nerima +
 //                nihon +
-//               eva
+               eva
 //                "東京23区の中では最も新しく誕生した区で。"
-                "東京23区の中では最も新しく誕生した区で、板橋区の一部だった旧北豊島郡練馬町・上練馬村・中新井村・石神井村・大泉村の区域が1947年8月1日に分離して発足した。当時、広大な板橋区の区役所までの経路が遠く、著しく不便であったことが分離の要因とされている。板橋区は練馬、石神井に行政派出所（後に、支所）を設けたが、行政サービスは極めて限られていたため、西武池袋線沿線を中心として生活する住民の要望にこたえる形で分離された[1]。\n" +
-                "練馬区は緑の多い閑静な住宅街であり、最低居住面積水準未満の世帯率は東京23区で最も低い。練馬区民の男性の平均寿命は81.2歳で全国で第5位、東京23区で第1位である[2]。また刑法犯認知件数は、人口が60万人以上のほぼ同規模の特別区[3]の中で大田区に次いで少ない[4]。人口は約70万人で、23区中世田谷区に次いで多い。近年は副都心線や大江戸線などの開通に伴って、マンション建設ラッシュに沸いている。"
+//                "東京23区の中では最も新しく誕生した区で、板橋区の一部だった旧北豊島郡練馬町・上練馬村・中新井村・石神井村・大泉村の区域が1947年8月1日に分離して発足した。当時、広大な板橋区の区役所までの経路が遠く、著しく不便であったことが分離の要因とされている。板橋区は練馬、石神井に行政派出所（後に、支所）を設けたが、行政サービスは極めて限られていたため、西武池袋線沿線を中心として生活する住民の要望にこたえる形で分離された[1]。\n" +
+//                "練馬区は緑の多い閑静な住宅街であり、最低居住面積水準未満の世帯率は東京23区で最も低い。練馬区民の男性の平均寿命は81.2歳で全国で第5位、東京23区で第1位である[2]。また刑法犯認知件数は、人口が60万人以上のほぼ同規模の特別区[3]の中で大田区に次いで少ない[4]。人口は約70万人で、23区中世田谷区に次いで多い。近年は副都心線や大江戸線などの開通に伴って、マンション建設ラッシュに沸いている。"
                 ,
                 Vocablist.Filtering.MANDATORY
         );
@@ -60,7 +60,7 @@ public class JMDictPronService {
         SetMultimap<ForwardingToken, Sentence> exampleSentences = unsortedVocablist.getTokensToSentences();
         List<VocabListRow> sortedByFreq = unsortedVocablist.getSortedByFreq();
 
-        List<VocabListRowCumu> cumulative = buildVocabListCumu(percentLimit, unsortedVocablist, sortedByFreq);
+        List<VocabListRowCumu> cumulative = buildVocabListCumu(minYield, percentLimit, unsortedVocablist, sortedByFreq);
 
         Set<ForwardingToken> tokensToSearch = new HashSet<>();
         Set<ForwardingToken> tokensToSearchInProperNouns = new HashSet<>();
@@ -117,7 +117,7 @@ public class JMDictPronService {
     }
 
 
-    private List<VocabListRowCumu> buildVocabListCumu(Float limit, Vocablist vocablist, List<VocabListRow> sortedByFreq) {
+    private List<VocabListRowCumu> buildVocabListCumu(Float minimumYield, Float limit, Vocablist vocablist, List<VocabListRow> sortedByFreq) {
         List<VocabListRowCumu> cumulative = new ArrayList<>();
 
         final int s = vocablist.getTokenCount().size();
@@ -126,7 +126,8 @@ public class JMDictPronService {
             VocabListRow vocabListRow = sortedByFreq.get(i);
             float myPercent = (float)vocabListRow.getCount() / (float)s;
             runningPercent += myPercent;
-            if(runningPercent > (limit/PERCENT_TO_DECIMAL)) return cumulative; // bail out early if limit has been reached.
+            if(myPercent < (minimumYield/PERCENT_TO_DECIMAL)) return cumulative; // bail out early if token's yield too low.
+            if(runningPercent > (limit/PERCENT_TO_DECIMAL)) return cumulative; // bail out early if cumulative limit is reached.
             boolean fundamental = Vocablist.filterOut(vocabListRow.getToken(), Vocablist.Filtering.FUNDAMENTAL);
             boolean n5 = Filter.N5_BLACKLIST.contains(vocabListRow.getToken().getBaseForm());
             boolean n4 = Filter.N4_BLACKLIST.contains(vocabListRow.getToken().getBaseForm());
