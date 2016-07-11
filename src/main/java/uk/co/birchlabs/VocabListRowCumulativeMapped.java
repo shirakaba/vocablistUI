@@ -33,6 +33,17 @@ public class VocabListRowCumulativeMapped {
     private static final Integer MAX_PHONETIC_PROPER_NOUN_ENTRYREADOUTS = 4;
     private static final Integer MAX_EG_SENTENCES = 3;
 
+    private List<String> convertSentencesToStrings(SetMultimap<ForwardingToken, Sentence> exampleSentences) {
+        return exampleSentences
+                .get(token)
+                .stream()
+                .unordered()
+                .map(Sentence::getSentence)
+                .limit(MAX_EG_SENTENCES)
+                .collect(Collectors.toList())
+                ;
+    }
+
     public VocabListRowCumulativeMapped(
             VocabListRowCumu vocabListRowCumu,
             SetMultimap<ForwardingToken, Sentence> exampleSentences,
@@ -46,14 +57,7 @@ public class VocabListRowCumulativeMapped {
         tokenKatakanaPron = token.getReading();
         tokenHiraganaPron = Utils.convertKana(tokenKatakanaPron);
         pos = TokensByMecabPOS.determinePOS(token);
-        this.exampleSentences = exampleSentences
-                .get(token)
-                .stream()
-                .unordered()
-                .map(Sentence::getSentence)
-                .limit(MAX_EG_SENTENCES)
-                .collect(Collectors.toList())
-        ;
+        this.exampleSentences = convertSentencesToStrings(exampleSentences);
 
         e = new HashSet<>();
 
@@ -78,12 +82,13 @@ public class VocabListRowCumulativeMapped {
             }
             defs = entryReadouts.stream().map(EntryReadout::getDescription).collect(Collectors.toList());
         }
-        System.out.println("Gotta go fast!");
+//        System.out.println("Gotta go fast!");
     }
 
     public List<String> getExampleSentences() {
 //        return Lists.partition(exampleSentences, MAX_EG_SENTENCES).get(0);
         return exampleSentences;
+//        return new ArrayList<>(); // For evangelion.txt: 530kB added to a 360kB JSON with 3 sentences
     }
 
     public List<String> getDefs() {
