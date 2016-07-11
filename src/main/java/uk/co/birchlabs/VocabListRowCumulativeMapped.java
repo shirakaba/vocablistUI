@@ -33,15 +33,56 @@ public class VocabListRowCumulativeMapped {
     private static final Integer MAX_PHONETIC_PROPER_NOUN_ENTRYREADOUTS = 4;
     private static final Integer MAX_EG_SENTENCES = 3;
 
+    private class MappedSentence{
+        private final List<ForwardingToken> sentenceAsTokens;
+        private String sentenceAsString;
+
+        public MappedSentence(List<ForwardingToken> sentenceAsTokens, String sentenceAsString) {
+            this.sentenceAsTokens = sentenceAsTokens;
+            this.sentenceAsString = sentenceAsString;
+        }
+
+        public List<ForwardingToken> getSentenceAsTokens() {
+            return sentenceAsTokens;
+        }
+
+        public String getSentenceAsString() {
+            return sentenceAsString;
+        }
+
+        public void setSentenceAsString(String sentenceAsString) {
+            this.sentenceAsString = sentenceAsString;
+        }
+    }
+
+
     private List<String> convertSentencesToStrings(SetMultimap<ForwardingToken, Sentence> exampleSentences) {
-        return exampleSentences
-                .get(token)
+//        List<String> boldSentences = new ArrayList<>();
+
+        Set<Sentence> sentences = exampleSentences.get(token);
+        List<MappedSentence> mappedSentences = sentences
                 .stream()
-                .unordered()
-                .map(Sentence::getSentence)
+                .map(sentence -> new MappedSentence(sentence.getTokens(), sentence.getSentence()))
                 .limit(MAX_EG_SENTENCES)
                 .collect(Collectors.toList())
                 ;
+        for (MappedSentence mappedSentence : mappedSentences) {
+            mappedSentence
+                    .getSentenceAsTokens()
+                    .stream()
+                    .filter(t -> t.equals(token))
+                    .map(ForwardingToken::getSurfaceForm)
+                    .forEach(surfaceForm -> mappedSentence.setSentenceAsString(mappedSentence.getSentenceAsString().replaceAll(surfaceForm, '{' + surfaceForm + '}')));
+        }
+
+        return mappedSentences.stream().map(MappedSentence::getSentenceAsString).collect(Collectors.toList());
+//        return sentences
+//                .stream()
+//                .unordered()
+//                .map(Sentence::getSentence)
+//                .limit(MAX_EG_SENTENCES)
+//                .collect(Collectors.toList())
+//                ;
     }
 
     public VocabListRowCumulativeMapped(
@@ -207,7 +248,7 @@ public class VocabListRowCumulativeMapped {
             case pron:
                 return StreamSupport
                         .stream(wordEntries.spliterator(), false)
-                        // take only whose words...data equals the token's baseForm.
+                        // take only whose words...data equals the token's surfaceForm.
                         .filter(
                                 entry -> Iterables.tryFind(
                                         entry
@@ -238,7 +279,7 @@ public class VocabListRowCumulativeMapped {
             case word:
                 return StreamSupport
                         .stream(wordEntries.spliterator(), false)
-                        // take only whose words...data equals the token's baseForm.
+                        // take only whose words...data equals the token's surfaceForm.
                         .filter(
                                 entry -> Iterables.tryFind(
                                         entry
