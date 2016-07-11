@@ -50,7 +50,7 @@ public class VocabListRowCumulativeMapped {
                 .get(token)
                 .stream()
                 .unordered()
-                .map(sentence -> sentence.reconstructSentence(token, "{", "}"))
+                .map(sentence -> sentence.reconstructSentence(token, "{{{", "}}}"))
                 .limit(MAX_EG_SENTENCES)
                 .collect(Collectors.toList())
         ;
