@@ -31,9 +31,9 @@ public class VocabListRowCumulativeMapped {
     private final List<String> exampleSentences;
 
     private static final Integer MAX_PHONETIC_PROPER_NOUN_ENTRYREADOUTS = 4;
-    private static final Integer MAX_EG_SENTENCES = 3;
 
     public VocabListRowCumulativeMapped(
+            Integer maxEgs,
             VocabListRowCumu vocabListRowCumu,
             SetMultimap<ForwardingToken, Sentence> exampleSentences,
             Iterable<JMDictEntry> wordEntries,
@@ -51,7 +51,7 @@ public class VocabListRowCumulativeMapped {
                 .stream()
                 .unordered()
                 .map(sentence -> sentence.reconstructSentence(token, "{{{", "}}}"))
-                .limit(MAX_EG_SENTENCES)
+                .limit(maxEgs)
                 .collect(Collectors.toList())
         ;
 

@@ -33,7 +33,7 @@ public class JMDictPronService {
 
     private static Integer PERCENT_TO_DECIMAL = 100;
 
-    public Test6Model test6(Float minYield, Integer partition, Float percentLimit, String input) {
+    public Test6Model test6(Integer egs, Float minYield, Integer partition, Float percentLimit, String input) {
 
         String nerima = null, nihon = null, eva = null;
         try {
@@ -102,6 +102,7 @@ public class JMDictPronService {
                 .map(
                         row ->
                                 new VocabListRowCumulativeMapped(
+                                        egs,
                                         row,
                                         exampleSentences,
                                         wordEntries,
