@@ -19,6 +19,7 @@ public class EntryReadout {
     private final List<JMDictSense> senses;
     private final SetMultimap<JMDictSense, String> sensesToDefs = HashMultimap.create();
     private final SetMultimap<JMDictSense, String> sensesToPOS = HashMultimap.create();
+    public static final String MEANINGS_START_KEY = "：";
 
     public EntryReadout(JMDictEntry entry, ForwardingToken token) {
         this.entry = entry;
@@ -63,7 +64,7 @@ public class EntryReadout {
         }
         if(!words.isEmpty()) sb.append(']');
 
-        sb.append(' ');
+        sb.append(MEANINGS_START_KEY);
 
 //        // For verbs, just show baseform. For non-verbs, show reading provided it differs from baseform.
 //        if(!token.isVerb())

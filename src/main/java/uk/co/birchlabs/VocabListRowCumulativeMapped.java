@@ -30,6 +30,7 @@ public class VocabListRowCumulativeMapped {
     private final POS pos;
     private final List<String> exampleSentences;
 
+    public static final String NO_DEF_KEY = "No definitions";
     private static final Integer MAX_PHONETIC_PROPER_NOUN_ENTRYREADOUTS = 4;
 
     public VocabListRowCumulativeMapped(
@@ -62,8 +63,8 @@ public class VocabListRowCumulativeMapped {
         if(e.isEmpty()) e.addAll(collectEntriesMatchingTokenProperty(katakanaEntriesByPOS, CollectionMode.pron, Mode.READINGS_IN_KATAKANA));
         if(e.isEmpty()) {
             entryReadouts = null;
-            defs = Lists.newArrayList(String.format("No definitions found in dictionary. Search off-site at:" +
-                    "http://jisho.org/search/%s", token.getBaseForm()));
+            defs = Lists.newArrayList(String.format("%s found in dictionary. Search off-site at:" +
+                    "http://jisho.org/search/%s", NO_DEF_KEY, token.getBaseForm()));
         }
         else {
             entryReadouts = e
