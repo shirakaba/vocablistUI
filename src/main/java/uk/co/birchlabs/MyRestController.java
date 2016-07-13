@@ -56,7 +56,7 @@ public class MyRestController {
     @RequestMapping("/test6")
     public Test6Model test6(
             // eg. http://localhost:8080/test4?input="この俺が俺です。"
-            @RequestParam(name="makeTest", defaultValue = "false") boolean makeTest,
+            @RequestParam(name="makeQuiz", defaultValue = "false") boolean makeQuiz,
             @RequestParam(name="maxarticles", defaultValue = "3") Integer maxArticles,
             @RequestParam(name="filtering", defaultValue = "mandatory") String filtering,
             @RequestParam(name="egs", defaultValue = "3") Integer egs,
@@ -65,6 +65,6 @@ public class MyRestController {
             @RequestParam(name="limit", defaultValue = "95") Float limit,
             @RequestParam(name="input", defaultValue = "するためにしない。する為に行く。何のためにした？自分の為。する為。") String input
     ) {
-        return jmDictPronService.test6(makeTest, maxArticles, filtering, egs, minYield, partition, limit, input);
+        return jmDictPronService.test6(makeQuiz, maxArticles, filtering, egs, minYield, partition, limit, input);
     }
 }

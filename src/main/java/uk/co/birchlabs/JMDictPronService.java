@@ -32,9 +32,9 @@ public class JMDictPronService {
 //    @Autowired
 //    JMDictPronRepo jmDictPronunciationRepository;
 
-    private static Integer PERCENT_TO_DECIMAL = 100;
+    public static Integer PERCENT_TO_DECIMAL = 100;
 
-    public Test6Model test6(boolean makeTest, Integer maxArticles, String filtering, Integer egs, Float minYield, Integer partition, Float percentLimit, String input) {
+    public Test6Model test6(boolean makeQuiz, Integer maxArticles, String filtering, Integer egs, Float minYield, Integer partition, Float percentLimit, String input) {
 
         Filtering filteringEnum = determineFiltering(filtering);
         Vocablist unsortedVocablist;
@@ -122,10 +122,14 @@ public class JMDictPronService {
                 )
                 .collect(Collectors.toList());
 
-        // Partition the list only if partition size is non-zero.
+        if(makeQuiz){
+            if(partition.equals(0)) return new Test6Model(list, exampleSentences);
+            else return new Test6Model(Lists.partition(list, partition).get(0), exampleSentences);
+        }
         if(partition.equals(0)) return new Test6Model(list);
         else return new Test6Model(Lists.partition(list, partition).get(0));
     }
+
 
     private Filtering determineFiltering(String filtering) {
         Filtering filteringEnum;
