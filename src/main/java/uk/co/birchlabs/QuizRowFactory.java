@@ -17,7 +17,8 @@ public class QuizRowFactory {
             case pron:
                 return new PronQuizRow(bf, fulldef);
             case kanji:
-                break;
+                // TODO: ensure only things with distinct baseform & reading reach this.
+                return new KanjiQuizRow(bf, fulldef);
         }
     }
 }
