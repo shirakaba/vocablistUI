@@ -1,5 +1,5 @@
 -- As of commit f048bd3, wherein large 'grammatical' group was used
-SELECT e.id, p.data AS pron, w.data AS word, s.data AS sense, d.data AS def, t.data AS type FROM jmdict_entry e
+SELECT e.id, p.data AS pron, w.data AS word, s.data AS sense, d.data AS quiz, t.data AS type FROM jmdict_entry e
 JOIN jmdict_pronunciation p
   ON e.id = p.id
 JOIN jmdict_sense s
@@ -13,7 +13,7 @@ LEFT JOIN jmdict_word w
 WHERE e.id IN (1314550, 1399250, 1402240, 1436510, 1469800, 2028920, 2028930, 2028940, 2028980, 2028990, 2029010, 2086960, 2224630, 2270030, 2654270, 2773810)
 -- Expecting: mo, hodo, ga, wo, te, de ni, no, ha
 ;
-id|pron|word|sense|def|type
+id|pron|word|sense|quiz|type
 1314550|に|似|34771|'takes after (either of one''s parents)'|suf
 1399250|も|喪|44827|mourning|adj-no
 1399250|も|喪|44827|mourning|n
