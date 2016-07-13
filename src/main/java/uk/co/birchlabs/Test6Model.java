@@ -9,6 +9,7 @@ import java.util.List;
  */
 public class Test6Model {
     List<VocabListRowCumulativeMapped> list;
+    // also a Test object.
 
     public Test6Model(List<VocabListRowCumulativeMapped> list) {
         this.list = list;

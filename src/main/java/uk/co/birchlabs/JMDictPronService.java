@@ -34,7 +34,7 @@ public class JMDictPronService {
 
     private static Integer PERCENT_TO_DECIMAL = 100;
 
-    public Test6Model test6(Integer maxArticles, String filtering, Integer egs, Float minYield, Integer partition, Float percentLimit, String input) {
+    public Test6Model test6(boolean makeTest, Integer maxArticles, String filtering, Integer egs, Float minYield, Integer partition, Float percentLimit, String input) {
 
         Filtering filteringEnum = determineFiltering(filtering);
         Vocablist unsortedVocablist;

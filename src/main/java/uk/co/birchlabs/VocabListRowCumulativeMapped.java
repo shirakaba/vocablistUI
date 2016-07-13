@@ -63,7 +63,7 @@ public class VocabListRowCumulativeMapped {
         if(e.isEmpty()) {
             entryReadouts = null;
             defs = Lists.newArrayList(String.format("No definitions found in dictionary. Search off-site at:" +
-                    "http://www.edrdg.org/cgi-bin/wwwjdic/wwwjdic?QMDJ%s", token.getBaseForm()));
+                    "http://jisho.org/search/%s", token.getBaseForm()));
         }
         else {
             entryReadouts = e
