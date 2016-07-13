@@ -122,12 +122,8 @@ public class JMDictPronService {
                 )
                 .collect(Collectors.toList());
 
-        if(makeQuiz){
-            if(partition.equals(0)) return new Test6Model(list, exampleSentences);
-            else return new Test6Model(Lists.partition(list, partition).get(0), exampleSentences);
-        }
-        if(partition.equals(0)) return new Test6Model(list);
-        else return new Test6Model(Lists.partition(list, partition).get(0));
+        if(partition.equals(0)) return new Test6Model(list, makeQuiz);
+        else return new Test6Model(Lists.partition(list, partition).get(0), makeQuiz);
     }
 
 

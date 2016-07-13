@@ -11,39 +11,36 @@ import static uk.co.birchlabs.EntryReadout.PRONS_START_KEY;
  */
 public class PronQuizRow implements QuizRow {
     private final String info; // しと
-    private final String quizTarget; // 使徒：disciple ･ apostle
+    private final String target; // 使徒：disciple ･ apostle
 
     /**
      * Expects input like: 使徒 [しと]：disciple ･ apostle
      *        ... or like: スタッフ：(1) staff; (2) stuff
-     * @param bf
      * @param fullDef
      */
-    public PronQuizRow(String bf, String fullDef) {
-        String kanjiAndMeanings = fullDef.split(Pattern.quote(MEANINGS_START_KEY), 2)[0]; // 使徒 [しと]
-
-        if(kanjiAndMeanings.contains(PRONS_START_KEY) && kanjiAndMeanings.contains(PRONS_END_KEY)){
+    public PronQuizRow(String fullDef) {
+        if(EntryReadout.defHasKanji(fullDef)) {
             this.info = fullDef.split(Pattern.quote(PRONS_START_KEY), 2)[1].split(Pattern.quote(PRONS_END_KEY), 2)[0];
             // しと
-            this.quizTarget = fullDef.split(Pattern.quote(PRONS_START_KEY), 2)[0]
+            this.target = fullDef.split(Pattern.quote(PRONS_START_KEY), 2)[0]
                     + MEANINGS_START_KEY + fullDef.split(Pattern.quote(MEANINGS_START_KEY), 2)[1];
             // 使徒：disciple ･ apostle
         }
         else {
             this.info = fullDef.split(Pattern.quote(MEANINGS_START_KEY), 2)[0]; // スタッフ
-            this.quizTarget = fullDef.split(Pattern.quote(MEANINGS_START_KEY), 2)[1]; // (1) staff; (2) stuff
+            this.target = fullDef.split(Pattern.quote(MEANINGS_START_KEY), 2)[1]; // (1) staff; (2) stuff
         }
 
 
     }
 
     @Override
-    public String getInfoPortion() {
+    public String getInfo() {
         return info;
     }
 
     @Override
-    public String getQuizPortion() {
-        return quizTarget;
+    public String getTarget() {
+        return target;
     }
 }

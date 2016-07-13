@@ -3,6 +3,7 @@ package uk.co.birchlabs;
 import com.google.common.collect.Range;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,11 +16,10 @@ import static uk.co.birchlabs.VocabListRowCumulativeMapped.NO_DEF_KEY;
  */
 public class TieredSingleDefVRCMList {
     private static final Integer ALL= 100;
-    private static final Integer MAX_QUESTIONS= 4;
-    private final List<QuizRow> tierOne;
-    private final List<QuizRow> tierTwo;
-    private final List<QuizRow> tierThree;
-    private final List<QuizRow> tierFour;
+    private final List<VocabListRowCumulativeMapped> tierOne;
+    private final List<VocabListRowCumulativeMapped> tierTwo;
+    private final List<VocabListRowCumulativeMapped> tierThree;
+    private final List<VocabListRowCumulativeMapped> tierFour;
 
     public TieredSingleDefVRCMList(List<VocabListRowCumulativeMapped> untieredList) {
         List<VocabListRowCumulativeMapped>
@@ -47,23 +47,41 @@ public class TieredSingleDefVRCMList {
                     //                       87.5            93.75
                 });
 
-        this.tierOne = tierToQuizList(tierOne);
-        this.tierTwo = tierToQuizList(tierTwo);
-        this.tierThree = tierToQuizList(tierThree);
-        this.tierFour = tierToQuizList(tierFour);
+        shuffleTiers(tierOne, tierTwo, tierThree, tierFour);
+
+//        Collections.shuffle(tierOne);
+//        Collections.shuffle(tierTwo);
+//        Collections.shuffle(tierThree);
+//        Collections.shuffle(tierFour);
+
+        this.tierOne = tierOne;
+        this.tierTwo = tierTwo;
+        this.tierThree = tierThree;
+        this.tierFour = tierFour;
     }
 
-    /**
-     * Note: any tier passed to this will be shuffled.
-     * @param tier
-     * @return
-     */
-    private List<QuizRow> tierToQuizList(List<VocabListRowCumulativeMapped> tier){
-        Collections.shuffle(tier);
-        return tier
-                .stream()
-                .map(row -> new QuizRow(row.getBf(), row.getDefs().get(0)))
-                .limit(MAX_QUESTIONS)
-                .collect(Collectors.toList());
+//    @SuppressWarnings("varargs")
+    private void shuffleTiers(List<VocabListRowCumulativeMapped> ... listsToShuffle){
+        for (List<VocabListRowCumulativeMapped> list : listsToShuffle) {
+            Collections.shuffle(list);
+        }
+
     }
+
+    public List<VocabListRowCumulativeMapped> getTierOne() {
+        return tierOne;
+    }
+
+    public List<VocabListRowCumulativeMapped> getTierTwo() {
+        return tierTwo;
+    }
+
+    public List<VocabListRowCumulativeMapped> getTierThree() {
+        return tierThree;
+    }
+
+    public List<VocabListRowCumulativeMapped> getTierFour() {
+        return tierFour;
+    }
+
 }

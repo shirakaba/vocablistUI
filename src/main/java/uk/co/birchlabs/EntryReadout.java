@@ -7,6 +7,7 @@ import com.google.common.collect.SetMultimap;
 
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -92,5 +93,11 @@ public class EntryReadout {
 
     public String getDescription() {
         return description;
+    }
+
+    public static boolean defHasKanji(String fullDef){
+        String kanjiAndMeanings = fullDef.split(Pattern.quote(MEANINGS_START_KEY), 2)[0]; // 使徒 [しと]
+        if(kanjiAndMeanings.contains(PRONS_START_KEY) && kanjiAndMeanings.contains(PRONS_END_KEY)) return true;
+        else return false;
     }
 }
