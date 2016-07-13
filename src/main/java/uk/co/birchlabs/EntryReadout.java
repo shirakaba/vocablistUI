@@ -19,7 +19,7 @@ public class EntryReadout {
     private final List<JMDictSense> senses;
     private final SetMultimap<JMDictSense, String> sensesToDefs = HashMultimap.create();
     private final SetMultimap<JMDictSense, String> sensesToPOS = HashMultimap.create();
-    public static final String MEANINGS_START_KEY = "：";
+
 
     public EntryReadout(JMDictEntry entry, ForwardingToken token) {
         this.entry = entry;
@@ -46,6 +46,10 @@ public class EntryReadout {
         return sense.getTypes().stream().map(def -> def.getSenseDataKey().getData()).collect(Collectors.toList());
     }
 
+    public static final String MEANINGS_START_KEY = "：";
+    public static final String PRONS_START_KEY = " [";
+    public static final String PRONS_END_KEY = "]";
+
     private String initDescription() {
         StringBuilder sb = new StringBuilder();
 //        sb.append(token.getBaseForm());
@@ -57,12 +61,12 @@ public class EntryReadout {
             if(i+1 < words.size()) sb.append(" / ");
         }
 
-        if(!words.isEmpty()) sb.append(" [");
+        if(!words.isEmpty()) sb.append(PRONS_START_KEY);
         for(int i = 0; i < prons.size(); i++){
             sb.append(prons.get(i).getIdDataKey().getData());
             if(i+1 < prons.size()) sb.append(" / ");
         }
-        if(!words.isEmpty()) sb.append(']');
+        if(!words.isEmpty()) sb.append(PRONS_END_KEY);
 
         sb.append(MEANINGS_START_KEY);
 
