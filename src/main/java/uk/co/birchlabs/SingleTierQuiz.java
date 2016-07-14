@@ -48,7 +48,7 @@ public class SingleTierQuiz {
     private List<VocabListRowCumulativeMapped> findRowsWithKanjiInDefs(List<VocabListRowCumulativeMapped> rows, Integer limit){
         return rows
                 .stream()
-                .filter(row -> EntryReadout.descHasKanji(row.getDefs().get(0)))
+                .filter(row -> row.getEntryReadouts().get(0).descHasKanji())
                 .limit(limit)
                 .collect(Collectors.toList());
     }

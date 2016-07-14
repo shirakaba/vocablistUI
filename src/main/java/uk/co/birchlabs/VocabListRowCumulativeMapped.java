@@ -94,6 +94,12 @@ public class VocabListRowCumulativeMapped {
         return entryReadouts;
     }
 
+    @JsonIgnore
+    public boolean hasDefs(){
+        if(entryReadouts == null) return false;
+        else return true;
+    }
+
     public List<String> getDefs() {
         return defs;
     }

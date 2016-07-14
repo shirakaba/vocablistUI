@@ -16,7 +16,8 @@ public class DefQuizRow implements QuizRow {
      *        ... or like: スタッフ：(1) staff; (2) stuff
      */
     public DefQuizRow(VocabListRowCumulativeMapped row) {
-        String fullDef = row.getDefs().get(0);
+        EntryReadout firstEntryReadout = row.getEntryReadouts().get(0);
+        String fullDef = firstEntryReadout.getDescription();
         this.info = fullDef.split(Pattern.quote(MEANINGS_START_KEY), 2)[1];
         this.target = fullDef.split(Pattern.quote(MEANINGS_START_KEY), 2)[0];
     }

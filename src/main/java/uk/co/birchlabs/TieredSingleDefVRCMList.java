@@ -29,7 +29,7 @@ public class TieredSingleDefVRCMList {
         untieredList
                 .stream()
                 .filter(row -> row.getDefs().size() == 1
-                        && !row.getDefs().get(0).startsWith(NO_DEF_KEY)
+                        && row.hasDefs()
                         // TODO: examine instead based on chosen pre-filtering level?
 //                        && !(row.isFundamental() || row.isN5() || row.isN4() || row.isN3() || row.isN2()) || row.isN1()
                 )

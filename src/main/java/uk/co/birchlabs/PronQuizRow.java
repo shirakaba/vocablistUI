@@ -18,8 +18,9 @@ public class PronQuizRow implements QuizRow {
      *        ... or like: スタッフ：(1) staff; (2) stuff
      */
     public PronQuizRow(VocabListRowCumulativeMapped row) {
-        String fullDef = row.getDefs().get(0);
-        if(EntryReadout.descHasKanji(fullDef)) {
+        EntryReadout firstEntryReadout = row.getEntryReadouts().get(0);
+        String fullDef = firstEntryReadout.getDescription();
+        if(firstEntryReadout.descHasKanji()) {
             this.info = fullDef.split(Pattern.quote(PRONS_START_KEY), 2)[1].split(Pattern.quote(PRONS_END_KEY), 2)[0];
             // しと
             this.target = fullDef.split(Pattern.quote(PRONS_START_KEY), 2)[0]
