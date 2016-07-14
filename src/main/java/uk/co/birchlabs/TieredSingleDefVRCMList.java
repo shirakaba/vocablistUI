@@ -15,7 +15,7 @@ import static uk.co.birchlabs.VocabListRowCumulativeMapped.NO_DEF_KEY;
  * Created by jamiebirch on 13/07/2016.
  */
 public class TieredSingleDefVRCMList {
-    private static final Integer ALL= 100;
+    private static final Double ALL= 100.0;
     private final List<VocabListRowCumulativeMapped> tierOne;
     private final List<VocabListRowCumulativeMapped> tierTwo;
     private final List<VocabListRowCumulativeMapped> tierThree;
@@ -35,15 +35,16 @@ public class TieredSingleDefVRCMList {
                         // TODO: examine instead based on chosen pre-filtering level?
                         && !(row.isFundamental() || row.isN5() || row.isN4() || row.isN3() || row.isN2()) || row.isN1())
                 .forEach(row -> {
+
                     Float cumu = row.getCumu() * PERCENT_TO_DECIMAL;
-                    Integer cumuInt = cumu.intValue();
-                    if(Range.closedOpen(          0,          ALL - (ALL/2^1)).contains(cumuInt)) tierOne.add(row);
+                    Double cumuInt = cumu.doubleValue();
+                    if(Range.closedOpen(          0.0,          ALL - (ALL/Math.pow(2, 1))).contains(cumuInt)) tierOne.add(row);
                         //                       0.0            50.0
-                    else if(Range.closedOpen(ALL - (ALL/2^1), ALL - (ALL/2^2)).contains(cumuInt)) tierTwo.add(row);
+                    else if(Range.closedOpen(ALL - (ALL/Math.pow(2, 1)), ALL - (ALL/Math.pow(2, 2))).contains(cumuInt)) tierTwo.add(row);
                         //                       50.0            75.0
-                    else if(Range.closedOpen(ALL - (ALL/2^2), ALL - (ALL/2^3)).contains(cumuInt)) tierThree.add(row);
+                    else if(Range.closedOpen(ALL - (ALL/Math.pow(2, 2)), ALL - (ALL/Math.pow(2, 3))).contains(cumuInt)) tierThree.add(row);
                         //                       75.0            87.5
-                    else if(Range.closedOpen(ALL - (ALL/2^3), ALL - (ALL/2^4)).contains(cumuInt)) tierFour.add(row);
+                    else if(Range.closedOpen(ALL - (ALL/Math.pow(2, 3)), ALL - (ALL/Math.pow(2, 4))).contains(cumuInt)) tierFour.add(row);
                     //                       87.5            93.75
                 });
 

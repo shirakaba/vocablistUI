@@ -25,7 +25,9 @@ public class Quiz {
         defQuiz = new ArrayList<>();
     }
 
-    public Quiz(TieredSingleDefVRCMList tierHolder) {
+    public Quiz(List<VocabListRowCumulativeMapped> untieredList) {
+        TieredSingleDefVRCMList tierHolder = new TieredSingleDefVRCMList(untieredList);
+
         List<VocabListRowCumulativeMapped> t1 = tierHolder.getTierOne(),
                 t2 = tierHolder.getTierTwo(),
                 t3 = tierHolder.getTierThree(),

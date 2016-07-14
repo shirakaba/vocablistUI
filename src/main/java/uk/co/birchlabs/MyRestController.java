@@ -56,11 +56,11 @@ public class MyRestController {
     @RequestMapping("/test6")
     public Test6Model test6(
             // eg. http://localhost:8080/test4?input="この俺が俺です。"
-            @RequestParam(name="makeQuiz", defaultValue = "false") boolean makeQuiz,
-            @RequestParam(name="maxarticles", defaultValue = "3") Integer maxArticles,
+            @RequestParam(name="makeQuiz", defaultValue = "true") boolean makeQuiz,
+            @RequestParam(name="maxarticles", defaultValue = "2") Integer maxArticles,
             @RequestParam(name="filtering", defaultValue = "mandatory") String filtering,
-            @RequestParam(name="egs", defaultValue = "3") Integer egs,
-            @RequestParam(name="minyield", defaultValue = "0.20") Float minYield,
+            @RequestParam(name="egs", defaultValue = "1") Integer egs,
+            @RequestParam(name="minyield", defaultValue = "0.01") Float minYield,
             @RequestParam(name="partition", defaultValue = "0") Integer partition,
             @RequestParam(name="limit", defaultValue = "95") Float limit,
             @RequestParam(name="input", defaultValue = "するためにしない。する為に行く。何のためにした？自分の為。する為。") String input

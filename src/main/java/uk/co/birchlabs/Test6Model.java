@@ -32,7 +32,7 @@ public class Test6Model {
     public Test6Model(List<VocabListRowCumulativeMapped> list, boolean makeQuiz) {
         this.list = list;
         if(makeQuiz){
-
+            this.quiz = new Quiz(list);
         }
         else this.quiz = new Quiz();
     }
@@ -46,10 +46,12 @@ public class Test6Model {
         this.quiz = new Quiz();
     }
 
-
-
     public List<VocabListRowCumulativeMapped> getList()
     {
         return list;
+    }
+
+    public Quiz getQuiz() {
+        return quiz;
     }
 }
