@@ -16,13 +16,12 @@ public class KanjiQuizRow implements QuizRow {
     /**
      * Expects input like: 使徒 [しと]：disciple ･ apostle
      *        ... or like: スタッフ：(1) staff; (2) stuff
-     * @param bf
-     * @param fullDef
      */
-    public KanjiQuizRow(String bf, String fullDef) {
-        this.info = bf;
+    public KanjiQuizRow(VocabListRowCumulativeMapped row) {
+        String fullDef = row.getDefs().get(0);
+        this.info = row.getBf();
 
-        if(EntryReadout.defHasKanji(fullDef)) {
+        if(EntryReadout.descHasKanji(fullDef)) {
             this.target = PRONS_START_KEY + fullDef.split(Pattern.quote(PRONS_START_KEY), 2)[1].split(Pattern.quote(PRONS_END_KEY))[0] + PRONS_END_KEY
                     + MEANINGS_START_KEY + fullDef.split(Pattern.quote(MEANINGS_START_KEY), 2)[1];
         }

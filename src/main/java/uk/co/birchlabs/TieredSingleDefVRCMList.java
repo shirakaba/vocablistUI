@@ -3,10 +3,8 @@ package uk.co.birchlabs;
 import com.google.common.collect.Range;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static uk.co.birchlabs.JMDictPronService.PERCENT_TO_DECIMAL;
 import static uk.co.birchlabs.VocabListRowCumulativeMapped.NO_DEF_KEY;
@@ -33,7 +31,8 @@ public class TieredSingleDefVRCMList {
                 .filter(row -> row.getDefs().size() == 1
                         && !row.getDefs().get(0).startsWith(NO_DEF_KEY)
                         // TODO: examine instead based on chosen pre-filtering level?
-                        && !(row.isFundamental() || row.isN5() || row.isN4() || row.isN3() || row.isN2()) || row.isN1())
+//                        && !(row.isFundamental() || row.isN5() || row.isN4() || row.isN3() || row.isN2()) || row.isN1()
+                )
                 .forEach(row -> {
 
                     Float cumu = row.getCumu() * PERCENT_TO_DECIMAL;

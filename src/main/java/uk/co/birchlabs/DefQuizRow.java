@@ -14,9 +14,9 @@ public class DefQuizRow implements QuizRow {
     /**
      * Expects input like: 使徒 [しと]：disciple ･ apostle
      *        ... or like: スタッフ：(1) staff; (2) stuff
-     * @param fullDef
      */
-    public DefQuizRow(String fullDef) {
+    public DefQuizRow(VocabListRowCumulativeMapped row) {
+        String fullDef = row.getDefs().get(0);
         this.info = fullDef.split(Pattern.quote(MEANINGS_START_KEY), 2)[1];
         this.target = fullDef.split(Pattern.quote(MEANINGS_START_KEY), 2)[0];
     }

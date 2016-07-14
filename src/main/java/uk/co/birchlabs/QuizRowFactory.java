@@ -12,14 +12,14 @@ public class QuizRowFactory {
         kanji
     }
 
-    public static QuizRow getQuizRow(Type type, String bf, String fulldef){
+    public static QuizRow getQuizRow(Type type, VocabListRowCumulativeMapped row){
         switch (type){
             case def:
-                return new DefQuizRow(fulldef);
+                return new DefQuizRow(row);
             case pron:
-                return new PronQuizRow(fulldef);
+                return new PronQuizRow(row);
             case kanji:
-                return new KanjiQuizRow(bf, fulldef);
+                return new KanjiQuizRow(row);
             default:
                 throw new NotImplementedException();
         }

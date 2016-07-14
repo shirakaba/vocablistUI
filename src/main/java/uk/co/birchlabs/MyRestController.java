@@ -59,7 +59,7 @@ public class MyRestController {
             @RequestParam(name="makeQuiz", defaultValue = "true") boolean makeQuiz,
             @RequestParam(name="maxarticles", defaultValue = "2") Integer maxArticles,
             @RequestParam(name="filtering", defaultValue = "mandatory") String filtering,
-            @RequestParam(name="egs", defaultValue = "1") Integer egs,
+            @RequestParam(name="egs", defaultValue = "0") Integer egs,
             @RequestParam(name="minyield", defaultValue = "0.01") Float minYield,
             @RequestParam(name="partition", defaultValue = "0") Integer partition,
             @RequestParam(name="limit", defaultValue = "95") Float limit,

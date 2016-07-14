@@ -2,6 +2,7 @@ package uk.co.birchlabs;
 
 import catRecurserPkg.ForwardingToken;
 import catRecurserPkg.Sentence;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.SetMultimap;
@@ -86,6 +87,11 @@ public class VocabListRowCumulativeMapped {
 //        return Lists.partition(exampleSentences, MAX_EG_SENTENCES).get(0);
         return exampleSentences;
 //        return new ArrayList<>(); // For evangelion.txt: 530kB added to a 360kB JSON with 3 sentences
+    }
+
+    @JsonIgnore
+    public List<EntryReadout> getEntryReadouts() {
+        return entryReadouts;
     }
 
     public List<String> getDefs() {

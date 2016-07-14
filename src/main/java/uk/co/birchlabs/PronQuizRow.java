@@ -16,10 +16,10 @@ public class PronQuizRow implements QuizRow {
     /**
      * Expects input like: 使徒 [しと]：disciple ･ apostle
      *        ... or like: スタッフ：(1) staff; (2) stuff
-     * @param fullDef
      */
-    public PronQuizRow(String fullDef) {
-        if(EntryReadout.defHasKanji(fullDef)) {
+    public PronQuizRow(VocabListRowCumulativeMapped row) {
+        String fullDef = row.getDefs().get(0);
+        if(EntryReadout.descHasKanji(fullDef)) {
             this.info = fullDef.split(Pattern.quote(PRONS_START_KEY), 2)[1].split(Pattern.quote(PRONS_END_KEY), 2)[0];
             // しと
             this.target = fullDef.split(Pattern.quote(PRONS_START_KEY), 2)[0]
