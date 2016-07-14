@@ -12,20 +12,11 @@ public class GrandQuiz {
     private final SingleTierQuiz tierThree;
     private final SingleTierQuiz tierFour;
 
-    public GrandQuiz(){
-        tierOne = new SingleTierQuiz(new ArrayList<>());
-        tierTwo = new SingleTierQuiz(new ArrayList<>());
-        tierThree = new SingleTierQuiz(new ArrayList<>());
-        tierFour = new SingleTierQuiz(new ArrayList<>());
-    }
-
-    public GrandQuiz(List<VocabListRowCumulativeMapped> untieredList) {
-        TieredSingleDefVRCMList tierHolder = new TieredSingleDefVRCMList(untieredList);
-
-        tierOne = new SingleTierQuiz(tierHolder.getTierOne());
-        tierTwo = new SingleTierQuiz(tierHolder.getTierTwo());
-        tierThree = new SingleTierQuiz(tierHolder.getTierThree());
-        tierFour = new SingleTierQuiz(tierHolder.getTierFour());
+    public GrandQuiz(SingleTierQuiz tierOne, SingleTierQuiz tierTwo, SingleTierQuiz tierThree, SingleTierQuiz tierFour) {
+        this.tierOne = tierOne;
+        this.tierTwo = tierTwo;
+        this.tierThree = tierThree;
+        this.tierFour = tierFour;
     }
 
     public SingleTierQuiz getTierOne() {

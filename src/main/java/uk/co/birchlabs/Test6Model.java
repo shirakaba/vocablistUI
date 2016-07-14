@@ -6,30 +6,42 @@ import java.util.List;
  * Created by jamiebirch on 22/06/2016.
  */
 public class Test6Model {
-    List<VocabListRowCumulativeMapped> list;
-    GrandQuiz quiz;
-//    private static final Integer MAX_TOKENS= 10;
-
+    private final List<VocabListRowCumulativeMapped> list;
+    private final GrandQuiz quizA;
+    private final GrandQuiz quizB;
 
     /**
-     * Just includes list.
-     * @param list
+     * Just includes untieredList.
+     * @param untieredList
+     * @param makeQuiz
      */
-    public Test6Model(List<VocabListRowCumulativeMapped> list, boolean makeQuiz) {
-        this.list = list;
+    public Test6Model(List<VocabListRowCumulativeMapped> untieredList, boolean makeQuiz) {
+        this.list = untieredList;
         if(makeQuiz){
-            this.quiz = new GrandQuiz(list);
+            TieredSingleDefVRCMList tierHolder = new TieredSingleDefVRCMList(untieredList);
+
+            SingleTierQuizGenerator tierOne = new SingleTierQuizGenerator(tierHolder.getTierOne());
+            SingleTierQuizGenerator tierTwo = new SingleTierQuizGenerator(tierHolder.getTierTwo());
+            SingleTierQuizGenerator tierThree = new SingleTierQuizGenerator(tierHolder.getTierThree());
+            SingleTierQuizGenerator tierFour = new SingleTierQuizGenerator(tierHolder.getTierFour());
+
+            this.quizA = new GrandQuiz(tierOne.getQuizA(), tierTwo.getQuizA(), tierThree.getQuizA(), tierFour.getQuizA());
+            this.quizB = new GrandQuiz(tierOne.getQuizB(), tierTwo.getQuizB(), tierThree.getQuizB(), tierFour.getQuizB());
         }
-        else this.quiz = new GrandQuiz();
+        else {
+            this.quizA = null;
+            this.quizB = null;
+        }
     }
 
     /**
-     * Includes quiz.
+     * Includes quizA.
      * @param list
      */
     public Test6Model(List<VocabListRowCumulativeMapped> list) {
         this.list = list;
-        this.quiz = new GrandQuiz();
+        this.quizA = null;
+        this.quizB = null;
     }
 
     public List<VocabListRowCumulativeMapped> getList()
@@ -37,7 +49,11 @@ public class Test6Model {
         return list;
     }
 
-    public GrandQuiz getQuiz() {
-        return quiz;
+    public GrandQuiz getQuizA() {
+        return quizA;
+    }
+
+    public GrandQuiz getQuizB() {
+        return quizB;
     }
 }
