@@ -20,10 +20,11 @@ public class SingleTierQuiz {
 
 
     public SingleTierQuiz(List<VocabListRowCumulativeMapped> tieredList) {
-        List<VocabListRowCumulativeMapped> rowsWithKanjiInDefs = findRowsWithKanjiInDefs(tieredList, MAX_QUESTIONS);
-        kanjiQuiz = VLRCMListToQuizList(rowsWithKanjiInDefs, kanji, MAX_QUESTIONS * MAX_TIERS);
         List<VocabListRowCumulativeMapped> rowsAlreadyClaimed = new ArrayList<>();
-        rowsAlreadyClaimed.addAll(rowsWithKanjiInDefs);
+
+        List<VocabListRowCumulativeMapped> rowsForKanji = findRowsNotYetClaimed(tieredList, rowsAlreadyClaimed, MAX_QUESTIONS);
+        kanjiQuiz = VLRCMListToQuizList(rowsForKanji, kanji, MAX_QUESTIONS * MAX_TIERS);
+        rowsAlreadyClaimed.addAll(rowsForKanji);
 
         List<VocabListRowCumulativeMapped> rowsForPron = findRowsNotYetClaimed(tieredList, rowsAlreadyClaimed, MAX_QUESTIONS);
         pronQuiz = VLRCMListToQuizList(rowsForPron, pron, MAX_QUESTIONS * MAX_TIERS);
@@ -33,6 +34,7 @@ public class SingleTierQuiz {
         defQuiz = VLRCMListToQuizList(rowsForDef, def, MAX_QUESTIONS * MAX_TIERS);
         rowsAlreadyClaimed.addAll(rowsForDef);
     }
+
 
     private List<VocabListRowCumulativeMapped> findRowsNotYetClaimed(List<VocabListRowCumulativeMapped> tieredList,
                                                                      List<VocabListRowCumulativeMapped> alreadyClaimed,
@@ -45,15 +47,6 @@ public class SingleTierQuiz {
     }
 
 
-    private List<VocabListRowCumulativeMapped> findRowsWithKanjiInDefs(List<VocabListRowCumulativeMapped> rows, Integer limit){
-        return rows
-                .stream()
-                .filter(row -> row.getEntryReadouts().get(0).descHasKanji())
-                .limit(limit)
-                .collect(Collectors.toList());
-    }
-
-
     private List<QuizRow> VLRCMListToQuizList(List<VocabListRowCumulativeMapped> list, Type type, Integer limit){
         return list
                 .stream()
@@ -61,6 +54,14 @@ public class SingleTierQuiz {
                 .limit(limit)
                 .collect(Collectors.toList());
     }
+
+//    private List<VocabListRowCumulativeMapped> findRowsWithKanjiInDefs(List<VocabListRowCumulativeMapped> rows, Integer limit){
+//        return rows
+//                .stream()
+//                .filter(row -> row.getEntryReadouts().get(0).descHasKanji())
+//                .limit(limit)
+//                .collect(Collectors.toList());
+//    }
 
 
     public List<QuizRow> getKanjiQuiz() {

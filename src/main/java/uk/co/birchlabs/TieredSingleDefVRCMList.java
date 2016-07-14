@@ -28,8 +28,9 @@ public class TieredSingleDefVRCMList {
 
         untieredList
                 .stream()
-                .filter(row -> row.getDefs().size() == 1
-                        && row.hasDefs()
+                .filter(row -> row.hasDefs()
+                        && row.getEntryReadouts().size() == 1 // selects only single-def entities
+                        && row.getEntryReadouts().get(0).descHasKanji() // removes katakana familiarity issue
                         // TODO: examine instead based on chosen pre-filtering level?
 //                        && !(row.isFundamental() || row.isN5() || row.isN4() || row.isN3() || row.isN2()) || row.isN1()
                 )
