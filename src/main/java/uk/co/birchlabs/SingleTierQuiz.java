@@ -26,11 +26,11 @@ public class SingleTierQuiz {
         kanjiQuiz = VLRCMListToQuizList(rowsForKanji, kanji, MAX_QUESTIONS * MAX_TIERS);
         rowsAlreadyClaimed.addAll(rowsForKanji);
 
-        List<VocabListRowCumulativeMapped> rowsForPron = findRowsNotYetClaimed(tieredList, rowsAlreadyClaimed, MAX_QUESTIONS);
+        List<VocabListRowCumulativeMapped> rowsForPron = withoutPNouns(findRowsNotYetClaimed(tieredList, rowsAlreadyClaimed), MAX_QUESTIONS);
         pronQuiz = VLRCMListToQuizList(rowsForPron, pron, MAX_QUESTIONS * MAX_TIERS);
         rowsAlreadyClaimed.addAll(rowsForPron);
 
-        List<VocabListRowCumulativeMapped> rowsForDef = findRowsNotYetClaimed(tieredList, rowsAlreadyClaimed, MAX_QUESTIONS);
+        List<VocabListRowCumulativeMapped> rowsForDef = withoutPNouns(findRowsNotYetClaimed(tieredList, rowsAlreadyClaimed), MAX_QUESTIONS);
         defQuiz = VLRCMListToQuizList(rowsForDef, def, MAX_QUESTIONS * MAX_TIERS);
         rowsAlreadyClaimed.addAll(rowsForDef);
     }
@@ -46,6 +46,14 @@ public class SingleTierQuiz {
                 .collect(Collectors.toList());
     }
 
+    private List<VocabListRowCumulativeMapped> findRowsNotYetClaimed(List<VocabListRowCumulativeMapped> tieredList,
+                                                                     List<VocabListRowCumulativeMapped> alreadyClaimed){
+        return tieredList
+                .stream()
+                .filter(row -> !alreadyClaimed.contains(row))
+                .collect(Collectors.toList());
+    }
+
 
     private List<QuizRow> VLRCMListToQuizList(List<VocabListRowCumulativeMapped> list, Type type, Integer limit){
         return list
@@ -53,6 +61,10 @@ public class SingleTierQuiz {
                 .map(row -> getQuizRow(type, row))
                 .limit(limit)
                 .collect(Collectors.toList());
+    }
+
+    private List<VocabListRowCumulativeMapped> withoutPNouns(List<VocabListRowCumulativeMapped> rows, Integer limit){
+        return rows.stream().filter(row -> !row.isPNoun()).limit(limit).collect(Collectors.toList());
     }
 
 //    private List<VocabListRowCumulativeMapped> findRowsWithKanjiInDefs(List<VocabListRowCumulativeMapped> rows, Integer limit){

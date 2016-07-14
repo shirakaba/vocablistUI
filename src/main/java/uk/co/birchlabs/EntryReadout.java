@@ -92,6 +92,10 @@ public class EntryReadout {
         return sb.toString();
     }
 
+    public List<String> getPronsAsStrings() {
+        return prons.stream().map(pron -> pron.getIdDataKey().getData()).collect(Collectors.toList());
+    }
+
     public boolean descHasKanji(){
         return !words.isEmpty();
     }

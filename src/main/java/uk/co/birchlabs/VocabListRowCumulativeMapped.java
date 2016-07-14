@@ -95,6 +95,11 @@ public class VocabListRowCumulativeMapped {
     }
 
     @JsonIgnore
+    public boolean isPNoun() {
+        return pos.equals(properNouns);
+    }
+
+    @JsonIgnore
     public boolean hasDefs(){
         if(entryReadouts == null) return false;
         else return true;

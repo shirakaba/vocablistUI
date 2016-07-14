@@ -31,6 +31,7 @@ public class TieredSingleDefVRCMList {
                 .filter(row -> row.hasDefs()
                         && row.getEntryReadouts().size() == 1 // selects only single-def entities
                         && row.getEntryReadouts().get(0).descHasKanji() // removes katakana familiarity issue
+                        && !row.getEntryReadouts().get(0).getPronsAsStrings().contains(row.getBf()) // for ため having same pron as bf
                         // TODO: examine instead based on chosen pre-filtering level?
 //                        && !(row.isFundamental() || row.isN5() || row.isN4() || row.isN3() || row.isN2()) || row.isN1()
                 )
