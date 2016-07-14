@@ -110,10 +110,4 @@ public class EntryReadout {
         return description;
     }
 
-//    public static boolean descHasKanji(String fullDesc){
-//        String kanjiAndMeanings = fullDesc.split(Pattern.quote(MEANINGS_START_KEY), 2)[0]; // 使徒 [しと]
-//        if(kanjiAndMeanings.contains(PRONS_START_KEY) && kanjiAndMeanings.contains(PRONS_END_KEY)) return true;
-//        else return false;
-//    }
-
 }

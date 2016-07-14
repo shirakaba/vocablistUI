@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static uk.co.birchlabs.JMDictPronService.PERCENT_TO_DECIMAL;
-import static uk.co.birchlabs.VocabListRowCumulativeMapped.NO_DEF_KEY;
 
 /**
  * Created by jamiebirch on 13/07/2016.
