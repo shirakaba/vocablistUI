@@ -6,25 +6,25 @@ import java.util.List;
  * Created by jamiebirch on 14/07/2016.
  */
 public class SingleTierQuiz {
-    private final List<QuizRow> kanjiQuiz;
-    private final List<QuizRow> pronQuiz;
-    private final List<QuizRow> defQuiz;
+    private final Quiz kanjiQuiz;
+    private final Quiz pronQuiz;
+    private final Quiz defQuiz;
 
-    public SingleTierQuiz(List<QuizRow> kanjiQuiz, List<QuizRow> pronQuiz, List<QuizRow> defQuiz) {
-        this.kanjiQuiz = kanjiQuiz;
-        this.pronQuiz = pronQuiz;
-        this.defQuiz = defQuiz;
+    public SingleTierQuiz(List<QuizRow> kanjiQuiz, List<QuizRow> pronQuiz, List<QuizRow> defQuiz, String label) {
+        this.kanjiQuiz = new Quiz(kanjiQuiz, label);
+        this.pronQuiz = new Quiz(pronQuiz, label);
+        this.defQuiz = new Quiz(defQuiz, label);
     }
 
-    public List<QuizRow> getKanjiQuiz() {
+    public Quiz getKanjiQuiz() {
         return kanjiQuiz;
     }
 
-    public List<QuizRow> getPronQuiz() {
+    public Quiz getPronQuiz() {
         return pronQuiz;
     }
 
-    public List<QuizRow> getDefQuiz() {
+    public Quiz getDefQuiz() {
         return defQuiz;
     }
 }

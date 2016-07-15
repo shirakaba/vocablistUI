@@ -47,8 +47,8 @@ public class SingleTierQuizGenerator {
         List<QuizRow> defQuizB = partitioned.get(1);
 //        rowsAlreadyClaimed.addAll(rowsForDef);
 
-        quizA = new SingleTierQuiz(kanjiQuizA, pronQuizA, defQuizA);
-        quizB = new SingleTierQuiz(kanjiQuizB, pronQuizB, defQuizB);
+        quizA = new SingleTierQuiz(kanjiQuizA, pronQuizA, defQuizA, "tier" + tierName);
+        quizB = new SingleTierQuiz(kanjiQuizB, pronQuizB, defQuizB, "tier" + tierName);
     }
 
 
