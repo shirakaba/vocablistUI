@@ -9,4 +9,6 @@ public interface QuizRow {
     String getInfo();
 
     String getTarget();
+
+    String getType();
 }

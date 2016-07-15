@@ -12,12 +12,15 @@ import static uk.co.birchlabs.EntryReadout.PRONS_START_KEY;
 public class PronQuizRow implements QuizRow {
     private final String info; // しと
     private final String target; // 使徒：disciple ･ apostle
+    private final String type;
 
     /**
      * Expects input like: 使徒 [しと]：disciple ･ apostle
      *        ... or like: スタッフ：(1) staff; (2) stuff
      */
-    public PronQuizRow(VocabListRowCumulativeMapped row) {
+    public PronQuizRow(VocabListRowCumulativeMapped row, String type) {
+        this.type = type;
+
         EntryReadout firstEntryReadout = row.getEntryReadouts().get(0);
         String fullDef = firstEntryReadout.getDescription();
         if(firstEntryReadout.descHasKanji()) {
@@ -43,5 +46,10 @@ public class PronQuizRow implements QuizRow {
     @Override
     public String getTarget() {
         return target;
+    }
+
+    @Override
+    public String getType() {
+        return type;
     }
 }

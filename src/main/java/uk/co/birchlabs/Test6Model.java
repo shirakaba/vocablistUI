@@ -20,10 +20,10 @@ public class Test6Model {
         if(makeQuiz){
             TieredSingleDefVRCMList tierHolder = new TieredSingleDefVRCMList(untieredList);
 
-            SingleTierQuizGenerator tierOne = new SingleTierQuizGenerator(tierHolder.getTierOne());
-            SingleTierQuizGenerator tierTwo = new SingleTierQuizGenerator(tierHolder.getTierTwo());
-            SingleTierQuizGenerator tierThree = new SingleTierQuizGenerator(tierHolder.getTierThree());
-            SingleTierQuizGenerator tierFour = new SingleTierQuizGenerator(tierHolder.getTierFour());
+            SingleTierQuizGenerator tierOne = new SingleTierQuizGenerator(tierHolder.getTierOne(), "One");
+            SingleTierQuizGenerator tierTwo = new SingleTierQuizGenerator(tierHolder.getTierTwo(), "Two");
+            SingleTierQuizGenerator tierThree = new SingleTierQuizGenerator(tierHolder.getTierThree(), "Three");
+            SingleTierQuizGenerator tierFour = new SingleTierQuizGenerator(tierHolder.getTierFour(), "Four");
 
             this.quizA = new GrandQuiz(tierOne.getQuizA(), tierTwo.getQuizA(), tierThree.getQuizA(), tierFour.getQuizA());
             this.quizB = new GrandQuiz(tierOne.getQuizB(), tierTwo.getQuizB(), tierThree.getQuizB(), tierFour.getQuizB());
