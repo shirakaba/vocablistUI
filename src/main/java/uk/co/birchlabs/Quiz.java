@@ -9,7 +9,7 @@ public class Quiz {
     private final List<QuizRow> quiz;
     private final String label;
     private final String[] allowedTypes;
-    private final String max;
+    private final Integer max;
 
     public Quiz(List<QuizRow> quiz, String label) {
         if(quiz.isEmpty()) allowedTypes = new String[]{};
@@ -17,7 +17,7 @@ public class Quiz {
 
         this.quiz = quiz;
         this.label = label;
-        this.max = "2";
+        this.max = 2;
     }
 
     public List<QuizRow> getQuiz() {
@@ -32,7 +32,7 @@ public class Quiz {
         return allowedTypes;
     }
 
-    public String getMax() {
+    public Integer getMax() {
         return max;
     }
 }
