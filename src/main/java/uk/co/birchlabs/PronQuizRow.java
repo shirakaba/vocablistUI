@@ -10,6 +10,7 @@ import static uk.co.birchlabs.EntryReadout.PRONS_START_KEY;
  * Given info of the pronunciation, user must match to kanji and definition.
  */
 public class PronQuizRow implements QuizRow {
+    private final int hashCode;
     private final String info; // しと
     private final String target; // 使徒：disciple ･ apostle
 
@@ -34,8 +35,22 @@ public class PronQuizRow implements QuizRow {
             this.target = fullDef.split(Pattern.quote(MEANINGS_START_KEY), 2)[1]; // (1) staff; (2) stuff
         }
 
-
+        hashCode = calculateHash(this.info);
     }
+
+
+    private static int calculateHash(String comparator) {
+        return comparator.hashCode();
+    }
+
+
+    @Override
+    public int hashCode() {
+        return hashCode;
+    }
+
+    @Override
+    public boolean equals(Object o) { return o.hashCode() == hashCode(); }
 
     @Override
     public String getInfo() {

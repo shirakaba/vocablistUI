@@ -3,7 +3,9 @@ package uk.co.birchlabs;
 import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static uk.co.birchlabs.QuizRowFactory.*;
@@ -75,6 +77,8 @@ public class SingleTierQuizGenerator {
         return list
                 .stream()
                 .map(row -> getQuizRow(mode, row))
+                .collect(Collectors.toSet())
+                .stream()
                 .collect(Collectors.toList());
     }
 

@@ -10,6 +10,7 @@ import static uk.co.birchlabs.EntryReadout.PRONS_START_KEY;
  * Created by jamiebirch on 13/07/2016.
  */
 public class KanjiQuizRow implements QuizRow {
+    private final int hashCode;
     private final String info; // 使徒
     private final String target; // [しと]：disciple ･ apostle
 
@@ -30,7 +31,22 @@ public class KanjiQuizRow implements QuizRow {
                     fullDef.split(Pattern.quote(MEANINGS_START_KEY), 2)[1];
         }
         else throw new IllegalStateException("This definition has no kanji form to test upon; it is purely phonetic.");
+
+        hashCode = calculateHash(this.info);
     }
+
+    private static int calculateHash(String comparator) {
+        return comparator.hashCode();
+    }
+
+    @Override
+    public int hashCode() {
+        return hashCode;
+    }
+
+    @Override
+    public boolean equals(Object o) { return o.hashCode() == hashCode(); }
+
 
     @Override
     public String getInfo() {
