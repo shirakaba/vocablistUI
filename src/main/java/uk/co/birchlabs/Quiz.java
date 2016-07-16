@@ -7,16 +7,16 @@ import java.util.List;
  */
 public class Quiz {
     private final List<QuizRow> quiz;
-    private final String label;
+    private final String type;
     private final String[] allowedTypes;
     private final Integer max;
 
-    public Quiz(List<QuizRow> quiz, String label) {
+    public Quiz(List<QuizRow> quiz, String type) {
         if(quiz.isEmpty()) allowedTypes = new String[]{};
-        else allowedTypes = new String[]{quiz.get(0).getType()};
+        else allowedTypes = new String[]{type};
 
         this.quiz = quiz;
-        this.label = label;
+        this.type = type;
         this.max = 2;
     }
 
@@ -24,8 +24,8 @@ public class Quiz {
         return quiz;
     }
 
-    public String getLabel() {
-        return label;
+    public String getType() {
+        return type;
     }
 
     public String[] getAllowedTypes() {

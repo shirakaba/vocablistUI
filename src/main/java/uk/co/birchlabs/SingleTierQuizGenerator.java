@@ -26,7 +26,7 @@ public class SingleTierQuizGenerator {
         List<List<QuizRow>> partitioned;
 
         List<VocabListRowCumulativeMapped> rowsForKanji = findRowsNotYetClaimed(tieredList, rowsAlreadyClaimed, MAX_QUESTIONS);
-        unpartitioned = VLRCMListToQuizList(rowsForKanji, kanji, kanji.toString() + tierName);
+        unpartitioned = VLRCMListToQuizList(rowsForKanji, kanji);
         partitioned = Lists.partition(unpartitioned, unpartitioned.size() / 2);
         List<QuizRow> kanjiQuizA = partitioned.get(0);
         List<QuizRow> kanjiQuizB = partitioned.get(1);
@@ -34,21 +34,21 @@ public class SingleTierQuizGenerator {
 
         List<VocabListRowCumulativeMapped> rowsForPron = withoutPNouns(findRowsNotYetClaimed(tieredList, rowsAlreadyClaimed), MAX_QUESTIONS);
         // BEWARE re-use of unpartitioned and partitioned. May affect kanjiQuizA's references.
-        unpartitioned = VLRCMListToQuizList(rowsForPron, pron, pron.toString() + tierName);
+        unpartitioned = VLRCMListToQuizList(rowsForPron, pron);
         partitioned = Lists.partition(unpartitioned, unpartitioned.size() / 2);
         List<QuizRow> pronQuizA = partitioned.get(0);
         List<QuizRow> pronQuizB = partitioned.get(1);
         rowsAlreadyClaimed.addAll(rowsForPron);
 
         List<VocabListRowCumulativeMapped> rowsForDef = withoutPNouns(findRowsNotYetClaimed(tieredList, rowsAlreadyClaimed), MAX_QUESTIONS);
-        unpartitioned = VLRCMListToQuizList(rowsForDef, def, def.toString() + tierName);
+        unpartitioned = VLRCMListToQuizList(rowsForDef, def);
         partitioned = Lists.partition(unpartitioned, unpartitioned.size() / 2);
         List<QuizRow> defQuizA = partitioned.get(0);
         List<QuizRow> defQuizB = partitioned.get(1);
 //        rowsAlreadyClaimed.addAll(rowsForDef);
 
-        quizA = new SingleTierQuiz(kanjiQuizA, pronQuizA, defQuizA, "tier" + tierName);
-        quizB = new SingleTierQuiz(kanjiQuizB, pronQuizB, defQuizB, "tier" + tierName);
+        quizA = new SingleTierQuiz(kanjiQuizA, pronQuizA, defQuizA, tierName);
+        quizB = new SingleTierQuiz(kanjiQuizB, pronQuizB, defQuizB, tierName);
     }
 
 
@@ -71,10 +71,10 @@ public class SingleTierQuizGenerator {
     }
 
 
-    private List<QuizRow> VLRCMListToQuizList(List<VocabListRowCumulativeMapped> list, Mode mode, String type){
+    private List<QuizRow> VLRCMListToQuizList(List<VocabListRowCumulativeMapped> list, Mode mode){
         return list
                 .stream()
-                .map(row -> getQuizRow(mode, row, type))
+                .map(row -> getQuizRow(mode, row))
                 .collect(Collectors.toList());
     }
 

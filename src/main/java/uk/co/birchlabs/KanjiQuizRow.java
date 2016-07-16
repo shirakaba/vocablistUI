@@ -12,23 +12,22 @@ import static uk.co.birchlabs.EntryReadout.PRONS_START_KEY;
 public class KanjiQuizRow implements QuizRow {
     private final String info; // 使徒
     private final String target; // [しと]：disciple ･ apostle
-    private final String type;
 
     /**
      * Expects input like: 使徒 [しと]：disciple ･ apostle
      *        ... or like: スタッフ：(1) staff; (2) stuff
      * Undefined behaviour if firstEntryReadout is "No definitions found..."
      */
-    public KanjiQuizRow(VocabListRowCumulativeMapped row, String type) {
-        this.type = type;
-
+    public KanjiQuizRow(VocabListRowCumulativeMapped row) {
         EntryReadout firstEntryReadout = row.getEntryReadouts().get(0);
         String fullDef = firstEntryReadout.getDescription();
         this.info = row.getBf();
 
         if(firstEntryReadout.descHasKanji()) {
-            this.target = PRONS_START_KEY + fullDef.split(Pattern.quote(PRONS_START_KEY), 2)[1].split(Pattern.quote(PRONS_END_KEY))[0] + PRONS_END_KEY
-                    + MEANINGS_START_KEY + fullDef.split(Pattern.quote(MEANINGS_START_KEY), 2)[1];
+            this.target =
+//                    PRONS_START_KEY + fullDef.split(Pattern.quote(PRONS_START_KEY), 2)[1].split(Pattern.quote(PRONS_END_KEY))[0] + PRONS_END_KEY +
+//                    MEANINGS_START_KEY +
+                    fullDef.split(Pattern.quote(MEANINGS_START_KEY), 2)[1];
         }
         else throw new IllegalStateException("This definition has no kanji form to test upon; it is purely phonetic.");
     }
@@ -41,10 +40,5 @@ public class KanjiQuizRow implements QuizRow {
     @Override
     public String getTarget() {
         return target;
-    }
-
-    @Override
-    public String getType() {
-        return type;
     }
 }

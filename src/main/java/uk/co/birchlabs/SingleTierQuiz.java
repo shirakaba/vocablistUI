@@ -11,9 +11,9 @@ public class SingleTierQuiz {
     private final Quiz defQuiz;
 
     public SingleTierQuiz(List<QuizRow> kanjiQuiz, List<QuizRow> pronQuiz, List<QuizRow> defQuiz, String label) {
-        this.kanjiQuiz = new Quiz(kanjiQuiz, label);
-        this.pronQuiz = new Quiz(pronQuiz, label);
-        this.defQuiz = new Quiz(defQuiz, label);
+        this.kanjiQuiz = new Quiz(kanjiQuiz, "kanji" + label);
+        this.pronQuiz = new Quiz(pronQuiz, "pron" + label);
+        this.defQuiz = new Quiz(defQuiz, "def" + label);
     }
 
     public Quiz getKanjiQuiz() {

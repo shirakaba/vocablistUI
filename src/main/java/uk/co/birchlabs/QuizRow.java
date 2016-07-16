@@ -8,5 +8,5 @@ public interface QuizRow {
 
     String getTarget();
 
-    String getType();
+//    String getType();
 }
