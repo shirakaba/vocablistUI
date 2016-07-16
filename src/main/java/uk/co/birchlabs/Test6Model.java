@@ -1,5 +1,7 @@
 package uk.co.birchlabs;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -7,8 +9,8 @@ import java.util.List;
  */
 public class Test6Model {
     private final List<VocabListRowCumulativeMapped> list;
-    private final GrandQuiz quizA;
-    private final GrandQuiz quizB;
+    private final List<SingleTierQuiz> quizATiers;
+    private final List<SingleTierQuiz> quizBTiers;
 
     /**
      * Just includes untieredList.
@@ -25,12 +27,17 @@ public class Test6Model {
             SingleTierQuizGenerator tierThree = new SingleTierQuizGenerator(tierHolder.getTierThree(), "Three");
             SingleTierQuizGenerator tierFour = new SingleTierQuizGenerator(tierHolder.getTierFour(), "Four");
 
-            this.quizA = new GrandQuiz(tierOne.getQuizA(), tierTwo.getQuizA(), tierThree.getQuizA(), tierFour.getQuizA());
-            this.quizB = new GrandQuiz(tierOne.getQuizB(), tierTwo.getQuizB(), tierThree.getQuizB(), tierFour.getQuizB());
+            quizATiers = new ArrayList<>(
+                    Arrays.asList(tierOne.getQuizA(), tierTwo.getQuizA(), tierThree.getQuizA(), tierFour.getQuizA())
+            );
+
+            quizBTiers = new ArrayList<>(
+                    Arrays.asList(tierOne.getQuizB(), tierTwo.getQuizB(), tierThree.getQuizB(), tierFour.getQuizB())
+            );
         }
         else {
-            this.quizA = null;
-            this.quizB = null;
+            quizATiers = null;
+            quizBTiers = null;
         }
     }
 
@@ -40,8 +47,8 @@ public class Test6Model {
      */
     public Test6Model(List<VocabListRowCumulativeMapped> list) {
         this.list = list;
-        this.quizA = null;
-        this.quizB = null;
+        quizATiers = null;
+        quizBTiers = null;
     }
 
     public List<VocabListRowCumulativeMapped> getList()
@@ -49,11 +56,11 @@ public class Test6Model {
         return list;
     }
 
-    public GrandQuiz getQuizA() {
-        return quizA;
+    public List<SingleTierQuiz> getQuizATiers() {
+        return quizATiers;
     }
 
-    public GrandQuiz getQuizB() {
-        return quizB;
+    public List<SingleTierQuiz> getQuizBTiers() {
+        return quizBTiers;
     }
 }
