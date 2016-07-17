@@ -9,8 +9,8 @@ import java.util.List;
  */
 public class Test6Model {
     private final List<VocabListRowCumulativeMapped> list;
-    private final List<SingleTierQuiz> quizATiers;
-    private final List<SingleTierQuiz> quizBTiers;
+    private final List<Tier> quizA;
+    private final List<Tier> quizB;
 
     /**
      * Just includes untieredList.
@@ -22,22 +22,22 @@ public class Test6Model {
         if(makeQuiz){
             TieredSingleDefVRCMList tierHolder = new TieredSingleDefVRCMList(untieredList);
 
-            SingleTierQuizGenerator tierOne = new SingleTierQuizGenerator(tierHolder.getTierOne(), "One");
-            SingleTierQuizGenerator tierTwo = new SingleTierQuizGenerator(tierHolder.getTierTwo(), "Two");
-            SingleTierQuizGenerator tierThree = new SingleTierQuizGenerator(tierHolder.getTierThree(), "Three");
-            SingleTierQuizGenerator tierFour = new SingleTierQuizGenerator(tierHolder.getTierFour(), "Four");
+            TierGenerator tierOne = new TierGenerator(tierHolder.getTierOne(), "One");
+            TierGenerator tierTwo = new TierGenerator(tierHolder.getTierTwo(), "Two");
+            TierGenerator tierThree = new TierGenerator(tierHolder.getTierThree(), "Three");
+            TierGenerator tierFour = new TierGenerator(tierHolder.getTierFour(), "Four");
 
-            quizATiers = new ArrayList<>(
-                    Arrays.asList(tierOne.getQuizA(), tierTwo.getQuizA(), tierThree.getQuizA(), tierFour.getQuizA())
+            quizA = new ArrayList<>(
+                    Arrays.asList(tierOne.getTierA(), tierTwo.getTierA(), tierThree.getTierA(), tierFour.getTierA())
             );
 
-            quizBTiers = new ArrayList<>(
-                    Arrays.asList(tierOne.getQuizB(), tierTwo.getQuizB(), tierThree.getQuizB(), tierFour.getQuizB())
+            quizB = new ArrayList<>(
+                    Arrays.asList(tierOne.getTierB(), tierTwo.getTierB(), tierThree.getTierB(), tierFour.getTierB())
             );
         }
         else {
-            quizATiers = null;
-            quizBTiers = null;
+            quizA = null;
+            quizB = null;
         }
     }
 
@@ -47,8 +47,8 @@ public class Test6Model {
      */
     public Test6Model(List<VocabListRowCumulativeMapped> list) {
         this.list = list;
-        quizATiers = null;
-        quizBTiers = null;
+        quizA = null;
+        quizB = null;
     }
 
     public List<VocabListRowCumulativeMapped> getList()
@@ -56,11 +56,11 @@ public class Test6Model {
         return list;
     }
 
-    public List<SingleTierQuiz> getQuizATiers() {
-        return quizATiers;
+    public List<Tier> getQuizA() {
+        return quizA;
     }
 
-    public List<SingleTierQuiz> getQuizBTiers() {
-        return quizBTiers;
+    public List<Tier> getQuizB() {
+        return quizB;
     }
 }

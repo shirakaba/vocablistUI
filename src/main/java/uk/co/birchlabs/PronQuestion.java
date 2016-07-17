@@ -7,37 +7,42 @@ import static uk.co.birchlabs.EntryReadout.PRONS_END_KEY;
 import static uk.co.birchlabs.EntryReadout.PRONS_START_KEY;
 
 /**
- * Created by jamiebirch on 13/07/2016.
+ * Given info of the pronunciation, user must match to kanji and definition.
  */
-public class KanjiQuizRow implements QuizRow {
+public class PronQuestion implements Question {
     private final int hashCode;
-    private final String info; // 使徒
-    private final String target; // [しと]：disciple ･ apostle
+    private final String info; // しと
+    private final String target; // 使徒：disciple ･ apostle
 
     /**
      * Expects input like: 使徒 [しと]：disciple ･ apostle
      *        ... or like: スタッフ：(1) staff; (2) stuff
-     * Undefined behaviour if firstEntryReadout is "No definitions found..."
      */
-    public KanjiQuizRow(VocabListRowCumulativeMapped row) {
+    public PronQuestion(VocabListRowCumulativeMapped row) {
+
         EntryReadout firstEntryReadout = row.getEntryReadouts().get(0);
         String fullDef = firstEntryReadout.getDescription();
-        this.info = row.getBf();
-
         if(firstEntryReadout.descHasKanji()) {
+            this.info = fullDef.split(Pattern.quote(PRONS_START_KEY), 2)[1].split(Pattern.quote(PRONS_END_KEY), 2)[0];
+            // しと
             this.target =
-//                    PRONS_START_KEY + fullDef.split(Pattern.quote(PRONS_START_KEY), 2)[1].split(Pattern.quote(PRONS_END_KEY))[0] + PRONS_END_KEY +
-//                    MEANINGS_START_KEY +
+//                    fullDef.split(Pattern.quote(PRONS_START_KEY), 2)[0] + MEANINGS_START_KEY +
                     fullDef.split(Pattern.quote(MEANINGS_START_KEY), 2)[1];
+            // 使徒：disciple ･ apostle
         }
-        else throw new IllegalStateException("This definition has no kanji form to test upon; it is purely phonetic.");
+        else {
+            this.info = fullDef.split(Pattern.quote(MEANINGS_START_KEY), 2)[0]; // スタッフ
+            this.target = fullDef.split(Pattern.quote(MEANINGS_START_KEY), 2)[1]; // (1) staff; (2) stuff
+        }
 
         hashCode = calculateHash(this.info);
     }
 
+
     private static int calculateHash(String comparator) {
         return comparator.hashCode();
     }
+
 
     @Override
     public int hashCode() {
@@ -46,7 +51,6 @@ public class KanjiQuizRow implements QuizRow {
 
     @Override
     public boolean equals(Object o) { return o.hashCode() == hashCode(); }
-
 
     @Override
     public String getInfo() {

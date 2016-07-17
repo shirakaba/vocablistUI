@@ -7,20 +7,28 @@ import static uk.co.birchlabs.EntryReadout.MEANINGS_START_KEY;
 /**
  * Created by jamiebirch on 13/07/2016.
  */
-public class DefQuizRow implements QuizRow {
+public class KanjiQuestion implements Question {
     private final int hashCode;
-    private final String info; // disciple ･ apostle
-    private final String target; //  使徒 [しと]
+    private final String info; // 使徒
+    private final String target; // [しと]：disciple ･ apostle
 
     /**
      * Expects input like: 使徒 [しと]：disciple ･ apostle
      *        ... or like: スタッフ：(1) staff; (2) stuff
+     * Undefined behaviour if firstEntryReadout is "No definitions found..."
      */
-    public DefQuizRow(VocabListRowCumulativeMapped row) {
+    public KanjiQuestion(VocabListRowCumulativeMapped row) {
         EntryReadout firstEntryReadout = row.getEntryReadouts().get(0);
         String fullDef = firstEntryReadout.getDescription();
-        this.info = fullDef.split(Pattern.quote(MEANINGS_START_KEY), 2)[1];
-        this.target = fullDef.split(Pattern.quote(MEANINGS_START_KEY), 2)[0];
+        this.info = row.getBf();
+
+        if(firstEntryReadout.descHasKanji()) {
+            this.target =
+//                    PRONS_START_KEY + fullDef.split(Pattern.quote(PRONS_START_KEY), 2)[1].split(Pattern.quote(PRONS_END_KEY))[0] + PRONS_END_KEY +
+//                    MEANINGS_START_KEY +
+                    fullDef.split(Pattern.quote(MEANINGS_START_KEY), 2)[1];
+        }
+        else throw new IllegalStateException("This definition has no kanji form to test upon; it is purely phonetic.");
 
         hashCode = calculateHash(this.info);
     }
@@ -37,6 +45,7 @@ public class DefQuizRow implements QuizRow {
     @Override
     public boolean equals(Object o) { return o.hashCode() == hashCode(); }
 
+
     @Override
     public String getInfo() {
         return info;
@@ -46,5 +55,4 @@ public class DefQuizRow implements QuizRow {
     public String getTarget() {
         return target;
     }
-
 }

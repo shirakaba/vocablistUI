@@ -6,13 +6,13 @@ import java.util.List;
  * Created by jamiebirch on 13/07/2016.
  */
 public class GrandQuiz {
-    private final List<SingleTierQuiz> tiers;
+    private final List<Tier> tiers;
 
-    public GrandQuiz(List<SingleTierQuiz> tiers) {
+    public GrandQuiz(List<Tier> tiers) {
         this.tiers = tiers;
     }
 
-    public List<SingleTierQuiz> getTiers() {
+    public List<Tier> getTiers() {
         return tiers;
     }
 }

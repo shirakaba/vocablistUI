@@ -3,9 +3,7 @@ package uk.co.birchlabs;
 import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static uk.co.birchlabs.QuizRowFactory.*;
@@ -14,43 +12,41 @@ import static uk.co.birchlabs.QuizRowFactory.Mode.*;
 /**
  * Created by jamiebirch on 14/07/2016.
  */
-public class SingleTierQuizGenerator {
+public class TierGenerator {
 
-    private final SingleTierQuiz quizA;
-    private final SingleTierQuiz quizB;
+    private final Tier tierA;
+    private final Tier tierB;
 
     public static final Integer MAX_QUESTIONS= 8;
 
 
-    public SingleTierQuizGenerator(List<VocabListRowCumulativeMapped> tieredList, String tierName) {
+    public TierGenerator(List<VocabListRowCumulativeMapped> tieredList, String tierAlpha) {
         List<VocabListRowCumulativeMapped> rowsAlreadyClaimed = new ArrayList<>();
-        List<QuizRow> unpartitioned;
-        List<List<QuizRow>> partitioned;
+        List<Question> unpartitioned;
+        List<List<Question>> partitioned;
 
         List<VocabListRowCumulativeMapped> rowsForKanji = findRowsNotYetClaimed(tieredList, rowsAlreadyClaimed, MAX_QUESTIONS);
         unpartitioned = VLRCMListToQuizList(rowsForKanji, kanji);
         partitioned = Lists.partition(unpartitioned, unpartitioned.size() / 2);
-        List<QuizRow> kanjiQuizA = partitioned.get(0);
-        List<QuizRow> kanjiQuizB = partitioned.get(1);
+        List<Question> kanjiQuizA = partitioned.get(0);
+        List<Question> kanjiQuizB = partitioned.get(1);
         rowsAlreadyClaimed.addAll(rowsForKanji);
 
         List<VocabListRowCumulativeMapped> rowsForPron = withoutPNouns(findRowsNotYetClaimed(tieredList, rowsAlreadyClaimed), MAX_QUESTIONS);
-        // BEWARE re-use of unpartitioned and partitioned. May affect kanjiQuizA's references.
         unpartitioned = VLRCMListToQuizList(rowsForPron, pron);
         partitioned = Lists.partition(unpartitioned, unpartitioned.size() / 2);
-        List<QuizRow> pronQuizA = partitioned.get(0);
-        List<QuizRow> pronQuizB = partitioned.get(1);
+        List<Question> pronQuizA = partitioned.get(0);
+        List<Question> pronQuizB = partitioned.get(1);
         rowsAlreadyClaimed.addAll(rowsForPron);
 
         List<VocabListRowCumulativeMapped> rowsForDef = withoutPNouns(findRowsNotYetClaimed(tieredList, rowsAlreadyClaimed), MAX_QUESTIONS);
         unpartitioned = VLRCMListToQuizList(rowsForDef, def);
         partitioned = Lists.partition(unpartitioned, unpartitioned.size() / 2);
-        List<QuizRow> defQuizA = partitioned.get(0);
-        List<QuizRow> defQuizB = partitioned.get(1);
-//        rowsAlreadyClaimed.addAll(rowsForDef);
+        List<Question> defQuizA = partitioned.get(0);
+        List<Question> defQuizB = partitioned.get(1);
 
-        quizA = new SingleTierQuiz(kanjiQuizA, pronQuizA, defQuizA, tierName);
-        quizB = new SingleTierQuiz(kanjiQuizB, pronQuizB, defQuizB, tierName);
+        tierA = new Tier(kanjiQuizA, pronQuizA, defQuizA, tierAlpha);
+        tierB = new Tier(kanjiQuizB, pronQuizB, defQuizB, tierAlpha);
     }
 
 
@@ -73,7 +69,7 @@ public class SingleTierQuizGenerator {
     }
 
 
-    private List<QuizRow> VLRCMListToQuizList(List<VocabListRowCumulativeMapped> list, Mode mode){
+    private List<Question> VLRCMListToQuizList(List<VocabListRowCumulativeMapped> list, Mode mode){
         return list
                 .stream()
                 .map(row -> getQuizRow(mode, row))
@@ -86,11 +82,11 @@ public class SingleTierQuizGenerator {
         return rows.stream().filter(row -> !row.isPNoun()).limit(limit).collect(Collectors.toList());
     }
 
-    public SingleTierQuiz getQuizA() {
-        return quizA;
+    public Tier getTierA() {
+        return tierA;
     }
 
-    public SingleTierQuiz getQuizB() {
-        return quizB;
+    public Tier getTierB() {
+        return tierB;
     }
 }
