@@ -171,9 +171,65 @@ public class JMDictPronRepo2 {
             "conj" // Included so we can handle conjunctions and particles in same acceptablePOS set 'keredomo'.
     );
 
-//    public static final List<String> all = Lists.newArrayList(
-//
-//    );
+    public static final List<String> all = Lists.newArrayList(
+            "adj-i",
+            "adj-na",
+            "adj-no",
+            "adj-pn",
+            "adj-t",
+            "adj-f",
+            "adj",
+            "adv",
+            "adv-n",
+            "adv-to",
+            "aux",
+            "aux-v",
+            "aux-adj",
+            "conj",
+            "ctr",
+            "exp",
+            "int",
+            "iv",
+            "n",
+            "n-adv",
+            "n-pref",
+            "n-suf",
+            "n-t",
+            "num",
+            "pn",
+            "pref",
+            "prt",
+            "suf",
+            "v1",
+            "v2a-s",
+            "v4h",
+            "v4r",
+            "v5",
+            "v5aru",
+            "v5b",
+            "v5g",
+            "v5k",
+            "v5k-s",
+            "v5m",
+            "v5n",
+            "v5r",
+            "v5r-i",
+            "v5s",
+            "v5t",
+            "v5u",
+            "v5u-s",
+            "v5uru",
+            "v5z",
+            "vz",
+            "vi",
+            "vk",
+            "vn",
+            "vs",
+            "vs-c",
+            "vs-i",
+            "vs-s",
+            "vt"
+    );
 
 
     /**
@@ -198,7 +254,6 @@ public class JMDictPronRepo2 {
         List<String> acceptablePOS;
         final String restrictPOSClause;
         final String properNounsClause;
-        boolean restrictPOS = true;
         boolean ignoreProperNouns = true;
 
         switch (mode) { // Note: most likely could search by baseForm for all of these. Not sure there's ever any difference in these cases.
@@ -209,9 +264,9 @@ public class JMDictPronRepo2 {
                 });
                 break;
             case READINGS_IN_KATAKANA:
-                tokensToSearch.forEach(forwardingToken -> {
-                    readingsToQuery.add(forwardingToken.getReading()); // search for possible loan words in their native katakana. eg. キャンパス
-                });
+                tokensToSearch.forEach(forwardingToken ->
+                    readingsToQuery.add(forwardingToken.getReading()) // search for possible loan words in their native katakana. eg. キャンパス
+                );
                 break;
             default:
                 throw new NotImplementedException();
@@ -251,8 +306,7 @@ public class JMDictPronRepo2 {
             case fillers:
             case others:
             case unclassified:
-                acceptablePOS = new ArrayList<>();
-                restrictPOS = false;
+                acceptablePOS = all;
                 break;
             default:
                 throw new IllegalStateException();
@@ -261,13 +315,13 @@ public class JMDictPronRepo2 {
 
         if(ignoreProperNouns) properNounsClause = "WHERE a.id < " + START_OF_PROPER_NOUNS_ID + " ";
         else properNounsClause = "WHERE a.id > " + (START_OF_PROPER_NOUNS_ID - 1) + " ";
-        if(restrictPOS) restrictPOSClause = "AND t.senseDataKey.data IN :acceptablePOS ";
-        else restrictPOSClause = "";
+        restrictPOSClause = "AND t.senseDataKey.data IN :acceptablePOS ";
 
+        if(readingsToQuery.isEmpty()) return new ArrayList<>(); // bail out if nothing to search database with.
         List<List<String>> partitionedReadingsToQuery = Lists.partition(readingsToQuery, MAX_HOST_PARAMETERS - acceptablePOS.size());
 
         List<JMDictEntry> resultList = new ArrayList<>();
-        for (List<String> partition : partitionedReadingsToQuery) {
+        partitionedReadingsToQuery.parallelStream().forEach(partition -> {
             TypedQuery<JMDictEntry> query = em.createQuery(
                     "SELECT a " + // JOIN FETCH is certainly faster (2s).
                             "FROM JMDictEntry a " +
@@ -285,31 +339,9 @@ public class JMDictPronRepo2 {
                     JMDictEntry.class
             );
             query.setParameter("readingsToQuery", partition);
-            if(restrictPOS) query.setParameter("acceptablePOS", acceptablePOS);
+            query.setParameter("acceptablePOS", acceptablePOS);
             resultList.addAll(query.getResultList());
-        }
-
-//        partitionedReadingsToQuery.parallelStream().forEach(partition -> {
-//            TypedQuery<JMDictEntry> query = em.createQuery(
-//                    "SELECT a " + // JOIN FETCH is certainly faster (2s).
-//                            "FROM JMDictEntry a " +
-//                            "JOIN FETCH JMDictPron p " +
-//                            "  ON a.id = p.idDataKey.id " +
-//                            "JOIN FETCH JMDictSense s " +
-//                            "  ON s.id = a.id "
-//                            + "JOIN FETCH JMDictType t " +
-//                            "ON t.senseDataKey.sense = s.data "
-//                            + properNounsClause
-//                            + " AND p.idDataKey.data IN :readingsToQuery "
-//                            + restrictPOSClause
-//                            + " GROUP BY p.idDataKey.id"
-//                    ,
-//                    JMDictEntry.class
-//            );
-//            query.setParameter("readingsToQuery", partition);
-//            if(restrictPOS) query.setParameter("acceptablePOS", acceptablePOS);
-//            resultList.addAll(query.getResultList());
-//        });
+        });
 
         return resultList;
     }

@@ -12,26 +12,20 @@
 "aux-v",
 "aux-adj",
 "conj",
-
-"ctr", // Mnoun
-
-"exp", // Mnoun
+"ctr",
+"exp",
 "int",
-
 "iv",
-
 "n",
 "n-adv",
 "n-pref",
 "n-suf",
 "n-t",
-
 "num",
 "pn",
 "pref",
 "prt",
 "suf",
-
 "v1",
 "v2a-s",
 "v4h",
@@ -60,4 +54,4 @@
 "vs-c",
 "vs-i",
 "vs-s",
-"vt",
+"vt"

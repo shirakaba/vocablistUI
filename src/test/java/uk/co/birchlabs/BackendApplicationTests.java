@@ -25,6 +25,9 @@ import static uk.co.birchlabs.JMDictPronRepo2.POS;
 public class BackendApplicationTests {
 
 	@Autowired
+	JMDictPronService jmDictPronService;
+
+	@Autowired
 	JMDictEntryRepo2 jmDictEntryRepo2;
 
     @Autowired
@@ -52,8 +55,31 @@ public class BackendApplicationTests {
 
 
 
-//	@Test
-//	public void doJoins() throws IOException {
-//	}
+	@Test
+	public void speedTest() throws IOException {
+		// 22s for 15 articles; 37s for 100 articles; 34s for 1000 articles (there probably aren't that many)
+//		jmDictPronService.test6(
+//				false, // makeQuiz
+//				1000, // maxArticles
+//				"mandatory", // filtering
+//				1, // egs
+//				new Float(0.0), // minYield
+//				0,  // partition
+//				new Float(100.0), // percentLimit
+//				"東方Project" // input
+//		);
+
+		// 22s for 1000 articles
+		jmDictPronService.test6(
+				false, // makeQuiz
+				1000, // maxArticles
+				"n3", // filtering
+				1, // egs
+				new Float(0.0), // minYield
+				100,  // partition
+				new Float(100.0), // percentLimit
+				"東方Project" // input
+		);
+	}
 
 }
