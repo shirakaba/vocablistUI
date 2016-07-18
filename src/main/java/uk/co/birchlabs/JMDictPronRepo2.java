@@ -9,8 +9,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 import static uk.co.birchlabs.JMDictEntry.START_OF_PROPER_NOUNS_ID;
@@ -97,23 +99,23 @@ public class JMDictPronRepo2 {
     public static final List<String> adverbs = Lists.newArrayList(
             "adj-na", // an extra option for たぶん, あまり
             "adj-no", // an extra option for たぶん, あまり
-            "adv", // for most
+            "adv",    // for most
             "adv-n",
-            "exp", // for なにか, あんなに
+            "exp",    // for なにか, あんなに
             "adv-to"
     );
 
     public static final List<String> adfixes = Lists.newArrayList(
-            "n-pref", // 夫
-            "n-suf", // 男
-            "pref", // go, o,
-            "suf" // go
+            "n-pref",  // 夫
+            "n-suf",   // 男
+            "pref",   // go, o,
+            "suf"     // go
     );
 
     public static final List<String> nouns = Lists.newArrayList(
             "ctr",
             "exp",
-            "int", // adnominals in Mecab
+            "int",   // adnominals in Mecab
             "n",
             "n-adv",
             "n-t",
@@ -129,7 +131,7 @@ public class JMDictPronRepo2 {
 
 
     public static final List<String> verbsAndAux = Lists.newArrayList(
-            "aux", // Mecab tags です and であろう as 助動詞; jmdict tags them as aux.
+            "aux",     // Mecab tags です and であろう as 助動詞; jmdict tags them as aux.
             "aux-adj", // Mecab tags らしい and -ない as 助動詞; jmdict tags them as aux.
             "aux-v",
             "iv",
@@ -250,7 +252,7 @@ public class JMDictPronRepo2 {
      * @return - an iterable of eligible JMDictEntrys.
      */
     public Iterable<JMDictEntry> getEntriesFromPron(Iterable<ForwardingToken> tokensToSearch, Mode mode, POS pos) {
-        List<String> readingsToQuery = new ArrayList<>();
+        Set<String> readingsToQuery = new HashSet<>();
         List<String> acceptablePOS;
         final String restrictPOSClause;
         final String properNounsClause;
@@ -318,7 +320,10 @@ public class JMDictPronRepo2 {
         restrictPOSClause = "AND t.senseDataKey.data IN :acceptablePOS ";
 
         if(readingsToQuery.isEmpty()) return new ArrayList<>(); // bail out if nothing to search database with.
-        List<List<String>> partitionedReadingsToQuery = Lists.partition(readingsToQuery, MAX_HOST_PARAMETERS - acceptablePOS.size());
+
+        List<List<String>> partitionedReadingsToQuery = Lists.partition(
+                readingsToQuery.stream().collect(Collectors.toList()), MAX_HOST_PARAMETERS - acceptablePOS.size()
+        );
 
         List<JMDictEntry> resultList = new ArrayList<>();
         partitionedReadingsToQuery.parallelStream().forEach(partition -> {

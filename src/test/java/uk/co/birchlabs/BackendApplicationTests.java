@@ -72,11 +72,11 @@ public class BackendApplicationTests {
 		// 22s for 1000 articles
 		jmDictPronService.test6(
 				false, // makeQuiz
-				1000, // maxArticles
+				1, // maxArticles
 				"n3", // filtering
-				1, // egs
+				0, // egs
 				new Float(0.0), // minYield
-				100,  // partition
+				1000,  // partition
 				new Float(100.0), // percentLimit
 				"東方Project" // input
 		);
