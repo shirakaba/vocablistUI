@@ -53,7 +53,7 @@ public class JMDictEntryRepo2 {
             TypedQuery<JMDictEntry> query = em.createQuery(
                     "SELECT a " +
                             "FROM JMDictEntry a " +
-                            "JOIN FETCH JMDictWord w " +
+                            "JOIN JMDictWord w " +
                             "  ON a.id = w.idDataKey.id " +
                             properNounsClause +
                             " AND w.idDataKey.data IN :data " +

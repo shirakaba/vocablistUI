@@ -58,28 +58,29 @@ public class BackendApplicationTests {
 	@Test
 	public void speedTest() throws IOException {
 		// 22s for 15 articles; 37s for 100 articles; 34s for 1000 articles (there probably aren't that many)
-//		jmDictPronService.test6(
-//				false, // makeQuiz
-//				1000, // maxArticles
-//				"mandatory", // filtering
-//				1, // egs
-//				new Float(0.0), // minYield
-//				0,  // partition
-//				new Float(100.0), // percentLimit
-//				"東方Project" // input
-//		);
-
-		// 22s for 1000 articles
 		jmDictPronService.test6(
 				false, // makeQuiz
 				1, // maxArticles
-				"n3", // filtering
+				"mandatory", // filtering
 				0, // egs
 				new Float(0.0), // minYield
-				1000,  // partition
+				30,  // partition
 				new Float(100.0), // percentLimit
 				"東方Project" // input
 		);
+
+		// 22s for 1000 articles
+		// 10s for 4 articles, unlimited partition
+//		jmDictPronService.test6(
+//				false, // makeQuiz
+//				1, // maxArticles
+//				"n3", // filtering
+//				0, // egs
+//				new Float(0.0), // minYield
+//				30,  // partition
+//				new Float(100.0), // percentLimit
+//				"東方Project" // input
+//		);
 	}
 
 }

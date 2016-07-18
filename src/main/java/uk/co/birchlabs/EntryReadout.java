@@ -19,7 +19,7 @@ public class EntryReadout {
     private final String description;
     private final List<JMDictSense> senses;
     private final SetMultimap<JMDictSense, String> sensesToDefs = HashMultimap.create();
-    private final SetMultimap<JMDictSense, String> sensesToPOS = HashMultimap.create();
+//    private final SetMultimap<JMDictSense, String> sensesToPOS = HashMultimap.create();
     private final List<JMDictWord> words;
     private final List<JMDictPron> prons;
 
@@ -31,7 +31,7 @@ public class EntryReadout {
         this.token = token;
         this.senses = entry.getSenses();
         senses.forEach(sense -> sensesToDefs.putAll(sense, extractDefs(sense)));
-        senses.forEach(sense -> sensesToPOS.putAll(sense, extractPOS(sense)));
+//        senses.forEach(sense -> sensesToPOS.putAll(sense, extractPOS(sense)));
         description = initDescription();
 
     }
@@ -50,9 +50,9 @@ public class EntryReadout {
         return sense.getDefs().stream().map(def -> def.getSenseDataKey().getData()).collect(Collectors.toList());
     }
 
-    private List<String> extractPOS (JMDictSense sense) {
-        return sense.getTypes().stream().map(def -> def.getSenseDataKey().getData()).collect(Collectors.toList());
-    }
+//    private List<String> extractPOS (JMDictSense sense) {
+//        return sense.getTypes().stream().map(def -> def.getSenseDataKey().getData()).collect(Collectors.toList());
+//    }
 
     public static final String MEANINGS_START_KEY = "：";
     public static final String PRONS_START_KEY = " [";

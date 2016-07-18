@@ -19,6 +19,15 @@ public class JMDictSense {
 
     private Integer id;
 
+    private Integer adfixes;
+    private Integer adjectives;
+    private Integer adnominals;
+    private Integer adverbs;
+    private Integer nouns;
+    private Integer particles;
+    private Integer propernouns;
+    private Integer verbsandaux;
+
     // TODO: not sure what to do about the field being an Integer called id in the real table.
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(
@@ -31,8 +40,8 @@ public class JMDictSense {
     @OneToMany(mappedBy = "jmDictSenseD", fetch = FetchType.EAGER)
     private List<JMDictDef> defs;
 
-    @OneToMany(mappedBy = "jmDictSenseT", fetch = FetchType.EAGER)
-    private List<JMDictType> types;
+//    @OneToMany(mappedBy = "jmDictSenseT", fetch = FetchType.EAGER)
+//    private List<JMDictType> types;
 
     public JMDictSense() {
     }
@@ -45,13 +54,13 @@ public class JMDictSense {
         this.id = id;
     }
 
-    public List<JMDictType> getTypes() {
-        return types;
-    }
-
-    public void setTypes(List<JMDictType> types) {
-        this.types = types;
-    }
+//    public List<JMDictType> getTypes() {
+//        return types;
+//    }
+//
+//    public void setTypes(List<JMDictType> types) {
+//        this.types = types;
+//    }
 
     public JMDictEntry getJmDictEntryS() {
         return jmDictEntryS;
@@ -75,5 +84,69 @@ public class JMDictSense {
 
     public void setDefs(List<JMDictDef> defs) {
         this.defs = defs;
+    }
+
+    public Integer getAdfixes() {
+        return adfixes;
+    }
+
+    public void setAdfixes(Integer adfixes) {
+        this.adfixes = adfixes;
+    }
+
+    public Integer getAdjectives() {
+        return adjectives;
+    }
+
+    public void setAdjectives(Integer adjectives) {
+        this.adjectives = adjectives;
+    }
+
+    public Integer getAdnominals() {
+        return adnominals;
+    }
+
+    public void setAdnominals(Integer adnominals) {
+        this.adnominals = adnominals;
+    }
+
+    public Integer getAdverbs() {
+        return adverbs;
+    }
+
+    public void setAdverbs(Integer adverbs) {
+        this.adverbs = adverbs;
+    }
+
+    public Integer getNouns() {
+        return nouns;
+    }
+
+    public void setNouns(Integer nouns) {
+        this.nouns = nouns;
+    }
+
+    public Integer getParticles() {
+        return particles;
+    }
+
+    public void setParticles(Integer particles) {
+        this.particles = particles;
+    }
+
+    public Integer getPropernouns() {
+        return propernouns;
+    }
+
+    public void setPropernouns(Integer propernouns) {
+        this.propernouns = propernouns;
+    }
+
+    public Integer getVerbsAndAux() {
+        return verbsandaux;
+    }
+
+    public void setVerbsAndAux(Integer verbsAndAux) {
+        this.verbsandaux = verbsAndAux;
     }
 }

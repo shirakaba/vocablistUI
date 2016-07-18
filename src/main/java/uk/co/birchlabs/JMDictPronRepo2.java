@@ -278,29 +278,37 @@ public class JMDictPronRepo2 {
         switch(pos){
             case particles:
             case conjunctions:
-                acceptablePOS = particles;
+//                acceptablePOS = particles;
+                restrictPOSClause = "AND s.particles = 1 ";
                 break;
             case adverbs:
-                acceptablePOS = adverbs;
+//                acceptablePOS = adverbs;
+                restrictPOSClause = "AND s.adverbs = 1 ";
                 break;
             case adjectives:
-                acceptablePOS = adjectives;
+//                acceptablePOS = adjectives;
+                restrictPOSClause = "AND s.adjectives = 1 ";
                 break;
             case adnominals:
-                acceptablePOS = adnominals;
+//                acceptablePOS = adnominals;
+                restrictPOSClause = "AND s.adnominals = 1 ";
                 break;
             case prefixes:
-                acceptablePOS = adfixes;
+//                acceptablePOS = adfixes;
+                restrictPOSClause = "AND s.adfixes = 1 ";
                 break;
             case nouns:
-                acceptablePOS = nouns;
+//                acceptablePOS = nouns;
+                restrictPOSClause = "AND s.nouns = 1 ";
                 break;
             case properNouns:
-                acceptablePOS = properNouns;
+//                acceptablePOS = properNouns;
+                restrictPOSClause = "AND s.propernouns = 1 ";
                 ignoreProperNouns = false;
                 break;
             case verbsAndAux:
-                acceptablePOS = verbsAndAux;
+//                acceptablePOS = verbsAndAux;
+                restrictPOSClause = "AND s.verbsandaux = 1 ";
                 break;
             // Take all you can find
             case exclamations:
@@ -308,7 +316,8 @@ public class JMDictPronRepo2 {
             case fillers:
             case others:
             case unclassified:
-                acceptablePOS = all;
+                restrictPOSClause = "";
+//                acceptablePOS = all;
                 break;
             default:
                 throw new IllegalStateException();
@@ -317,12 +326,13 @@ public class JMDictPronRepo2 {
 
         if(ignoreProperNouns) properNounsClause = "WHERE a.id < " + START_OF_PROPER_NOUNS_ID + " ";
         else properNounsClause = "WHERE a.id > " + (START_OF_PROPER_NOUNS_ID - 1) + " ";
-        restrictPOSClause = "AND t.senseDataKey.data IN :acceptablePOS ";
+//        restrictPOSClause = "AND t.senseDataKey.data IN :acceptablePOS ";
 
         if(readingsToQuery.isEmpty()) return new ArrayList<>(); // bail out if nothing to search database with.
 
         List<List<String>> partitionedReadingsToQuery = Lists.partition(
-                readingsToQuery.stream().collect(Collectors.toList()), MAX_HOST_PARAMETERS - acceptablePOS.size()
+//                readingsToQuery.stream().collect(Collectors.toList()), MAX_HOST_PARAMETERS - acceptablePOS.size()
+                readingsToQuery.stream().collect(Collectors.toList()), MAX_HOST_PARAMETERS
         );
 
         List<JMDictEntry> resultList = new ArrayList<>();
@@ -334,8 +344,8 @@ public class JMDictPronRepo2 {
                             "  ON a.id = p.idDataKey.id " +
                             "JOIN FETCH JMDictSense s " +
                             "  ON s.id = a.id "
-                            + "JOIN FETCH JMDictType t " +
-                            "ON t.senseDataKey.sense = s.data "
+//                            + "JOIN JMDictType t " +
+//                            "ON t.senseDataKey.sense = s.data "
                             + properNounsClause
                             + " AND p.idDataKey.data IN :readingsToQuery "
                             + restrictPOSClause
@@ -344,7 +354,7 @@ public class JMDictPronRepo2 {
                     JMDictEntry.class
             );
             query.setParameter("readingsToQuery", partition);
-            query.setParameter("acceptablePOS", acceptablePOS);
+//            query.setParameter("acceptablePOS", acceptablePOS);
             resultList.addAll(query.getResultList());
         });
 
