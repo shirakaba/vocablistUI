@@ -171,6 +171,10 @@ public class JMDictPronRepo2 {
             "conj" // Included so we can handle conjunctions and particles in same acceptablePOS set 'keredomo'.
     );
 
+//    public static final List<String> all = Lists.newArrayList(
+//
+//    );
+
 
     /**
      * Calls getEntriesFromPron() by the 'search readings in hiragana' mode.
@@ -284,6 +288,28 @@ public class JMDictPronRepo2 {
             if(restrictPOS) query.setParameter("acceptablePOS", acceptablePOS);
             resultList.addAll(query.getResultList());
         }
+
+//        partitionedReadingsToQuery.parallelStream().forEach(partition -> {
+//            TypedQuery<JMDictEntry> query = em.createQuery(
+//                    "SELECT a " + // JOIN FETCH is certainly faster (2s).
+//                            "FROM JMDictEntry a " +
+//                            "JOIN FETCH JMDictPron p " +
+//                            "  ON a.id = p.idDataKey.id " +
+//                            "JOIN FETCH JMDictSense s " +
+//                            "  ON s.id = a.id "
+//                            + "JOIN FETCH JMDictType t " +
+//                            "ON t.senseDataKey.sense = s.data "
+//                            + properNounsClause
+//                            + " AND p.idDataKey.data IN :readingsToQuery "
+//                            + restrictPOSClause
+//                            + " GROUP BY p.idDataKey.id"
+//                    ,
+//                    JMDictEntry.class
+//            );
+//            query.setParameter("readingsToQuery", partition);
+//            if(restrictPOS) query.setParameter("acceptablePOS", acceptablePOS);
+//            resultList.addAll(query.getResultList());
+//        });
 
         return resultList;
     }

@@ -48,11 +48,25 @@ public class JMDictEntryRepo2 {
         List<List<String>> partitionedReadingsToQuery = Lists.partition(baseFormsToQuery, MAX_HOST_PARAMETERS);
 
         List<JMDictEntry> resultList = new ArrayList<>();
-        for (List<String> partition : partitionedReadingsToQuery) {
+//        for (List<String> partition : partitionedReadingsToQuery) {
+//            TypedQuery<JMDictEntry> query = em.createQuery(
+//                    "SELECT a " +
+//                            "FROM JMDictEntry a " +
+//                            "JOIN FETCH JMDictWord w " +
+//                            "  ON a.id = w.idDataKey.id " +
+//                            properNounsClause +
+//                            " AND w.idDataKey.data IN :data " +
+//                            "GROUP BY w.idDataKey.id",
+//                    JMDictEntry.class
+//            );
+//            query.setParameter("data", partition);
+//            resultList.addAll(query.getResultList());
+//        }
+
+        partitionedReadingsToQuery.parallelStream().forEach(partition -> {
             TypedQuery<JMDictEntry> query = em.createQuery(
                     "SELECT a " +
                             "FROM JMDictEntry a " +
-                            // only need to specify the join because we're using a WHERE clause on it?
                             "JOIN FETCH JMDictWord w " +
                             "  ON a.id = w.idDataKey.id " +
                             properNounsClause +
@@ -62,7 +76,7 @@ public class JMDictEntryRepo2 {
             );
             query.setParameter("data", partition);
             resultList.addAll(query.getResultList());
-        }
+        });
 
         return resultList;
     }
