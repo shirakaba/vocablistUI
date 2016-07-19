@@ -12,14 +12,16 @@ public class Test6Model {
     private final List<Tier> quizA;
     private final List<Tier> quizB;
     private final List<Tier> quizC;
+    private final List<String> successfulArticles;
 
     /**
      * Just includes untieredList.
      * @param untieredList
      * @param makeQuiz
      */
-    public Test6Model(List<VocabListRowCumulativeMapped> untieredList, boolean makeQuiz) {
+    public Test6Model(List<String> successfulArticles, List<VocabListRowCumulativeMapped> untieredList, boolean makeQuiz) {
         this.list = untieredList;
+        this.successfulArticles = successfulArticles;
         if(makeQuiz){
             TieredSingleDefVRCMList tierHolder = new TieredSingleDefVRCMList(untieredList);
 
@@ -51,8 +53,9 @@ public class Test6Model {
      * Includes quizA.
      * @param list
      */
-    public Test6Model(List<VocabListRowCumulativeMapped> list) {
+    public Test6Model(List<String> successfulArticles, List<VocabListRowCumulativeMapped> list) {
         this.list = list;
+        this.successfulArticles = successfulArticles;
         quizA = null;
         quizB = null;
         quizC = null;
@@ -73,5 +76,9 @@ public class Test6Model {
 
     public List<Tier> getQuizC() {
         return quizC;
+    }
+
+    public List<String> getSuccessfulArticles() {
+        return successfulArticles;
     }
 }

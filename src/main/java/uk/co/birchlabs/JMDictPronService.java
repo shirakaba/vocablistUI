@@ -35,7 +35,7 @@ public class JMDictPronService {
     public static Integer PERCENT_TO_DECIMAL = 100;
 
     public Test6Model test6(boolean makeQuiz, Integer maxArticles, String filtering, Integer egs, Float minYield, Integer partition, Float percentLimit, String input) {
-
+        List<String> successfulArticles;
 //        if(makeQuiz){
 //            maxArticles = 1;
 //            filtering = "n3"; // only n2 and above accepted (being the topic-specific vocab starting level: http://www.jlpt.jp/e/about/levelsummary.html)
@@ -52,13 +52,14 @@ public class JMDictPronService {
         if(input.equals("test")){
             String nerima = null, nihon = null, eva = null;
             try {
-                nerima = new String(Files.readAllBytes(Paths.get("src/test/java/uk/co/birchlabs/nerima.txt")));
-                nihon = new String(Files.readAllBytes(Paths.get("src/test/java/uk/co/birchlabs/nihon.txt")));
+//                nerima = new String(Files.readAllBytes(Paths.get("src/test/java/uk/co/birchlabs/nerima.txt")));
+//                nihon = new String(Files.readAllBytes(Paths.get("src/test/java/uk/co/birchlabs/nihon.txt")));
                 eva = new String(Files.readAllBytes(Paths.get("src/test/java/uk/co/birchlabs/evangelion.txt")));
             } catch (IOException e) {
                 e.printStackTrace();
             }
             unsortedVocablist = new Vocablist(eva, filteringEnum);
+            successfulArticles = new ArrayList<>(Collections.singletonList("新世紀エヴァンゲリオン"));
         }
         else {
             HashSet<String> pagesReturned;
@@ -69,7 +70,10 @@ public class JMDictPronService {
                         maxArticles,
                         false
                 );
-                unsortedVocablist = Vocablist.addTokensFromListOfWikipediaArticles(pagesReturned, filteringEnum);
+                ArticlesWithVocablist articlesWithVocablist = Vocablist.addTokensFromListOfWikipediaArticles(pagesReturned, filteringEnum);
+                unsortedVocablist = articlesWithVocablist.getVocablist();
+                successfulArticles = articlesWithVocablist.getSuccessfulArticles();
+
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
                 throw new IllegalStateException("Vocab list was unable to be built from category specified.");
@@ -132,8 +136,8 @@ public class JMDictPronService {
                 )
                 .collect(Collectors.toList());
 
-        if(partition.equals(0)) return new Test6Model(list, makeQuiz);
-        else return new Test6Model(Lists.partition(list, partition).get(0), makeQuiz);
+        if(partition.equals(0)) return new Test6Model(successfulArticles, list, makeQuiz);
+        else return new Test6Model(successfulArticles, Lists.partition(list, partition).get(0), makeQuiz);
     }
 
 
