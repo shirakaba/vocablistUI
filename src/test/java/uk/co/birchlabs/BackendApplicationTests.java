@@ -1,24 +1,14 @@
 package uk.co.birchlabs;
 
-import catRecurserPkg.*;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import uk.co.birchlabs.JMDictEntryRepo2.CollectionMode;
-import uk.co.birchlabs.JMDictPronRepo2.Mode;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
-import static uk.co.birchlabs.JMDictPronRepo2.POS;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -58,7 +48,7 @@ public class BackendApplicationTests {
 	@Test
 	public void speedTest() throws IOException {
 		// 22s for 15 articles; 37s for 100 articles; 34s for 1000 articles (there probably aren't that many)
-		jmDictPronService.test6(
+		jmDictPronService.generator(
 				false, // makeQuiz
 				1, // maxArticles
 				"mandatory", // filtering
@@ -71,7 +61,7 @@ public class BackendApplicationTests {
 
 		// 22s for 1000 articles
 		// 10s for 4 articles, unlimited partition
-//		jmDictPronService.test6(
+//		jmDictPronService.generator(
 //				false, // makeQuiz
 //				1, // maxArticles
 //				"n3", // filtering

@@ -34,7 +34,7 @@ public class JMDictPronService {
 
     public static Integer PERCENT_TO_DECIMAL = 100;
 
-    public Test6Model test6(boolean makeQuiz, Integer maxArticles, String filtering, Integer egs, Float minYield, Integer partition, Float percentLimit, String input) {
+    public Generator generator(boolean makeQuiz, Integer maxArticles, String filtering, Integer egs, Float minYield, Integer partition, Float percentLimit, String input) {
         List<String> successfulArticles;
 //        if(makeQuiz){
 //            maxArticles = 1;
@@ -136,8 +136,8 @@ public class JMDictPronService {
                 )
                 .collect(Collectors.toList());
 
-        if(partition.equals(0)) return new Test6Model(successfulArticles, list, makeQuiz);
-        else return new Test6Model(successfulArticles, Lists.partition(list, partition).get(0), makeQuiz);
+        if(partition.equals(0)) return new Generator(successfulArticles, list, makeQuiz);
+        else return new Generator(successfulArticles, Lists.partition(list, partition).get(0), makeQuiz);
     }
 
 

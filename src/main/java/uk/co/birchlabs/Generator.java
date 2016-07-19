@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by jamiebirch on 22/06/2016.
  */
-public class Test6Model {
+public class Generator {
     private final List<VocabListRowCumulativeMapped> list;
     private final List<Tier> quizA;
     private final List<Tier> quizB;
@@ -19,8 +19,9 @@ public class Test6Model {
      * @param untieredList
      * @param makeQuiz
      */
-    public Test6Model(List<String> successfulArticles, List<VocabListRowCumulativeMapped> untieredList, boolean makeQuiz) {
+    public Generator(List<String> successfulArticles, List<VocabListRowCumulativeMapped> untieredList, boolean makeQuiz) {
         this.list = untieredList;
+//        if(successfulArticles.isEmpty()) successfulArticles.add("No articles found for the category!");
         this.successfulArticles = successfulArticles;
         if(makeQuiz){
             TieredSingleDefVRCMList tierHolder = new TieredSingleDefVRCMList(untieredList);
@@ -53,7 +54,7 @@ public class Test6Model {
      * Includes quizA.
      * @param list
      */
-    public Test6Model(List<String> successfulArticles, List<VocabListRowCumulativeMapped> list) {
+    public Generator(List<String> successfulArticles, List<VocabListRowCumulativeMapped> list) {
         this.list = list;
         this.successfulArticles = successfulArticles;
         quizA = null;
