@@ -36,15 +36,15 @@ public class JMDictPronService {
 
     public Test6Model test6(boolean makeQuiz, Integer maxArticles, String filtering, Integer egs, Float minYield, Integer partition, Float percentLimit, String input) {
 
-        if(makeQuiz){
-            maxArticles = 1;
-            filtering = "n3"; // only n2 and above accepted (being the topic-specific vocab starting level: http://www.jlpt.jp/e/about/levelsummary.html)
-//            egs = 0;
-            minYield = new Float(0.0);
-            partition = 0;
-            percentLimit = new Float(100.0);
-            input = "test";
-        }
+//        if(makeQuiz){
+//            maxArticles = 1;
+//            filtering = "n3"; // only n2 and above accepted (being the topic-specific vocab starting level: http://www.jlpt.jp/e/about/levelsummary.html)
+////            egs = 0;
+//            minYield = new Float(0.0);
+//            partition = 0;
+//            percentLimit = new Float(100.0);
+//            input = "test";
+//        }
 
         Filtering filteringEnum = determineFiltering(filtering);
         Vocablist unsortedVocablist;

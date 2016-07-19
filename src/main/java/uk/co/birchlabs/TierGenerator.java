@@ -16,8 +16,9 @@ public class TierGenerator {
 
     private final Tier tierA;
     private final Tier tierB;
+    private final Tier tierC;
 
-    public static final Integer MAX_QUESTIONS= 8;
+    public static final Integer MAX_QUESTIONS= 12;
 
 
     public TierGenerator(List<VocabListRowCumulativeMapped> tieredList, String tierAlpha) {
@@ -27,26 +28,38 @@ public class TierGenerator {
 
         List<VocabListRowCumulativeMapped> rowsForKanji = findRowsNotYetClaimed(tieredList, rowsAlreadyClaimed, MAX_QUESTIONS);
         unpartitioned = VLRCMListToQuizList(rowsForKanji, kanji);
-        partitioned = Lists.partition(unpartitioned, unpartitioned.size() / 2);
-        List<Question> kanjiQuizA = partitioned.get(0);
-        List<Question> kanjiQuizB = partitioned.get(1);
+        if(unpartitioned.isEmpty()) partitioned = new ArrayList<>();
+        else partitioned = Lists.partition(unpartitioned, unpartitioned.size() / 3);
+        List<Question> kanjiQuizA = getPartitionIfNonEmpty(partitioned, 0);
+        List<Question> kanjiQuizB = getPartitionIfNonEmpty(partitioned, 1);
+        List<Question> kanjiQuizC = getPartitionIfNonEmpty(partitioned, 2);
         rowsAlreadyClaimed.addAll(rowsForKanji);
 
         List<VocabListRowCumulativeMapped> rowsForPron = withoutPNouns(findRowsNotYetClaimed(tieredList, rowsAlreadyClaimed), MAX_QUESTIONS);
         unpartitioned = VLRCMListToQuizList(rowsForPron, pron);
-        partitioned = Lists.partition(unpartitioned, unpartitioned.size() / 2);
-        List<Question> pronQuizA = partitioned.get(0);
-        List<Question> pronQuizB = partitioned.get(1);
+        if(unpartitioned.isEmpty()) partitioned = new ArrayList<>();
+        else partitioned = Lists.partition(unpartitioned, unpartitioned.size() / 3);
+        List<Question> pronQuizA = getPartitionIfNonEmpty(partitioned, 0);
+        List<Question> pronQuizB = getPartitionIfNonEmpty(partitioned, 1);
+        List<Question> pronQuizC = getPartitionIfNonEmpty(partitioned, 2);
         rowsAlreadyClaimed.addAll(rowsForPron);
 
         List<VocabListRowCumulativeMapped> rowsForDef = withoutPNouns(findRowsNotYetClaimed(tieredList, rowsAlreadyClaimed), MAX_QUESTIONS);
         unpartitioned = VLRCMListToQuizList(rowsForDef, def);
-        partitioned = Lists.partition(unpartitioned, unpartitioned.size() / 2);
-        List<Question> defQuizA = partitioned.get(0);
-        List<Question> defQuizB = partitioned.get(1);
+        if(unpartitioned.isEmpty()) partitioned = new ArrayList<>();
+        else partitioned = Lists.partition(unpartitioned, unpartitioned.size() / 3);
+        List<Question> defQuizA = getPartitionIfNonEmpty(partitioned, 0);
+        List<Question> defQuizB = getPartitionIfNonEmpty(partitioned, 1);
+        List<Question> defQuizC = getPartitionIfNonEmpty(partitioned, 2);
 
         tierA = new Tier(kanjiQuizA, pronQuizA, defQuizA, tierAlpha);
         tierB = new Tier(kanjiQuizB, pronQuizB, defQuizB, tierAlpha);
+        tierC = new Tier(kanjiQuizC, pronQuizC, defQuizC, tierAlpha);
+    }
+
+    private List<Question> getPartitionIfNonEmpty(List<List<Question>> partitioned, int index){
+        if(partitioned.size() > index) return partitioned.get(index);
+        else return new ArrayList<>();
     }
 
 
@@ -88,5 +101,9 @@ public class TierGenerator {
 
     public Tier getTierB() {
         return tierB;
+    }
+
+    public Tier getTierC() {
+        return tierC;
     }
 }

@@ -11,6 +11,7 @@ public class Test6Model {
     private final List<VocabListRowCumulativeMapped> list;
     private final List<Tier> quizA;
     private final List<Tier> quizB;
+    private final List<Tier> quizC;
 
     /**
      * Just includes untieredList.
@@ -34,10 +35,15 @@ public class Test6Model {
             quizB = new ArrayList<>(
                     Arrays.asList(tierOne.getTierB(), tierTwo.getTierB(), tierThree.getTierB(), tierFour.getTierB())
             );
+
+            quizC = new ArrayList<>(
+                    Arrays.asList(tierOne.getTierC(), tierTwo.getTierC(), tierThree.getTierC(), tierFour.getTierC())
+            );
         }
         else {
             quizA = null;
             quizB = null;
+            quizC = null;
         }
     }
 
@@ -49,6 +55,7 @@ public class Test6Model {
         this.list = list;
         quizA = null;
         quizB = null;
+        quizC = null;
     }
 
     public List<VocabListRowCumulativeMapped> getList()
@@ -62,5 +69,9 @@ public class Test6Model {
 
     public List<Tier> getQuizB() {
         return quizB;
+    }
+
+    public List<Tier> getQuizC() {
+        return quizC;
     }
 }
