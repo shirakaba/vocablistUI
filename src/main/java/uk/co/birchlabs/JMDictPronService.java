@@ -136,6 +136,7 @@ public class JMDictPronService {
                 )
                 .collect(Collectors.toList());
 
+        if(list.isEmpty()) throw new RuntimeException("Generated list was empty.");
         if(partition.equals(0)) return new Generator(successfulArticles, list, makeQuiz);
         else return new Generator(successfulArticles, Lists.partition(list, partition).get(0), makeQuiz);
     }
