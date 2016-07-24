@@ -13,13 +13,15 @@ public class Generator {
     private final List<Tier> quizB;
     private final List<Tier> quizC;
     private final List<String> successfulArticles;
+    private final String topic;
 
     /**
      * Just includes untieredList.
      * @param untieredList
      * @param makeQuiz
      */
-    public Generator(List<String> successfulArticles, List<VocabListRowCumulativeMapped> untieredList, boolean makeQuiz) {
+    public Generator(List<String> successfulArticles, List<VocabListRowCumulativeMapped> untieredList, boolean makeQuiz, String topic) {
+        this.topic = topic;
         this.list = untieredList;
 //        if(successfulArticles.isEmpty()) successfulArticles.add("No articles found for the category!");
         this.successfulArticles = successfulArticles;
@@ -54,7 +56,8 @@ public class Generator {
      * Includes quizA.
      * @param list
      */
-    public Generator(List<String> successfulArticles, List<VocabListRowCumulativeMapped> list) {
+    public Generator(List<String> successfulArticles, List<VocabListRowCumulativeMapped> list, String topic) {
+        this.topic = topic;
         this.list = list;
         this.successfulArticles = successfulArticles;
         quizA = null;
@@ -82,4 +85,6 @@ public class Generator {
     public List<String> getSuccessfulArticles() {
         return successfulArticles;
     }
+
+    public String getTopic() { return topic; }
 }
