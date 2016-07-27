@@ -3,6 +3,7 @@ package uk.co.birchlabs;
 import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,7 +29,7 @@ public class TierGenerator {
 
         List<VocabListRowCumulativeMapped> rowsForKanji = findRowsNotYetClaimed(tieredList, rowsAlreadyClaimed, MAX_QUESTIONS);
         unpartitioned = VLRCMListToQuizList(rowsForKanji, kanji);
-        if(unpartitioned.isEmpty()) partitioned = new ArrayList<>();
+        if(unpartitioned.size() < 3) partitioned = Arrays.asList(unpartitioned, new ArrayList<>(), new ArrayList<>());
         else partitioned = Lists.partition(unpartitioned, unpartitioned.size() / 3);
         List<Question> kanjiQuizA = getPartitionIfNonEmpty(partitioned, 0);
         List<Question> kanjiQuizB = getPartitionIfNonEmpty(partitioned, 1);
@@ -37,7 +38,7 @@ public class TierGenerator {
 
         List<VocabListRowCumulativeMapped> rowsForPron = withoutPNouns(findRowsNotYetClaimed(tieredList, rowsAlreadyClaimed), MAX_QUESTIONS);
         unpartitioned = VLRCMListToQuizList(rowsForPron, pron);
-        if(unpartitioned.isEmpty()) partitioned = new ArrayList<>();
+        if(unpartitioned.size() < 3) partitioned = Arrays.asList(unpartitioned, new ArrayList<>(), new ArrayList<>());
         else partitioned = Lists.partition(unpartitioned, unpartitioned.size() / 3);
         List<Question> pronQuizA = getPartitionIfNonEmpty(partitioned, 0);
         List<Question> pronQuizB = getPartitionIfNonEmpty(partitioned, 1);
@@ -46,7 +47,7 @@ public class TierGenerator {
 
         List<VocabListRowCumulativeMapped> rowsForDef = withoutPNouns(findRowsNotYetClaimed(tieredList, rowsAlreadyClaimed), MAX_QUESTIONS);
         unpartitioned = VLRCMListToQuizList(rowsForDef, def);
-        if(unpartitioned.isEmpty()) partitioned = new ArrayList<>();
+        if(unpartitioned.size() < 3) partitioned = Arrays.asList(unpartitioned, new ArrayList<>(), new ArrayList<>());
         else partitioned = Lists.partition(unpartitioned, unpartitioned.size() / 3);
         List<Question> defQuizA = getPartitionIfNonEmpty(partitioned, 0);
         List<Question> defQuizB = getPartitionIfNonEmpty(partitioned, 1);
