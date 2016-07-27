@@ -20,6 +20,7 @@ public class TierGenerator {
     private final Tier tierC;
 
     public static final Integer MAX_QUESTIONS= 12;
+    public static final Integer QUIZZES_NEEDED = 3;
 
 
     public TierGenerator(List<VocabListRowCumulativeMapped> tieredList, String tierAlpha) {
@@ -29,8 +30,8 @@ public class TierGenerator {
 
         List<VocabListRowCumulativeMapped> rowsForKanji = findRowsNotYetClaimed(tieredList, rowsAlreadyClaimed, MAX_QUESTIONS);
         unpartitioned = VLRCMListToQuizList(rowsForKanji, kanji);
-        if(unpartitioned.size() < 3) partitioned = Arrays.asList(unpartitioned, new ArrayList<>(), new ArrayList<>());
-        else partitioned = Lists.partition(unpartitioned, unpartitioned.size() / 3);
+        if(unpartitioned.size() < QUIZZES_NEEDED) partitioned = Arrays.asList(unpartitioned, new ArrayList<>(), new ArrayList<>());
+        else partitioned = Lists.partition(unpartitioned, unpartitioned.size() / QUIZZES_NEEDED);
         List<Question> kanjiQuizA = getPartitionIfNonEmpty(partitioned, 0);
         List<Question> kanjiQuizB = getPartitionIfNonEmpty(partitioned, 1);
         List<Question> kanjiQuizC = getPartitionIfNonEmpty(partitioned, 2);
@@ -38,8 +39,8 @@ public class TierGenerator {
 
         List<VocabListRowCumulativeMapped> rowsForPron = withoutPNouns(findRowsNotYetClaimed(tieredList, rowsAlreadyClaimed), MAX_QUESTIONS);
         unpartitioned = VLRCMListToQuizList(rowsForPron, pron);
-        if(unpartitioned.size() < 3) partitioned = Arrays.asList(unpartitioned, new ArrayList<>(), new ArrayList<>());
-        else partitioned = Lists.partition(unpartitioned, unpartitioned.size() / 3);
+        if(unpartitioned.size() < QUIZZES_NEEDED) partitioned = Arrays.asList(unpartitioned, new ArrayList<>(), new ArrayList<>());
+        else partitioned = Lists.partition(unpartitioned, unpartitioned.size() / QUIZZES_NEEDED);
         List<Question> pronQuizA = getPartitionIfNonEmpty(partitioned, 0);
         List<Question> pronQuizB = getPartitionIfNonEmpty(partitioned, 1);
         List<Question> pronQuizC = getPartitionIfNonEmpty(partitioned, 2);
@@ -47,8 +48,11 @@ public class TierGenerator {
 
         List<VocabListRowCumulativeMapped> rowsForDef = withoutPNouns(findRowsNotYetClaimed(tieredList, rowsAlreadyClaimed), MAX_QUESTIONS);
         unpartitioned = VLRCMListToQuizList(rowsForDef, def);
-        if(unpartitioned.size() < 3) partitioned = Arrays.asList(unpartitioned, new ArrayList<>(), new ArrayList<>());
-        else partitioned = Lists.partition(unpartitioned, unpartitioned.size() / 3);
+        // Got an IllegalArgumentException: null here for a very small topic - maybe stream().collect() as used in many
+        // of these methods doesn't guarantee a new ArrayList<>(), sometimes returning null. Issue is that it crashes the
+        // whole Spring backend.
+        if(unpartitioned.size() < QUIZZES_NEEDED) partitioned = Arrays.asList(unpartitioned, new ArrayList<>(), new ArrayList<>());
+        else partitioned = Lists.partition(unpartitioned, unpartitioned.size() / QUIZZES_NEEDED);
         List<Question> defQuizA = getPartitionIfNonEmpty(partitioned, 0);
         List<Question> defQuizB = getPartitionIfNonEmpty(partitioned, 1);
         List<Question> defQuizC = getPartitionIfNonEmpty(partitioned, 2);

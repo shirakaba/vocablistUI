@@ -31,6 +31,16 @@ public class MyController {
         this.JMDictPronRepo = JMDictPronRepo;
     }
 
+    @RequestMapping("/login")
+    public String login() {
+        return "login";
+    }
+
+    @RequestMapping("/hello")
+    public String hello() {
+        return "hello";
+    }
+
     @RequestMapping("/test")
     public String test(
             @RequestParam(name="kanji", defaultValue = "dat boi") String kanji,
