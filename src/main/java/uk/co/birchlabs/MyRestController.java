@@ -1,7 +1,6 @@
 package uk.co.birchlabs;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +15,6 @@ public class MyRestController {
     JMDictPronService jmDictPronService;
 
     @RequestMapping("/generate")
-    @CrossOrigin
     public Generator generator(
             // eg. http://localhost:8080/test4?input="この俺が俺です。"
             @RequestParam(name="makequiz", defaultValue = "true") boolean makeQuiz,
