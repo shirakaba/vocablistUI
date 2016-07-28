@@ -38,13 +38,25 @@ public class TieredSingleDefVRCMList {
 
                     Float cumu = row.getCumu() * PERCENT_TO_DECIMAL;
                     Double cumuInt = cumu.doubleValue();
-                    if(Range.closedOpen(          0.0,          0.0 + (ALL/Math.exp(1))).contains(cumuInt)) tierOne.add(row);
+                    if(Range.closedOpen(
+                            0.0,
+                            0.0 + ALL/Math.exp(1)
+                    ).contains(cumuInt)) tierOne.add(row);
                         //                       0.0            36.8
-                    else if(Range.closedOpen(0.0 + (ALL/Math.exp(1)), 0.0 + (ALL/Math.exp(2))).contains(cumuInt)) tierTwo.add(row);
+                    else if(Range.closedOpen(
+                            0.0 + ALL/Math.exp(1),
+                            0.0 + ALL/Math.exp(1) + ALL/Math.exp(2)
+                    ).contains(cumuInt)) tierTwo.add(row);
                         //                       36.8            50.32
-                    else if(Range.closedOpen(0.0 + (ALL/Math.exp(2)), 0.0 + (ALL/Math.exp(3))).contains(cumuInt)) tierThree.add(row);
+                    else if(Range.closedOpen(
+                            0.0 + ALL/Math.exp(1) + ALL/Math.exp(2),
+                            0.0 + ALL/Math.exp(1) + ALL/Math.exp(2) + ALL/Math.exp(3)
+                    ).contains(cumuInt)) tierThree.add(row);
                         //                       50.32            55.30
-                    else if(Range.closedOpen(0.0 + (ALL/Math.exp(3)), 0.0 + (ALL/Math.exp(4))).contains(cumuInt)) tierFour.add(row);
+                    else if(Range.closedOpen(
+                            0.0 + ALL/Math.exp(1) + ALL/Math.exp(2) + ALL/Math.exp(3),
+                            0.0 + ALL/Math.exp(1) + ALL/Math.exp(2) + ALL/Math.exp(3) + ALL/Math.exp(4)
+                    ).contains(cumuInt)) tierFour.add(row);
                     //                       55.30            57.13
                 });
 
