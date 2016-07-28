@@ -43,6 +43,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
                 .inMemoryAuthentication()
-                .withUser("topicdictSpring").password("deadlineapproachingSpring").roles("USER");
+                .withUser("thesisSpring").password("deadlineSpring").roles("USER");
     }
 }
