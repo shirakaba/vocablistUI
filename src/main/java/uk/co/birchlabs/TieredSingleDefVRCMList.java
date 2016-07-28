@@ -38,14 +38,14 @@ public class TieredSingleDefVRCMList {
 
                     Float cumu = row.getCumu() * PERCENT_TO_DECIMAL;
                     Double cumuInt = cumu.doubleValue();
-                    if(Range.closedOpen(          0.0,          ALL - (ALL/Math.pow(2, 1))).contains(cumuInt)) tierOne.add(row);
-                        //                       0.0            50.0
-                    else if(Range.closedOpen(ALL - (ALL/Math.pow(2, 1)), ALL - (ALL/Math.pow(2, 2))).contains(cumuInt)) tierTwo.add(row);
-                        //                       50.0            75.0
-                    else if(Range.closedOpen(ALL - (ALL/Math.pow(2, 2)), ALL - (ALL/Math.pow(2, 3))).contains(cumuInt)) tierThree.add(row);
-                        //                       75.0            87.5
-                    else if(Range.closedOpen(ALL - (ALL/Math.pow(2, 3)), ALL - (ALL/Math.pow(2, 4))).contains(cumuInt)) tierFour.add(row);
-                    //                       87.5            93.75
+                    if(Range.closedOpen(          0.0,          ALL - (ALL/Math.exp(1))).contains(cumuInt)) tierOne.add(row);
+                        //                       0.0            36.8
+                    else if(Range.closedOpen(ALL - (ALL/Math.exp(1)), ALL - (ALL/Math.exp(2))).contains(cumuInt)) tierTwo.add(row);
+                        //                       36.8            50.32
+                    else if(Range.closedOpen(ALL - (ALL/Math.exp(2)), ALL - (ALL/Math.exp(3))).contains(cumuInt)) tierThree.add(row);
+                        //                       50.32            55.30
+                    else if(Range.closedOpen(ALL - (ALL/Math.exp(3)), ALL - (ALL/Math.exp(4))).contains(cumuInt)) tierFour.add(row);
+                    //                       55.30            57.13
                 });
 
         shuffleTiers(tierOne, tierTwo, tierThree, tierFour);
