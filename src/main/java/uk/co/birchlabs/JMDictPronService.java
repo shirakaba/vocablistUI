@@ -3,6 +3,8 @@ package uk.co.birchlabs;
 import catRecurserPkg.*;
 import catRecurserPkg.Vocablist.Filtering;
 import com.google.common.collect.*;
+import org.atilika.kuromoji.Token;
+import org.atilika.kuromoji.Tokenizer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -137,6 +139,40 @@ public class JMDictPronService {
                 .collect(Collectors.toList());
 
         if(partition.equals(0)) return new Generator(successfulArticles, list, makeQuiz, input, filtering);
+
+        if(list.isEmpty()){
+            ForwardingTokenizer ft = new ForwardingTokenizer(Tokenizer.builder().build());
+            ForwardingToken errorToken = ft.tokenize("emptylist").get(0);
+            return new Generator(successfulArticles,
+                    Collections.singletonList(
+                            new VocabListRowCumulativeMapped(
+                                    egs,
+                                    new VocabListRowCumu(
+                                            new VocabListRow(1, errorToken),
+                                            new Float(100.0),
+                                            new Float(100.0),
+                                            false,
+                                            false,
+                                            false,
+                                            false,
+                                            false,
+                                            true
+                                    ),
+                                    exampleSentences,
+                                    wordEntries,
+                                    entriesByMecabPOSHiragana,
+                                    entriesByMecabPOSKatakana
+                            )
+                    ),
+                    makeQuiz,
+                    input,
+                    filtering
+            );
+        }
+
+//        if(list.isEmpty()) throw new RuntimeException("No words in list! Probably too much filtering or too small input.");
+        // Fails to stop the user having to wait two minutes.
+
         else return new Generator(successfulArticles, Lists.partition(list, partition).get(0), makeQuiz, input, filtering);
     }
 
